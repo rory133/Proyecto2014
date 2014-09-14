@@ -1,0 +1,111 @@
+
+#top {
+    display: block;
+    position:absolute;
+    /*position: relative;*/
+    background-color: #036fab;
+    color: white;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+  /*  width: 100%;
+    heigth: 25%*/
+    
+}
+
+#bottom {
+    display: block;
+    position:absolute;
+    /*position: relative;*/
+    background-color: #c2dfef;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+   /* width: 1px;*/
+}
+
+
+#left {
+    display: block;
+    position:absolute;
+    /*position: relative;*/
+    float: left;
+    background-color: #ece3a5;
+    padding: 5px;
+ /*   width: 100%;
+     heigth: 75%*/
+}
+
+
+
+.center_content {
+    position: relative;
+    background-color: #dddddd;
+    padding: 5px;
+}
+
+.left_content {
+    background-color: #dddddd;
+    padding: 5px;
+    margin-left: 170px;
+}
+
+.right_content {
+    background-color: #dddddd;
+    padding: 5px;
+    margin: 0px 170px 0px 170px;
+}
+
+#top a:link, #top a:visited {
+  color: white;
+  font-weight : bold;
+  text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+  color: black;
+  font-weight : bold;
+  text-decoration : underline;
+}
+
+
+.stretchedToMarginContent {
+    display: block;
+    position:absolute;
+    height:auto;
+    bottom:0;
+    top:0;
+    left:0;
+    right:0;
+    margin-top:20px;
+    margin-bottom:20px;
+    margin-right:80px;
+    margin-left:80px;
+    background-color: #dddddd;
+}
+.stretchedToMarginContentLeft {
+    display: block;
+    position:absolute;
+    height:auto;
+    bottom:0;
+    top:0;
+    left:0;
+    right:0;
+    margin-top:20px;
+    margin-bottom:20px;
+    margin-right:80px;
+    margin-left:80px;
+     background-color: #ece3a5;
+}
+.stretchedToMarginContentTop {
+    display: block;
+    position:absolute;
+    height:auto;
+    bottom:33;
+    top:77;
+    left:77;
+    right:77;
+    margin-top:20px;
+    margin-bottom:20px;
+    margin-right:180px;
+    margin-left:80px;
+    background-color: green;
+}

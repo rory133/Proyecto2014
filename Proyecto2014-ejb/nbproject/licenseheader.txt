@@ -1,0 +1,12 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Proyecto fin de carrera genérico del Dpto. ${licensePrefix}
+${licensePrefix}Lenguajes y Sistemas Informáticos (curso 2014-2015) ${licensePrefix}
+${licensePrefix}Desarrollo de un portal de anuncios para compra/venta online.${licensePrefix}
+${licensePrefix}realizado por:${licensePrefix}
+${licensePrefix}juan Manuel Mendez Feijoo ${licensePrefix}
+${licensePrefix} juan-ma@telefonica.net${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>

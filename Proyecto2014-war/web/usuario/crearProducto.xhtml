@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="Principal">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Pagina Principal Usuario</title>
+            </f:facet>
+
+         <h:outputStylesheet library="css" name="default.css"  />
+         <h:outputStylesheet library="css" name="cssLayout.css"  />
+         
+         
+         
+        </h:head>
+
+        <h:body>
+
+ <p:layout fullPage="true" rendered="#{ROLE_SOCIO}">
+
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+                        cabecera usuario
+            <br/>            
+            <h:outputText value="#{loginBean.login}"/>
+            <br/>            
+            <h:outputText value="#{sessionScope.usuario.nombre}" /> 
+            <br/>            
+            <h:outputText value="#{sessionScope.login.role}" />
+            <br/>
+           
+     
+            <h:form>       
+              <p:commandButton value="logout" icon="ui-icon-newwin"
+                               actionListener="#{loginBean.logout()}"/>
+            </h:form>
+                </p:layoutUnit>
+
+
+                <p:layoutUnit position="west" size="25%" header="Categorias" collapsible="false">
+                    <h:form>
+                        <p:growl id="msgs" showDetail="true" escape="false"/>
+
+                        <h3 style="margin-top:0">Selecciona la categoría</h3>
+                        <p:tree value="#{treeSelectionView.root1}" var="doc"
+                                    selectionMode="single"
+                                    selection="#{treeSelectionView.selectedNode}">
+                            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                                <h:outputText value="#{doc.nombre}"/>
+                            </p:treeNode>
+                            <p:treeNode type="document" icon="ui-icon-document">
+                                <h:outputText value="#{doc.nombre}" />
+                            </p:treeNode>
+                            <p:treeNode type="picture" icon="ui-icon-image">
+                                <h:outputText value="#{doc.nombre}" />
+                            </p:treeNode>
+                            <p:treeNode type="mp3" icon="ui-icon-video">
+                                <h:outputText value="#{doc.nombre}" />
+                            </p:treeNode>
+                           
+                        </p:tree>
+
+                        <p:commandButton value="Seleccionar esta categoria" update="msgs" icon="ui-icon-newwin"
+                                         actionListener="#{treeSelectionView.sumaCategoria()}">
+                                         <f:ajax event="click" render=":form2:categoria" />
+                                         <f:ajax event="click" render=":form2:idcategoria" />
+                
+             <f:ajax event="click" render=":form2:boton" />
+                        </p:commandButton>
+                  </h:form>
+
+                </p:layoutUnit>
+
+     <p:layoutUnit position="center">
+         <p:messages id="msgs" />
+         <h:form enctype="multipart-data" id="form2">
+          
+         <f:ajax event="click" render=":form2:categoria" />
+         <f:ajax event="click" render=":form2:idcategoria" />
+          
+           
+             <f:ajax event="click" render=":form2:boton" />
+          
+         <p:panel id="panel" header="Crear Producto Nuevo">
+              <p:messages id="msgs" /> 
+           <h:outputText value="Selecciona en el panel de la izquierda en que categoría lo quieres incluir" /> 
+             
+            <br/>   
+         <h:panelGrid columns="4" cellpadding="5">
+
+            
+            <h:outputLabel for="nombre" value="Nombre: " />
+            <p:inputText id="nombre" value="#{crearProductoBean.nombre}" label="nombre">
+                <f:validateLength minimum="4" />
+            </p:inputText>
+            <p:message for="nombre" />
+            <h:outputText value="#{crearProductoBean.nombre}" />
+            
+
+
+            <h:outputLabel for="categoria" value="Categoria: " />
+            <h:outputText id="categoria"  value="#{treeSelectionView.nombreCategoria}">
+           </h:outputText>
+            <p:message for="categoria" />
+            <h:outputText value="#{treeSelectionView.nombreCategoria}" />
+            
+           
+   
+           <h:outputLabel for="idcategoria" value="idCategoria: " />
+           <h:outputText id="idcategoria"  value="#{treeSelectionView.idCategoria}" >
+            <ui:param name="idCategoriaJSF" value="#{treeSelectionView.idCategoria}" /> 
+           </h:outputText>
+          
+               
+            
+            <h:outputLabel for="precio" value="precio: " />
+            <p:inputText id="precio" value="#{crearProductoBean.precio}" label="precio">
+               <f:validateDoubleRange minimum="1.00" maximum="12000.00" />
+            </p:inputText>
+            <p:message for="precio" />
+            <h:outputText value="#{crearProductoBean.precio}" />
+        </h:panelGrid>
+            
+            
+        <h:panelGrid columns="3" cellpadding="2">         
+            
+            <h:outputLabel for="descripcion" value="descripcion: " />
+            <p:inputTextarea rows="5" cols="30" counter="display" maxlength="400"  counterTemplate="{0} caracteres restantes." autoResize="false" 
+             id="descripcion" value="#{crearProductoBean.descripcion}" label="descripcion">   
+              <f:validateLength minimum="10" />
+            </p:inputTextarea>
+            <h:outputText id="display" />
+             <h:outputLabel value="" />
+             <h:outputLabel value="" />
+            <p:message for="descripcion" />  
+            
+         </h:panelGrid>           
+            
+        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+            <h:outputText value="¿Poner en modo subasta?: " />
+            <p:selectBooleanCheckbox value="#{crearProductoBean.enSubasta}" />
+        </h:panelGrid>
+            
+            
+     <p:commandButton id="boton" value="Crear producto"   update="panel" action="#{crearProductoBean.guardarProducto()}" icon="ui-icon-check" >
+            <f:ajax event="click" render=":form2:idcategoria" />
+            
+            
+             <f:ajax event="click" render=":form2:boton" /> 
+         <f:param id="parametro" name="idCategoriaJSF" value="#{idCategoriaJSF}" />
+       
+      
+           
+     </p:commandButton>
+            <!-- //////////////////////////////////////////////////////////-->
+         
+            <p:dataTable value="#{crearProductoBean.imagenesSubidas}" var="item" paginator="false" rows="5"  rowIndexVar="row" id="imagenes">
+            <p:column>
+               <f:facet name="header">
+                  <h:outputText value="Imagenes" />
+               </f:facet>
+                    
+                <h:outputLink value="../VisualizaImagen?Image_id=#{row}" target="_blank" >
+                        <h:graphicImage value="../VisualizaImagen?Image_id=#{row}" width="50" height="50"></h:graphicImage>
+               </h:outputLink>
+              </p:column>
+            </p:dataTable>
+            
+
+              
+            
+            <!-- //////////////////////////////////////////////////////////-->
+          
+      </p:panel>         
+
+       
+       
+     </h:form>   
+         
+
+         
+      <h:form enctype="multipart/form-data" id="form3">
+       <p:fileUpload fileUploadListener="#{crearProductoBean.fileUploadListener}"
+
+                    required="true" mode="advanced" dragDropSupport="false"
+                    multiple="true" sizeLimit="1000000" fileLimit="5" update="messages"
+                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+                    <p:growl id="messages" showDetail="true" />
+                    
+        </p:fileUpload>
+          <f:ajax event="click" render=":form2:imagenes" />
+      </h:form>
+         
+       <h:form>
+         <p:commandButton value="imprimir imagenes"   action="#{crearProductoBean.imprimirImagenes()}" icon="ui-icon-check" />
+       </h:form>
+          <h:link outcome="/usuario/index" value="volver" />
+       <h:form>
+           <p:commandButton value="Salir"   action="#{crearProductoBean.salir()}" icon="ui-icon-check" />
+       </h:form>
+
+    </p:layoutUnit>
+     
+
+ </p:layout>
+            <h:outputText value="no estas reginstrado como socio y no pudes acceder a esta pagina"    rendered="#{ROLE_ADMIN}" />
+            <BR/>
+             <h:link outcome="/admin/index" value="volver"   rendered="#{ROLE_ADMIN}" />
+            <h:outputText value="no estas logado para poder acceder a esta pagina"    rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
+            <BR/>
+            <h:link outcome="/faces/index" value="volver" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
+            
+            
+            
+
+
+        </h:body>
+
+    </f:view>
+</html>
+
