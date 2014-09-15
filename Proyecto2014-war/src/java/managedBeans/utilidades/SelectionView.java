@@ -18,8 +18,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import managedBeans.beans.CrearProductoBean;
 import org.primefaces.model.TreeNode;
 import utilidades.Loggable;
@@ -42,6 +44,7 @@ public class SelectionView  {
  private String nombreCategoria;
  private Integer idCategoria;
  private TreeNode root1;
+ private  FacesContext faceContext;
 //    private TreeNode root2;
 //    private TreeNode root3;
     private TreeNode selectedNode;
@@ -54,6 +57,7 @@ public class SelectionView  {
     @PostConstruct
     public void init() {
         root1 = service.createDocuments();
+        faceContext=FacesContext.getCurrentInstance();
         
 //        root2 = service.createDocuments();
 //        root3 = service.createDocuments();
@@ -148,13 +152,26 @@ public class SelectionView  {
         public void sumaCategoria() {
         if(selectedNode != null) {
            
-            System.out.println("entro en suma categoria con "+ selectedNode.getData().toString());
+            System.out.println("**********entro en suma categoria con  "+ selectedNode.getData().toString());
+           
            // System.out.println("entro en suma categoria con "+ categoriaSelec.getNombre());
             categoriaSelec =  (Categoria)selectedNode.getData();
             setNombreCategoria(categoriaSelec.getNombre());
             setIdCategoria(categoriaSelec.getIdcategoria());
             
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Seleccionada categoriassss", categoriaSelec.getNombre());
+             System.out.println("**********entro en suma categoria se actualiza nombrecategoria  "+ getNombreCategoria());
+             System.out.println("**********entro en suma categoria se actualiza IsCategoria  "+ getIdCategoria());
+            //////////////////////////////////
+//            HttpSession session =            
+//            (HttpSession) faceContext.getExternalContext().getSession(false);
+//            session.setAttribute("idCategoria", getIdCategoria());
+            
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            externalContext.getSessionMap().put("idCategoria", getIdCategoria());
+            /////////////////////////////////////
+            
+            
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Seleccionada categoria", categoriaSelec.getNombre());
             FacesContext.getCurrentInstance().addMessage(null, message);
             
         }else{

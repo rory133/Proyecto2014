@@ -45,7 +45,7 @@ public class Imagen implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Lob
-    @Column(name = "imagen")
+    @Column(name = "imagen", length=16777215)
     private byte[] imagen;
     @JoinColumn(name = "producto_idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)

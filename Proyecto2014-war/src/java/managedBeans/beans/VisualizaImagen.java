@@ -48,7 +48,8 @@ public class VisualizaImagen extends HttpServlet {
             System.out.println("inside servlet–>" + id);
             Integer indice=Integer.parseInt(id);
             System.out.println("inside servlet indice –>" + indice);
-            byte[] bytearray = new byte[1048576];
+           // byte[] bytearray = new byte[1048576];
+            byte[] bytearray = new byte[16777215];
             int size = 0;
             sImage = crearProducto.getImagenesSubidas().get(indice).getInputstream();
             System.out.println("inside servlet oontents –>" + crearProducto.getImagenesSubidas().size());

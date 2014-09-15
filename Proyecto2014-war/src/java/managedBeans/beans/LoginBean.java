@@ -108,8 +108,7 @@ public String validarUsuario(){
         //System.out.println("usuario encontrado: "+usuarioLogado.getLogin());
         if(usuarioLogado!=null){
             HttpSession session = 
-           // (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-             
+           
             (HttpSession) faceContext.getExternalContext().getSession(false);
             session.setAttribute("login", usuarioLogado);
             datosUsuarioLogado=(Usuario)usuarioFacade.find(usuarioLogado.getUsuarioIdusuario().getIdusuario());

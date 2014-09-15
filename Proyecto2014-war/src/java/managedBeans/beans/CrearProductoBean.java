@@ -13,14 +13,18 @@ import entidades.Categoria;
 import entidades.Imagen;
 import entidades.Login;
 import entidades.Producto;
+import entidades.Puja;
 import entidades.Usuario;
 import entidades.Venta;
 import facade.CategoriaFacade;
 import facade.ImagenFacade;
 import facade.LoginFacade;
 import facade.ProductoFacade;
+import facade.PujaFacade;
 import facade.UsuarioFacade;
 import facade.VentaFacade;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +76,9 @@ private UsuarioFacade usuarioFacade;
 @EJB
 private VentaFacade ventaFacade;
 
+@EJB
+private PujaFacade pujaFacade;
+
 @EJB 
 CategoriaFacade categoriaFacade;
 
@@ -88,6 +95,7 @@ CategoriaFacade categoriaFacade;
   private Producto producto;
   private Venta venta;
   private Categoria categoria;
+  private Puja puja;
 
     public UploadedFile getFile() {
         return file;
@@ -348,29 +356,80 @@ private String idCategoria;
          usuario=(Usuario) session.getAttribute("usuario");
          
          producto= new Producto();
+         Integer categoriaSeleccionada=(Integer)session.getAttribute("idCategoria");
+         System.out.println("categoria pasada desde SelectionView : "+categoriaSeleccionada);
+         
          
 //         Map<String,String> params = 
 //                faceContext.getExternalContext().getRequestParameterMap();
 //	  String idCategoria = params.get("idCategoriaJSF");
 //          String idCategoria=(String)session.getAttribute("idCategoriaJSF");
 //         String idCategoria = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idCategoriaJSF");
-            String idCategoria2="";
-            System.out.println("antes de todo CATEGORIA PASADAfasdfa::::::::::"+ facesContext.getExternalContext().getRequestParameterMap().get("idCategoriaJSF"));
-            idCategoria2 = facesContext.getExternalContext().getRequestParameterMap().get("idCategoriaJSF");
-            System.out.println("CATEGORIA PASADA antes if::::::::::"+ idCategoria2);
+         
+         
+//            String idCategoria2="";
+//            System.out.println("antes de todo CATEGORIA PASADAfasdfa::::::::::"+ facesContext.getExternalContext().getRequestParameterMap().get("idCategoriaJSF"));
+//            idCategoria2 = facesContext.getExternalContext().getRequestParameterMap().get("idCategoriaJSF");
+//            System.out.println("CATEGORIA PASADA antes if::::::::::"+ idCategoria2);
+            
+            
         //  if (!(idCategoria2.isEmpty())&&(idCategoria2!=null)){
-          if ((!idCategoria2.equals("null"))&& (idCategoria2 != null) && (!idCategoria2.equals(""))&&!( idCategoria2 == "null" ) ) {
-             System.out.println("CATEGORIA PASADA en if::::::::::"+ idCategoria2); 
-             System.out.println("logitud CATEGORIA PASADA en if::::::::::"+ idCategoria2.length()); 
-             Integer idCategoria=Integer.parseInt(idCategoria2); 
+        //  if ((!idCategoria2.equals("null"))&& (idCategoria2 != null) && (!idCategoria2.equals(""))&&!( idCategoria2 == "null" ) ) {
+          
+          if ((categoriaSeleccionada != null) && (categoriaSeleccionada>0)) {
+//             System.out.println("CATEGORIA PASADA en if::::::::::"+ idCategoria2); 
+//             System.out.println("logitud CATEGORIA PASADA en if::::::::::"+ idCategoria2.length()); 
+//             Integer idCategoria=Integer.parseInt(idCategoria2); 
 
              
 
-             Categoria categoria=categoriaFacade.find(idCategoria);
+             Categoria categoria=categoriaFacade.find(categoriaSeleccionada);
+             
+             System.out.println("nombre CATEGORIA PASADA en if::::::::::"+ categoria.getNombre()); 
              producto.setCategoriaIdcategoria(categoria);
+             producto.setUsuarioIdusuario(usuario);
+             producto.setNombre(getNombre());
+             producto.setPrecio(getPrecio());
+             producto.setDescripcion(getDescripcion());
+             producto.setEnSubasta(isEnSubasta());
+             producto.setVendido(false);
+             producto.setFechaProducto(new java.util.Date(System.currentTimeMillis()));
+             productoFacade.create(producto);
+             
+             if (!isEnSubasta()){
+                 System.out.println("creado procuto "+ producto.getNombre()+" en modo Venta directa");
+                 
+             }else{
+                 System.out.println("crado procuto "+ producto.getNombre()+" en modo subasta");
+             }
+             
+            for(UploadedFile uploadedFile:imagenesSubidas){
+                    imagen=new Imagen();
+                    //imagen.setImagen(uploadedFile.getContents());
+                    imagen.setProductoIdproducto(producto);
+                    System.out.println(" por insertar uploadedFile : "+uploadedFile.getFileName());
+                    System.out.println(" por insertar imagen para producto: "+imagen.getProductoIdproducto().getNombre());
+                    try { 
+                        
+                        byte[] bytearray = new byte[16777215];
+                        int size = 0;
+                        InputStream input = uploadedFile.getInputstream();
+                        ByteArrayOutputStream output = new ByteArrayOutputStream();
+                        byte[] buffer = new byte[10240];
+                        for (int length = 0; (length = input.read(buffer)) > 0;) output.write(buffer, 0, length);
+                            imagen.setImagen(output.toByteArray());
+                            
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    imagenFacade.create(imagen);
+                  
+                    System.out.println(" insertada imagen : "+uploadedFile.getFileName());
 
 
-             producto.setCategoriaIdcategoria(categoria);
+                }
+             
+             
          
           }else {
              System.out.println("CATEGORIA PASADA en else::::::::::"+ idCategoria);
@@ -383,6 +442,10 @@ private String idCategoria;
 //            faceContext.addMessage(null, facesMessage);
                FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Debe seleccionar una Categoria"  ));
+               
+               
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"DEBES SELECCIONAR UNA CATEGORIA","SELECCIONA UNA");
+            FacesContext.getCurrentInstance().addMessage(null, message);
                
                
             return "crearProducto";

@@ -66,10 +66,11 @@
 
                         <p:commandButton value="Seleccionar esta categoria" update="msgs" icon="ui-icon-newwin"
                                          actionListener="#{treeSelectionView.sumaCategoria()}">
-                                         <f:ajax event="click" render=":form2:categoria" />
-                                         <f:ajax event="click" render=":form2:idcategoria" />
-                
-             <f:ajax event="click" render=":form2:boton" />
+ 
+       
+                                      
+
+                                         
                         </p:commandButton>
                   </h:form>
 
@@ -78,12 +79,10 @@
      <p:layoutUnit position="center">
          <p:messages id="msgs" />
          <h:form enctype="multipart-data" id="form2">
-          
-         <f:ajax event="click" render=":form2:categoria" />
-         <f:ajax event="click" render=":form2:idcategoria" />
-          
+
+         
            
-             <f:ajax event="click" render=":form2:boton" />
+   
           
          <p:panel id="panel" header="Crear Producto Nuevo">
               <p:messages id="msgs" /> 
@@ -91,7 +90,10 @@
              
             <br/>   
          <h:panelGrid columns="4" cellpadding="5">
+             
 
+                    
+     
             
             <h:outputLabel for="nombre" value="Nombre: " />
             <p:inputText id="nombre" value="#{crearProductoBean.nombre}" label="nombre">
@@ -99,21 +101,7 @@
             </p:inputText>
             <p:message for="nombre" />
             <h:outputText value="#{crearProductoBean.nombre}" />
-            
 
-
-            <h:outputLabel for="categoria" value="Categoria: " />
-            <h:outputText id="categoria"  value="#{treeSelectionView.nombreCategoria}">
-           </h:outputText>
-            <p:message for="categoria" />
-            <h:outputText value="#{treeSelectionView.nombreCategoria}" />
-            
-           
-   
-           <h:outputLabel for="idcategoria" value="idCategoria: " />
-           <h:outputText id="idcategoria"  value="#{treeSelectionView.idCategoria}" >
-            <ui:param name="idCategoriaJSF" value="#{treeSelectionView.idCategoria}" /> 
-           </h:outputText>
           
                
             
@@ -146,19 +134,22 @@
         </h:panelGrid>
             
             
-     <p:commandButton id="boton" value="Crear producto"   update="panel" action="#{crearProductoBean.guardarProducto()}" icon="ui-icon-check" >
-            <f:ajax event="click" render=":form2:idcategoria" />
-            
-            
-             <f:ajax event="click" render=":form2:boton" /> 
+     <p:commandButton id="boton" value="Crear Producto"   update="panel" action="#{crearProductoBean.guardarProducto()}" icon="ui-icon-check" >
+           <f:ajax event="click" render=":form3:imagenes" />
+
          <f:param id="parametro" name="idCategoriaJSF" value="#{idCategoriaJSF}" />
        
       
            
      </p:commandButton>
             <!-- //////////////////////////////////////////////////////////-->
-         
+      </p:panel>       
+           
+           
+      </h:form> 
+       <h:form enctype="multipart-data" id="form3">
             <p:dataTable value="#{crearProductoBean.imagenesSubidas}" var="item" paginator="false" rows="5"  rowIndexVar="row" id="imagenes">
+
             <p:column>
                <f:facet name="header">
                   <h:outputText value="Imagenes" />
@@ -171,28 +162,30 @@
             </p:dataTable>
             
 
-              
+         </h:form>      
             
             <!-- //////////////////////////////////////////////////////////-->
           
-      </p:panel>         
+          
 
        
        
-     </h:form>   
+       
          
 
          
-      <h:form enctype="multipart/form-data" id="form3">
+      <h:form enctype="multipart/form-data" id="form4">
        <p:fileUpload fileUploadListener="#{crearProductoBean.fileUploadListener}"
 
                     required="true" mode="advanced" dragDropSupport="false"
                     multiple="true" sizeLimit="1000000" fileLimit="5" update="messages"
                     allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
                     <p:growl id="messages" showDetail="true" />
-                    
+                   
         </p:fileUpload>
-          <f:ajax event="click" render=":form2:imagenes" />
+         
+
+        <f:ajax event="click" render=":form3:imagenes" />
       </h:form>
          
        <h:form>
