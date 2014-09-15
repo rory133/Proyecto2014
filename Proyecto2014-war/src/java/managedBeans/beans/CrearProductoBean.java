@@ -253,9 +253,15 @@ private String idCategoria;
     
   
     public String salir() {
-        imagenesSubidas = new  ArrayList<UploadedFile>();
+    imagenesSubidas = new  ArrayList<UploadedFile>();
 //        imagenesSubiendo=new ImagenesSubiendo();
 //        imagenesSubidasByte= new ArrayList<byte[]>();
+      
+      setCategoria(null);
+      setDescripcion("");
+      setEnSubasta(false);
+      setNombre("");
+      setPrecio((float) 0.0);
       return "index";
     }
 
@@ -397,12 +403,12 @@ private String idCategoria;
              productoFacade.create(producto);
              
              if (!isEnSubasta()){
-                 System.out.println("creado procuto "+ producto.getNombre()+" en modo Venta directa");
+                 System.out.println("creado producto "+ producto.getNombre()+" en modo Venta directa");
                  
              }else{
-                 System.out.println("crado procuto "+ producto.getNombre()+" en modo subasta");
+                 System.out.println("creado producto "+ producto.getNombre()+" en modo subasta");
              }
-             
+            if (!imagenesSubidas.isEmpty()){
             for(UploadedFile uploadedFile:imagenesSubidas){
                     imagen=new Imagen();
                     //imagen.setImagen(uploadedFile.getContents());
@@ -423,13 +429,40 @@ private String idCategoria;
                         e.printStackTrace();
                     }
                     imagenFacade.create(imagen);
-                  
                     System.out.println(" insertada imagen : "+uploadedFile.getFileName());
 
 
                 }
+            
+                              
+                      imagenesSubidas = new  ArrayList<UploadedFile>();
+                      setCategoria(null);
+                      setDescripcion("");
+                      setEnSubasta(false);
+                      setNombre("");
+                      setPrecio((float) 0.0);
+                    return "index";
              
+            }else{
+                
+                System.out.println("---- no se ha pasado ninguna imagen ----");
              
+                FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado ninguna imagen",
+                                    "Selecciona una imagen"));
+
+               FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Debe seleccionar una imagen"  ));
+               
+               
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"DEBES SELECCIONAR AL MENOS UNA IMAGEN","SELECCIONA UNA");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+               
+               
+            return "crearProducto";
+                
+                
+            } 
          
           }else {
              System.out.println("CATEGORIA PASADA en else::::::::::"+ idCategoria);
@@ -451,7 +484,7 @@ private String idCategoria;
             return "crearProducto";
           }
               
-        return null;
+     //   return null;
     }
    
 
