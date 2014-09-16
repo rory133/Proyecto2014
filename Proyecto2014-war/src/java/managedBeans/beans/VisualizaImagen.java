@@ -42,7 +42,12 @@ public class VisualizaImagen extends HttpServlet {
             throws ServletException, IOException {
             InputStream sImage;
             CrearProductoBean crearProducto = (CrearProductoBean) request.getSession().getAttribute("crearProductoBean");
-            
+    try { 
+            String tipo = request.getParameter("tipo");  
+              System.out.println("pasdo como tipo: " + tipo);
+     switch (tipo){
+         
+      case "crearProducto":
         try { 
             String id = request.getParameter("Image_id");
             System.out.println("inside servlet–>" + id);
@@ -64,12 +69,14 @@ public class VisualizaImagen extends HttpServlet {
             e.printStackTrace();
         }
             
-            
-            
-            
-            
+        break;    
+        }
+     
+     
+    }catch (Exception e) {
+            e.printStackTrace();
         }
     
-    
+  }  
     
 }

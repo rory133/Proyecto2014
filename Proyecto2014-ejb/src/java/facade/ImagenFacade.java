@@ -10,9 +10,12 @@
 package facade;
 
 import entidades.Imagen;
+import entidades.Producto;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,6 +33,27 @@ public class ImagenFacade extends AbstractFacade<Imagen> {
 
     public ImagenFacade() {
         super(Imagen.class);
+    }
+    
+    
+    public List<Imagen> imagenesXProcducto(Producto productoIdproductoP){
+            
+        
+        
+        try{
+            Query query=
+                    getEntityManager().createQuery(
+                    "SELECT imagen FROM Imagen imagen WHERE Producto productoIdproducto = :productoIdproductoP");
+            query.setParameter("productoIdproductoP" , productoIdproductoP);
+            
+            
+            return (List<Imagen>) query.getResultList();
+            
+        }catch (Exception e){
+            System.out.println("@@@no encontradas imagenes para el producto: "+e.toString());
+            return null;
+        }
+        
     }
     
 }
