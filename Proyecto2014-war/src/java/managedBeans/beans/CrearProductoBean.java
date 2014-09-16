@@ -13,39 +13,21 @@ import entidades.Categoria;
 import entidades.Imagen;
 import entidades.Login;
 import entidades.Producto;
-import entidades.Puja;
 import entidades.Usuario;
-import entidades.Venta;
 import facade.CategoriaFacade;
 import facade.ImagenFacade;
-import facade.LoginFacade;
 import facade.ProductoFacade;
-import facade.PujaFacade;
-import facade.UsuarioFacade;
-import facade.VentaFacade;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
+//import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Scope;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import managedBeans.utilidades.SelectionView;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import utilidades.Loggable;
@@ -54,8 +36,9 @@ import utilidades.Loggable;
  *
  * @author juanma
  */
-//@Loggable
-//@RequestScoped
+
+
+@Loggable
 @SessionScoped
 @ManagedBean(name="crearProductoBean")
 public class CrearProductoBean {
@@ -66,36 +49,21 @@ private ProductoFacade productoFacade;
 @EJB
 private ImagenFacade imagenFacade;
 
-@EJB
-private LoginFacade loginFacade;
-
-@EJB
-private UsuarioFacade usuarioFacade;
-
-
-@EJB
-private VentaFacade ventaFacade;
-
-@EJB
-private PujaFacade pujaFacade;
-
 @EJB 
 CategoriaFacade categoriaFacade;
 
 
 
- private List<byte[]> imagenesSubidasByte = new ArrayList<byte[]>(); ;
+// private List<byte[]> imagenesSubidasByte = new ArrayList<byte[]>(); ;
 
-////////////////////
+
   private List<UploadedFile> imagenesSubidas ;
   private  Imagen imagen;
   private  UploadedFile file;
   
   private Usuario usuario;
   private Producto producto;
-  private Venta venta;
   private Categoria categoria;
-  private Puja puja;
 
     public UploadedFile getFile() {
         return file;
@@ -107,12 +75,12 @@ CategoriaFacade categoriaFacade;
     
     
 
-///////////////////
+
 
 private FacesMessage facesMessage;
 private final FacesContext faceContext;
 
-// private List<UploadedFile> ImagenesSubidas ;
+
 
  private String nombre;
  
@@ -136,11 +104,6 @@ private String idCategoria;
 
 
 
-
-
-
-
-
    public List<UploadedFile> getImagenesSubidas() {
         return imagenesSubidas;
     }
@@ -148,13 +111,6 @@ private String idCategoria;
     public void setImagenesSubidas(List<UploadedFile> imagenesSubidas) {
         this.imagenesSubidas = imagenesSubidas;
     }
-    
-    
-    
-
-
-
-
 
     public String getNombre() {
         return nombre;
@@ -245,18 +201,14 @@ private String idCategoria;
     public CrearProductoBean() {
          
         faceContext=FacesContext.getCurrentInstance();
-        imagenesSubidas = new  ArrayList<UploadedFile>();
-//        imagenesSubiendo=new ImagenesSubiendo();
-//        imagenesSubidasByte= new ArrayList<byte[]>();
+        imagenesSubidas = new  ArrayList<>();
         
     }
     
-  
+  //antes de salir de la pagina borramos los campos
     public String salir() {
-    imagenesSubidas = new  ArrayList<UploadedFile>();
-//        imagenesSubiendo=new ImagenesSubiendo();
-//        imagenesSubidasByte= new ArrayList<byte[]>();
-      
+    imagenesSubidas = new  ArrayList<>();
+     
       setCategoria(null);
       setDescripcion("");
       setEnSubasta(false);
@@ -265,60 +217,14 @@ private String idCategoria;
       return "index";
     }
 
+    
    public void fileUploadListener(FileUploadEvent event){
-        // Get uploaded file from the FileUploadEvent
-        //file = event.getFile();
-        // Print out the information of the file
-     //  System.out.println("Uploaded File Name Is :: "+file.getFileName()+" :: Uploaded File Size :: "+file.getSize());
-      //  UploadedFile uploadedFile = event.getFile();
-       // String fileName = uploadedFile.getFileName();
-      //  System.out.println("nombre uploadedFile: "+ fileName);
-        
-      //  System.out.println("byte[] contents = uploadedFile.getContents();");
-       // byte[] contents = uploadedFile.getContents();
-        
-        //System.out.println("imagen.setImagen(contents);");
-       // imagen=new Imagen();
-        //imagen.setImagen(contents);
-       
-  
-            
-       
-       
         
            imagenesSubidas.add(event.getFile());
-           System.out.println("contenido imagenes: "+imagenesSubidas.size());
-                for(UploadedFile uploadedFile:imagenesSubidas){
-                    System.out.println(" nombre: "+uploadedFile.getFileName());
-                    System.out.println(" tamaño: "+uploadedFile.getSize());
-                    System.out.println(" contenido: "+uploadedFile.toString());
-                    
-                   // imagenesSubidasByte.add(uploadedFile.getContents());
-                    //imagenesSubiendo.getImagenesSubidas().add(uploadedFile.getContents());
-                    
-                }
-//            imagenesSubiendo.setImagenesSubidas(imagenesSubidasByte);
-//            imagenesSubiendo.imprimir();
-              
 
-       
     }
    public void imprimirImagenes(){
-        // Get uploaded file from the FileUploadEvent
-        //file = event.getFile();
-        // Print out the information of the file
-     //  System.out.println("Uploaded File Name Is :: "+file.getFileName()+" :: Uploaded File Size :: "+file.getSize());
-      //  UploadedFile uploadedFile = event.getFile();
-       // String fileName = uploadedFile.getFileName();
-      //  System.out.println("nombre uploadedFile: "+ fileName);
-        
-      //  System.out.println("byte[] contents = uploadedFile.getContents();");
-       // byte[] contents = uploadedFile.getContents();
-        
-        //System.out.println("imagen.setImagen(contents);");
-       // imagen=new Imagen();
-        //imagen.setImagen(contents);
-        
+       
           
            System.out.println("contenido imagenesSubidas: "+imagenesSubidas.size());
                 for(UploadedFile uploadedFile:imagenesSubidas){
@@ -327,69 +233,34 @@ private String idCategoria;
                     System.out.println(" contenido: "+uploadedFile.toString());
 
                 }
-                
-//            System.out.println("contenido imagenesSubidasByte: "+imagenesSubidasByte.size());
-//                for(byte[] imagen:imagenesSubidasByte){
-//                    
-//                    System.out.println(" tamaño: "+imagen.length);
-//                    System.out.println(" contenido: "+imagen.toString());
-//                
-//                }
-                
-                
-                
-//            System.out.println("IMPRIMIDO DESDE IMAGNESSUBIENDO: ");
-//            imagenesSubiendo.imprimir();
-       
-    }
+     }
 
  
 
     
     
-    
-     public String guardarProducto() {
+    //guardamos un nuevo producto en la base de datos
+    public String guardarProducto() {
          System.out.println("guardarProducto()");
          
     FacesContext facesContext = FacesContext.getCurrentInstance();
-    ExternalContext context = facesContext.getExternalContext();  
-    HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+      HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
          
        
          usuario=new Usuario();    
-         //HttpSession session = (HttpSession) faceContext.getExternalContext().getSession(false);
-       
+      
          usuario=(Usuario) session.getAttribute("usuario");
          
          producto= new Producto();
          Integer categoriaSeleccionada=(Integer)session.getAttribute("idCategoria");
          System.out.println("categoria pasada desde SelectionView : "+categoriaSeleccionada);
          
-         
-//         Map<String,String> params = 
-//                faceContext.getExternalContext().getRequestParameterMap();
-//	  String idCategoria = params.get("idCategoriaJSF");
-//          String idCategoria=(String)session.getAttribute("idCategoriaJSF");
-//         String idCategoria = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("idCategoriaJSF");
-         
-         
-//            String idCategoria2="";
-//            System.out.println("antes de todo CATEGORIA PASADAfasdfa::::::::::"+ facesContext.getExternalContext().getRequestParameterMap().get("idCategoriaJSF"));
-//            idCategoria2 = facesContext.getExternalContext().getRequestParameterMap().get("idCategoriaJSF");
-//            System.out.println("CATEGORIA PASADA antes if::::::::::"+ idCategoria2);
-            
-            
-        //  if (!(idCategoria2.isEmpty())&&(idCategoria2!=null)){
-        //  if ((!idCategoria2.equals("null"))&& (idCategoria2 != null) && (!idCategoria2.equals(""))&&!( idCategoria2 == "null" ) ) {
-          
+        
+     
           if ((categoriaSeleccionada != null) && (categoriaSeleccionada>0)) {
-//             System.out.println("CATEGORIA PASADA en if::::::::::"+ idCategoria2); 
-//             System.out.println("logitud CATEGORIA PASADA en if::::::::::"+ idCategoria2.length()); 
-//             Integer idCategoria=Integer.parseInt(idCategoria2); 
-
              
 
-             Categoria categoria=categoriaFacade.find(categoriaSeleccionada);
+             categoria=categoriaFacade.find(categoriaSeleccionada);
              
              System.out.println("nombre CATEGORIA PASADA en if::::::::::"+ categoria.getNombre()); 
              producto.setCategoriaIdcategoria(categoria);
@@ -413,15 +284,15 @@ private String idCategoria;
                     imagen=new Imagen();
                     //imagen.setImagen(uploadedFile.getContents());
                     imagen.setProductoIdproducto(producto);
+                    
                     System.out.println(" por insertar uploadedFile : "+uploadedFile.getFileName());
                     System.out.println(" por insertar imagen para producto: "+imagen.getProductoIdproducto().getNombre());
                     try { 
                         
-                        byte[] bytearray = new byte[16777215];
-                        int size = 0;
                         InputStream input = uploadedFile.getInputstream();
                         ByteArrayOutputStream output = new ByteArrayOutputStream();
-                        byte[] buffer = new byte[10240];
+                    
+                        byte[] buffer = new byte[16777215];
                         for (int length = 0; (length = input.read(buffer)) > 0;) output.write(buffer, 0, length);
                             imagen.setImagen(output.toByteArray());
                             
@@ -433,9 +304,11 @@ private String idCategoria;
 
 
                 }
-            
+            //informamos que el producto se añadio correctamente
+                      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Agregado correctamente producto: ", producto.getNombre());
+                      FacesContext.getCurrentInstance().addMessage(null, message);
                               
-                      imagenesSubidas = new  ArrayList<UploadedFile>();
+                      imagenesSubidas = new  ArrayList<>();
                       setCategoria(null);
                       setDescripcion("");
                       setEnSubasta(false);
@@ -444,6 +317,7 @@ private String idCategoria;
                     return "index";
              
             }else{
+        // se informa al usuario cuando no ha añadido ninguna imagen
                 
                 System.out.println("---- no se ha pasado ninguna imagen ----");
              
@@ -465,14 +339,14 @@ private String idCategoria;
             } 
          
           }else {
+              
+           // se informa al usuario cuando no ha añadido ninguna categoria
              System.out.println("CATEGORIA PASADA en else::::::::::"+ idCategoria);
              
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado ninguna categoría",
                                     "Selecciona una categoria"));
             
-//            facesMessage=new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha elegido una categoria", null);    
-//            faceContext.addMessage(null, facesMessage);
                FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Debe seleccionar una Categoria"  ));
                
@@ -484,7 +358,7 @@ private String idCategoria;
             return "crearProducto";
           }
               
-     //   return null;
+    
     }
    
 
