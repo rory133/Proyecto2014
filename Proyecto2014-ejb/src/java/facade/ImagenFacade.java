@@ -43,11 +43,31 @@ public class ImagenFacade extends AbstractFacade<Imagen> {
         try{
             Query query=
                     getEntityManager().createQuery(
-                    "SELECT imagen FROM Imagen imagen WHERE Producto productoIdproducto = :productoIdproductoP");
+                    "SELECT imagen FROM Imagen imagen WHERE Imagen.productoIdproducto = :productoIdproductoP order by Imagen.idimagen");
             query.setParameter("productoIdproductoP" , productoIdproductoP);
             
             
             return (List<Imagen>) query.getResultList();
+            
+        }catch (Exception e){
+            System.out.println("@@@no encontradas imagenes para el producto: "+e.toString());
+            return null;
+        }
+        
+    }
+        public Imagen imageneUnicaXIdProducto(Integer productoIdproductoP){
+            
+        
+        
+        try{
+            Query query=
+                    getEntityManager().createQuery(
+                    "SELECT imagen FROM Imagen imagen WHERE Imagen.productoIdproducto.idproducto = :productoIdproductoP order by Imagen.idimagen");
+            query.setParameter("productoIdproductoP" , productoIdproductoP);
+            
+            List<Imagen> lista=(List<Imagen>) query.getResultList();
+            return lista.get(0);
+            
             
         }catch (Exception e){
             System.out.println("@@@no encontradas imagenes para el producto: "+e.toString());

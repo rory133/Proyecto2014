@@ -42,5 +42,26 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return lP;
     }
     
-
+    public List<Producto> productosXNombreParcial(String nombreP){
+        
+        
+        List<Producto> lP=null;
+        try{
+            Query query=
+                    getEntityManager().createQuery(
+                    "SELECT producto FROM Producto producto WHERE producto.nombre like '%':nombreP'%'");
+//           "SELECT producto FROM Producto producto WHERE producto.nombre like '%' + replace(:nombreP, '%', '[%]') + '%'");
+//             "SELECT producto FROM Producto producto WHERE producto.nombre like :escape:nombreP:escape");
+            query.setParameter("escape" , '%');
+            query.setParameter("nombreP" , nombreP);
+            
+            
+            lP =query.getResultList();
+            System.out.println("@@@encontrados  : "+lP.size());
+        }catch (Exception e){
+            System.out.println("@@@error en contrando : "+nombreP);
+        }
+    System.out.println("@@@ amtes de devolver lP");
+        return lP;
+    }
 }

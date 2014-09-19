@@ -29,6 +29,7 @@
         </h:head>
 
         <h:body>
+             
 
             <p:layout fullPage="true" rendered="#{ROLE_SOCIO}">
 
@@ -79,14 +80,71 @@
                             </p:treeNode>
                         </p:tree>
 
-                        <p:commandButton value="Display" update="msgs" icon="ui-icon-newwin"
+                        <p:commandButton value="Información Categoría" update="msgs" icon="ui-icon-newwin"
                                             actionListener="#{treeSelectionView.displaySelectedSingle}"/>
                   </h:form>
 
                 </p:layoutUnit>
 
                 <p:layoutUnit position="center">
-                    Welcome to PrimeFaces
+                    
+                 <h:form id="form1">
+                        <p:messages id="msgs1" />
+                    <h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">
+                        <p:growl id="msgs2" showDetail="true" escape="false"/>
+                                    <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
+                                   
+                                    </p:inputText>
+                                    <p:commandButton id="boton1" value="Buscar Producto"  update="msgs1"  action="#{productoView.buscaXNombre()}" icon="ui-icon-check" >
+                                   <p:message for="boton1" />
+                                   <p:message for="boton1" />  
+                                    </p:commandButton>
+                        
+                    </h:panelGrid>
+                </h:form>
+                <h:form id="form2">
+                        <p:dataGrid var="producto" value="#{productoView.listaProductos}" columns="3" 
+                            rows="12" paginator="true" id="productos"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="6,12,16">
+
+                            <f:facet name="header">
+                                Lista de Productos
+                            </f:facet>
+                            
+                            <p:panel header="#{producto.nombre}" style="text-align:center">
+                             
+                                <h:panelGrid columns="1" style="width:100%">
+                   
+                                  
+                                    
+                                  
+                                    
+                                    <h:graphicImage value="../VisualizaImagen?tipo=imagenUnica&amp;idProducto=#{producto.idproducto}" width="50" height="50">
+                                   
+                                    </h:graphicImage>
+                                    
+                             
+                                    <h:outputText value="idproducto : #{producto.idproducto}" />
+                                    
+                                    <h:outputText value="Categoria : #{producto.categoriaIdcategoria.nombre}" />
+                                    
+                                    <h:outputText value="#{producto.precio}" />
+                                    <h:outputText value="usuario ofertador: #{producto.usuarioIdusuario.nombre}" />
+                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="en modo subasta" ></h:outputText >
+                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="en venta directa" ></h:outputText >
+                                    
+                          
+                                </h:panelGrid>
+                            </p:panel>
+
+                        </p:dataGrid>
+                </h:form>
+                    
+                    
+                    
+                    
+                    
                 </p:layoutUnit>
 
             </p:layout>
