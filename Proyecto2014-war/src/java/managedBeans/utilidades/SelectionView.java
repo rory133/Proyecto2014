@@ -12,6 +12,7 @@ package managedBeans.utilidades;
 import entidades.Categoria;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -23,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import managedBeans.beans.CrearProductoBean;
+import managedBeans.beans.ListadoProductosBean;
 import org.primefaces.model.TreeNode;
 import utilidades.Loggable;
 
@@ -45,6 +47,8 @@ public class SelectionView  {
  private Integer idCategoria;
  private TreeNode root1;
  private  FacesContext faceContext;
+// @EJB
+// private ListadoProductosBean listadoProductoBean;
 //    private TreeNode root2;
 //    private TreeNode root3;
     private TreeNode selectedNode;
@@ -173,6 +177,40 @@ public class SelectionView  {
             
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Seleccionada categoria", categoriaSelec.getNombre());
             FacesContext.getCurrentInstance().addMessage(null, message);
+            
+        }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected","debes seleccionar una categoria");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+        
+    }
+        
+    public void sumaCategoriaYBuscaProductos() {
+        if(selectedNode != null) {
+           
+            System.out.println("**********entro en suma categoria con  "+ selectedNode.getData().toString());
+           
+           // System.out.println("entro en suma categoria con "+ categoriaSelec.getNombre());
+            categoriaSelec =  (Categoria)selectedNode.getData();
+            setNombreCategoria(categoriaSelec.getNombre());
+            setIdCategoria(categoriaSelec.getIdcategoria());
+            
+             System.out.println("**********entro en suma categoria se actualiza nombrecategoria  "+ getNombreCategoria());
+             System.out.println("**********entro en suma categoria se actualiza IsCategoria  "+ getIdCategoria());
+            //////////////////////////////////
+//            HttpSession session =            
+//            (HttpSession) faceContext.getExternalContext().getSession(false);
+//            session.setAttribute("idCategoria", getIdCategoria());
+            
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            externalContext.getSessionMap().put("idCategoria", getIdCategoria());
+            /////////////////////////////////////
+            
+            
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Seleccionada categoria", categoriaSelec.getNombre());
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            
+           // listadoProductoBean.buscaXCategoria();
             
         }else{
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected","debes seleccionar una categoria");

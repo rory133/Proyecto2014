@@ -341,7 +341,7 @@ private String idCategoria;
           }else {
               
            // se informa al usuario cuando no ha añadido ninguna categoria
-             System.out.println("CATEGORIA PASADA en else::::::::::"+ idCategoria);
+           //  System.out.println("CATEGORIA PASADA en else::::::::::"+ idCategoria);
              
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado ninguna categoría",

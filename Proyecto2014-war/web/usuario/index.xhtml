@@ -82,27 +82,71 @@
 
                         <p:commandButton value="Información Categoría" update="msgs" icon="ui-icon-newwin"
                                             actionListener="#{treeSelectionView.displaySelectedSingle}"/>
+                          <p:commandButton value="Mostrar productos de la categoria seleccionada" update="msgs" icon="ui-icon-newwin"
+                                           actionListener="#{treeSelectionView.sumaCategoriaYBuscaProductos()}"/>
                   </h:form>
 
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center">
+                <p:layoutUnit position="center" id="centro">
                     
                  <h:form id="form1">
                         <p:messages id="msgs1" />
                     <h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">
                         <p:growl id="msgs2" showDetail="true" escape="false"/>
+                        
+                        <p:commandButton id="boton0" value="Ver Todos"   action="#{productoView.todosProductos()}" icon="ui-icon-check" >
+                          <f:ajax event="click" render=":form2" />
+                          <f:ajax event="click" render=":form2:productos" />
+                          <f:ajax event="click" render=":form2:cantidad" />
+                        </p:commandButton>
+                        
+                        
+                        <!--
+                        <h:commandButton id="boton0" value="Ver Todos" type="button" >
+
+                               <f:ajax render=":form2"  event="click" listener="#{productoView.todosProductos()}" />
+                        </h:commandButton>
+                        -->
+                        
+                        
+                       
                                     <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
                                    
                                     </p:inputText>
-                                    <p:commandButton id="boton1" value="Buscar Producto"  update="msgs1"  action="#{productoView.buscaXNombre()}" icon="ui-icon-check" >
+                        
+                                   <p:commandButton id="boton1" value="Buscar Producto"  update="msgs1"  action="#{productoView.buscaXNombre()}" icon="ui-icon-check" >
                                    <p:message for="boton1" />
-                                   <p:message for="boton1" />  
+                                  
+                                  
+                                    <f:ajax event="click" render=":form2:productos" />
+                                    <f:ajax event="click" render=":form2:cantidad" />
+                                    
                                     </p:commandButton>
                         
+                                    <p:commandButton id="boton2" value="Buscar por categoria selecionada"  update="msgs1"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
+                                   <p:message for="boton1" />
+                                  
+                                  
+                                    <f:ajax event="click" render=":form2:productos" />
+                                    <f:ajax event="click" render=":form2:cantidad" />
+                                    
+                                    </p:commandButton>
+                        <!--
+                         <h:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
+                                   
+                         </h:inputText>
+                        <h:commandButton id="boton1" value="Buscar" type="button" >
+
+                     
+                            <f:ajax render=":form2 msgs1"  event="click" listener="#{productoView.buscaXNombre()}" />
+                            <p:message for="msgs1" />
+                        </h:commandButton>
+                        -->
                     </h:panelGrid>
                 </h:form>
                 <h:form id="form2">
+                    <h:outputText value=" Numero de productos; #{productoView.listaProductos.size()}" id="cantidad"/>
                         <p:dataGrid var="producto" value="#{productoView.listaProductos}" columns="3" 
                             rows="12" paginator="true" id="productos"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

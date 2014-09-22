@@ -46,20 +46,50 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         
         
         List<Producto> lP=null;
+        System.out.println("@@@psumado parametro antes del try  : "+"%"+nombreP+"%");
         try{
-            Query query=
+            Query query2=
+                    //em.createQuery(
                     getEntityManager().createQuery(
-                    "SELECT producto FROM Producto producto WHERE producto.nombre like '%':nombreP'%'");
+                     "SELECT producto2 FROM Producto producto2 WHERE producto2.nombre like :nombreP");
+            
+            System.out.println("@@@psumado parametro depues del try  despues de crear query: "+"%"+nombreP+"%");
+            
 //           "SELECT producto FROM Producto producto WHERE producto.nombre like '%' + replace(:nombreP, '%', '[%]') + '%'");
 //             "SELECT producto FROM Producto producto WHERE producto.nombre like :escape:nombreP:escape");
-            query.setParameter("escape" , '%');
-            query.setParameter("nombreP" , nombreP);
-            
-            
-            lP =query.getResultList();
+           // query.setParameter("escape" , '%');
+            query2.setParameter("nombreP" , "%"+nombreP+"%");
+            System.out.println("@@@psumado parametro despues del try despues de añadir parametros  : "+"%"+nombreP+"%");
+            System.out.println("@@@psumado parametro  : "+"%"+nombreP+"%");
+            lP =query2.getResultList();
             System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
             System.out.println("@@@error en contrando : "+nombreP);
+        }
+    System.out.println("@@@ amtes de devolver lP");
+        return lP;
+    }
+    
+    
+    public List<Producto> productosXCategoria(String categoriaP){
+        
+        
+        List<Producto> lP=null;
+        System.out.println("@@@idcategoria  de la que buscamos pruductos  : "+"%"+categoriaP+"%");
+        try{
+            Query query2=
+                    //em.createQuery(
+                    getEntityManager().createQuery(
+                    "SELECT producto3 FROM Producto producto3 WHERE producto3.idcategoria :categoriaP");
+                   
+            
+           
+            
+
+            lP =query2.getResultList();
+            System.out.println("@@@encontrados  : "+lP.size());
+        }catch (Exception e){
+            System.out.println("@@@error en contrando productos de la categoria : "+categoriaP);
         }
     System.out.println("@@@ amtes de devolver lP");
         return lP;
