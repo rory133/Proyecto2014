@@ -80,10 +80,9 @@
                             </p:treeNode>
                         </p:tree>
 
-                        <p:commandButton value="Información Categoría" update="msgs" icon="ui-icon-newwin"
+                        <p:commandButton value="Seleccionar Categoría" update="msgs" icon="ui-icon-newwin"
                                             actionListener="#{treeSelectionView.displaySelectedSingle}"/>
-                          <p:commandButton value="Mostrar productos de la categoria seleccionada" update="msgs" icon="ui-icon-newwin"
-                                           actionListener="#{treeSelectionView.sumaCategoriaYBuscaProductos()}"/>
+
                   </h:form>
 
                 </p:layoutUnit>
@@ -124,7 +123,7 @@
                                     
                                     </p:commandButton>
                         
-                                    <p:commandButton id="boton2" value="Buscar por categoria selecionada"  update="msgs1"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
+                                    <p:commandButton id="boton2" value="Productos de la categoria selecionada"  update="msgs1"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
                                    <p:message for="boton1" />
                                   
                                   

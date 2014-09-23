@@ -9,8 +9,10 @@
 
 package managedBeans.beans;
 
+import entidades.Categoria;
 import entidades.Imagen;
 import entidades.Producto;
+import facade.CategoriaFacade;
 import facade.ImagenFacade;
 import facade.ProductoFacade;
 import java.io.Serializable;
@@ -43,7 +45,12 @@ private ProductoFacade productoFacade;
 @EJB
 private ImagenFacade imagenFacade;
 
+
+@EJB
+private CategoriaFacade categoriaFacade;
+
 private Imagen imagen;
+private Categoria categoria;
 
 private List<Imagen> imagenesProducto;
 
@@ -214,21 +221,23 @@ private FacesContext faceContext;
     
     
     
-        public void buscaXCategoria(){
+    public void buscaXCategoria(){
              FacesContext facesContext = FacesContext.getCurrentInstance();
              HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
              Integer categoriaSeleccionada=(Integer)session.getAttribute("idCategoria");
          System.out.println(" ###categoria seleccionada -----: " +categoriaSeleccionada +"*****"); 
         if ((categoriaSeleccionada != null) && (categoriaSeleccionada>0)) {
   
-            List<Producto> listaProductos2 =productoFacade.productosXCategoria(Integer.toString(categoriaSeleccionada));
+            //List<Producto> listaProductos2 =productoFacade.productosXCategoria(Integer.toString(categoriaSeleccionada));
+            List<Producto> listaProductos2 =productoFacade.productosXCategoria(categoriaSeleccionada);
+            categoria = (Categoria)categoriaFacade.find(categoriaSeleccionada);
        
-       if (listaProductos2.isEmpty()){//no hay productos de la categoria seleccionada
+       if ((null==listaProductos2)|| (listaProductos2.isEmpty())){//no hay productos de la categoria seleccionada
            setNombreBuscado("");
            todosProductos();
-            FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,"no se han encontrado productos de la categoria seleccionada: ","");
+            FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,"no se han encontrado productos de la categoria seleccionada: "+categoria.getNombre(),categoria.getNombre());
             FacesContext.getCurrentInstance().addMessage(null, message1);
-            System.out.println(" No se han encontrado productos");
+            System.out.println(" No se han encontrado productos de "+categoria.getNombre());
             
 
        }else{

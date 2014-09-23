@@ -71,7 +71,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
     }
     
     
-    public List<Producto> productosXCategoria(String categoriaP){
+    public List<Producto> productosXCategoria(Integer categoriaP){
         
         
         List<Producto> lP=null;
@@ -80,13 +80,9 @@ public class ProductoFacade extends AbstractFacade<Producto> {
             Query query2=
                     //em.createQuery(
                     getEntityManager().createQuery(
-                    "SELECT producto3 FROM Producto producto3 WHERE producto3.idcategoria :categoriaP");
-                   
-            
-           
-            
-
-            lP =query2.getResultList();
+                    "SELECT producto3 FROM Producto producto3 WHERE producto3.categoriaIdcategoria.idcategoria = :categoriaP");
+           query2.setParameter("categoriaP" , categoriaP);        
+           lP =query2.getResultList();
             System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
             System.out.println("@@@error en contrando productos de la categoria : "+categoriaP);

@@ -80,11 +80,22 @@ public class SelectionView  {
 //    }
  
     public TreeNode getSelectedNode() {
+        
         return selectedNode;
+        
     }
  
     public void setSelectedNode(TreeNode selectedNode) {
         this.selectedNode = selectedNode;
+            categoriaSelec =  (Categoria)selectedNode.getData();
+            setNombreCategoria(categoriaSelec.getNombre());
+            setIdCategoria(categoriaSelec.getIdcategoria());
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            externalContext.getSessionMap().put("idCategoria", getIdCategoria());
+           System.out.println("***en setSeletedNode*******entro en suma categoria se actualiza nombrecategoria  "+ getNombreCategoria());
+             System.out.println("******en setSeletedNode****entro en suma categoria se actualiza IsCategoria  "+ getIdCategoria());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Seleccionada categoria", categoriaSelec.getNombre());
+            FacesContext.getCurrentInstance().addMessage(null, message);
     }
  
 //    public TreeNode[] getSelectedNodes1() {
@@ -184,7 +195,7 @@ public class SelectionView  {
         }
         
     }
-        
+      /*  
     public void sumaCategoriaYBuscaProductos() {
         if(selectedNode != null) {
            
@@ -217,5 +228,5 @@ public class SelectionView  {
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }
-    
+    */
 }
