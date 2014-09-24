@@ -65,6 +65,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
             System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
             System.out.println("@@@error en contrando : "+nombreP);
+            System.out.println(e.toString());
         }
     System.out.println("@@@ amtes de devolver lP");
         return lP;
@@ -215,11 +216,14 @@ public class ProductoFacade extends AbstractFacade<Producto> {
             System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
             System.out.println("@@@error en contrando productos de la categoria : "+categoriaP);
+            System.out.println(e.toString());
         }
     System.out.println("@@@ amtes de devolver lP");
         return lP;
     }
-        public List<Producto> productosXCategoria(Integer categoriaP,String filtro, String vendidos){
+    
+    
+    public List<Producto> productosXCategoria(Integer categoriaP,String filtro, String vendidos){
         
         
         List<Producto> lP=null;
@@ -332,12 +336,121 @@ public class ProductoFacade extends AbstractFacade<Producto> {
            lP =query2.getResultList();
             System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
-            System.out.println("@@@error en contrando productos de la categoria : "+categoriaP);
+            System.out.println("@@@error en contrando productos de la categoria filtrada: "+categoriaP);
+             System.out.println(e.toString());
         }
     System.out.println("@@@ amtes de devolver lP");
         return lP;
     }
+        
+    public List<Producto> todosProductosFiltrados(String filtro, String vendidos){
+                List<Producto> lP=null;
+        System.out.println("@@@todos filtrados ");
+        try{
+            Query query3=
+                    //em.createQuery(
+                    getEntityManager().createQuery(
+                    "SELECT producto4 FROM Producto producto4");
+            /////////////////////////////////////
+            
+            switch (filtro) {
+                    case "todos":
+                        switch (vendidos) {
+                        case "todos":
+                            query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4");
+
+                        break;
+                        case "noVendidos":
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.vendido=false");
+
+
+
+                        break;
+                        case "yaVendidos":
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.vendido=true");
+
+
+                        break;
+                        }
+
+
+
+
+
+                    break;
+                    case "ventaDirecta":
+
+                        switch (vendidos) {
+                        case "todos":
+
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=false");
+
+
+
+                        break;
+                        case "noVendidos":
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=false   AND producto4.vendido=false");
+
+
+
+                        break;
+                        case "yaVendidos":
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=false   AND producto4.vendido=true");
+
+
+                        break;
+                        }
+
+
+
+                        break;
+                    case "subasta":
+                        switch (vendidos) {
+                        case "todos":
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=true");
+
+
+
+
+                        break;
+                        case "noVendidos":
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=true  AND producto4.vendido=false");
+
+
+
+                        break;
+                        case "yaVendidos":
+
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=true  AND producto4.vendido=true");
+
+                        break;
+                        }
+
+
+
+                    break;
+                    default:
+                            query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4");
+                    }
+        
+             
+            lP =query3.getResultList();
+        }catch (Exception e){
+              System.out.println("@@@error en contrando todos los producotos : "+e.toString());
+                        }
     
+        return lP;
+    }
     
     
     

@@ -141,9 +141,29 @@ private FacesContext faceContext;
     }
     
     //public List<Producto> todosProductos(){
-    public void todosProductos(){
+    public void todosProductosSinFiltro(){
       // setListaProductos(productoFacade.findAll());
        List<Producto> listaProductos2 =productoFacade.findAll();
+       System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
+       //añadimos a la lista de imagenes la primera imagen de cada producto.
+        imagenesProducto= new  ArrayList<>();
+        listaProductos=new  ArrayList<>();
+        setNombreBuscado("");
+       //setListaProductos(listaProductos2);
+       for(Producto productoEncontrado :listaProductos2){
+           System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
+           List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
+           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
+           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
+           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
+           imagenesProducto.add(imagenesXProcducto.get(0));
+           listaProductos.add(productoEncontrado);
+       }
+    }  
+       
+    public void todosProductos(){
+      // setListaProductos(productoFacade.findAll());
+       List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
        System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
        //añadimos a la lista de imagenes la primera imagen de cada producto.
         imagenesProducto= new  ArrayList<>();
