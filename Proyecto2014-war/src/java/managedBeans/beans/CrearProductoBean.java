@@ -305,7 +305,7 @@ private String idCategoria;
 
                 }
             //informamos que el producto se añadio correctamente
-                      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Agregado correctamente producto: ", producto.getNombre());
+                      FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Agregado correctamente producto: "+producto.getNombre(), producto.getNombre());
                       FacesContext.getCurrentInstance().addMessage(null, message);
                               
                       imagenesSubidas = new  ArrayList<>();
@@ -314,7 +314,8 @@ private String idCategoria;
                       setEnSubasta(false);
                       setNombre("");
                       setPrecio((float) 0.0);
-                    return "index";
+                    //return "index";
+                     return "/usuario/index";
              
             }else{
         // se informa al usuario cuando no ha añadido ninguna imagen

@@ -131,17 +131,30 @@
                                     <f:ajax event="click" render=":form2:cantidad" />
                                     
                                     </p:commandButton>
-                        <!--
-                         <h:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
-                                   
-                         </h:inputText>
-                        <h:commandButton id="boton1" value="Buscar" type="button" >
+                        
+                                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                    <p:outputLabel for="filtro" value="filtrar:" />
+                                    <p:selectOneRadio id="filtro" value="#{productoView.filtro}">
+                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
+                                        <f:selectItem itemLabel="Venta directa" itemValue="ventaDirecta" />
+                                        <f:selectItem itemLabel="Subasta" itemValue="subasta" />
+                                    </p:selectOneRadio>
+                                </h:panelGrid>
 
-                     
-                            <f:ajax render=":form2 msgs1"  event="click" listener="#{productoView.buscaXNombre()}" />
-                            <p:message for="msgs1" />
-                        </h:commandButton>
-                        -->
+
+
+
+                                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                    <p:outputLabel for="vendido" value="vendido:" />
+                                    <p:selectOneRadio id="vendido" value="#{productoView.vendidos}">
+                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
+                                        <f:selectItem itemLabel="solo no vendidos" itemValue="noVendidos" />
+                                        <f:selectItem itemLabel="solo ya Vendidos" itemValue="yaVendidos" />
+                                    </p:selectOneRadio>
+                                </h:panelGrid>
+                        
+                        
+ 
                     </h:panelGrid>
                 </h:form>
                 <h:form id="form2">
@@ -174,8 +187,8 @@
                                     
                                     <h:outputText value="#{producto.precio}" />
                                     <h:outputText value="usuario ofertador: #{producto.usuarioIdusuario.nombre}" />
-                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="en modo subasta" ></h:outputText >
-                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="en venta directa" ></h:outputText >
+                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="en venta directa" ></h:outputText >
+                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="en modo subasta" ></h:outputText >
                                     
                           
                                 </h:panelGrid>

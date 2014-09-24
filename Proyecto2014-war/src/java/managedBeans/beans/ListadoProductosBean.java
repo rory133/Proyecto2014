@@ -58,10 +58,34 @@ private List<Producto> listaProductos;
 
 
 private String nombreBuscado;
+private String filtro;
+private String vendidos;
 
 private FacesMessage facesMessage;
 private FacesContext faceContext;
 
+    public String getFiltro() {
+        return filtro;
+    }
+
+    public void setFiltro(String filtro) {
+        this.filtro = filtro;
+    }
+
+    public String getVendidos() {
+        return vendidos;
+    }
+
+    public void setVendidos(String vendidos) {
+        this.vendidos = vendidos;
+    }
+
+
+
+
+
+
+    
     public Imagen getImagen() {
         return imagen;
     }
@@ -110,6 +134,8 @@ private FacesContext faceContext;
        
        imagenesProducto= new  ArrayList<>();
        listaProductos=new  ArrayList<>(); 
+       setVendidos("todos");
+       setFiltro("todos");
        todosProductos();
        
     }
@@ -176,7 +202,7 @@ private FacesContext faceContext;
 //            return    "index";
             
         }else{
-       List<Producto> listaProductos2 =productoFacade.productosXNombreParcial(buscar);
+       List<Producto> listaProductos2 =productoFacade.productosXNombreParcial(buscar,filtro,vendidos);
        
        if ((listaProductos2.isEmpty())){
            setNombreBuscado("");
@@ -229,7 +255,7 @@ private FacesContext faceContext;
         if ((categoriaSeleccionada != null) && (categoriaSeleccionada>0)) {
   
             //List<Producto> listaProductos2 =productoFacade.productosXCategoria(Integer.toString(categoriaSeleccionada));
-            List<Producto> listaProductos2 =productoFacade.productosXCategoria(categoriaSeleccionada);
+            List<Producto> listaProductos2 =productoFacade.productosXCategoria(categoriaSeleccionada,filtro,vendidos);
             categoria = (Categoria)categoriaFacade.find(categoriaSeleccionada);
        
        if ((null==listaProductos2)|| (listaProductos2.isEmpty())){//no hay productos de la categoria seleccionada
