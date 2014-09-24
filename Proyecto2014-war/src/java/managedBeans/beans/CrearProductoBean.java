@@ -18,14 +18,17 @@ import facade.CategoriaFacade;
 import facade.ImagenFacade;
 import facade.ProductoFacade;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-//import javax.faces.context.ExternalContext;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.FileUploadEvent;
@@ -40,6 +43,7 @@ import utilidades.Loggable;
 
 @Loggable
 @SessionScoped
+//@RequestScoped
 @ManagedBean(name="crearProductoBean")
 public class CrearProductoBean {
 
@@ -197,13 +201,20 @@ private String idCategoria;
     
     
 
-
+   
     public CrearProductoBean() {
-         
+        System.out.println("ENTRO EN CREARPRODUCTOBEAN()");
         faceContext=FacesContext.getCurrentInstance();
+        FacesContext.getCurrentInstance().getAttributes().put((String)"idCategoria",(Integer)0);
         imagenesSubidas = new  ArrayList<>();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.getSessionMap().put("idCategoria", 0);
         
     }
+    
+    
+    
+    
     
   //antes de salir de la pagina borramos los campos
     public String salir() {
@@ -214,7 +225,10 @@ private String idCategoria;
       setEnSubasta(false);
       setNombre("");
       setPrecio((float) 0.0);
-      return "index";
+      imagenesSubidas = new  ArrayList<>();
+      ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+      externalContext.getSessionMap().put("idCategoria", 0);
+      return "index.xhtml?faces-redirect=true";
     }
 
     
@@ -241,6 +255,7 @@ private String idCategoria;
     
     //guardamos un nuevo producto en la base de datos
     public String guardarProducto() {
+    //public void guardarProducto() {
          System.out.println("guardarProducto()");
          
     FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -263,6 +278,25 @@ private String idCategoria;
              categoria=categoriaFacade.find(categoriaSeleccionada);
              
              System.out.println("nombre CATEGORIA PASADA en if::::::::::"+ categoria.getNombre()); 
+//             producto.setCategoriaIdcategoria(categoria);
+//             producto.setUsuarioIdusuario(usuario);
+//             producto.setNombre(getNombre());
+//             producto.setPrecio(getPrecio());
+//             producto.setDescripcion(getDescripcion());
+//             producto.setEnSubasta(isEnSubasta());
+//             producto.setVendido(false);
+//             producto.setFechaProducto(new java.util.Date(System.currentTimeMillis()));
+//             //productoFacade.create(producto);
+//             
+//             if (!isEnSubasta()){
+//                 System.out.println("creado producto "+ producto.getNombre()+" en modo Venta directa");
+//                 
+//             }else{
+//                 System.out.println("creado producto "+ producto.getNombre()+" en modo subasta");
+//             }
+            if (!imagenesSubidas.isEmpty()){
+                
+                
              producto.setCategoriaIdcategoria(categoria);
              producto.setUsuarioIdusuario(usuario);
              producto.setNombre(getNombre());
@@ -271,7 +305,7 @@ private String idCategoria;
              producto.setEnSubasta(isEnSubasta());
              producto.setVendido(false);
              producto.setFechaProducto(new java.util.Date(System.currentTimeMillis()));
-             productoFacade.create(producto);
+             
              
              if (!isEnSubasta()){
                  System.out.println("creado producto "+ producto.getNombre()+" en modo Venta directa");
@@ -279,7 +313,8 @@ private String idCategoria;
              }else{
                  System.out.println("creado producto "+ producto.getNombre()+" en modo subasta");
              }
-            if (!imagenesSubidas.isEmpty()){
+                
+                productoFacade.create(producto);
             for(UploadedFile uploadedFile:imagenesSubidas){
                     imagen=new Imagen();
                     //imagen.setImagen(uploadedFile.getContents());
@@ -314,8 +349,21 @@ private String idCategoria;
                       setEnSubasta(false);
                       setNombre("");
                       setPrecio((float) 0.0);
+                      
+                      ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                      externalContext.getSessionMap().put("idCategoria", 0);
                     //return "index";
-                     return "/usuario/index";
+                     //return "/usuario/index?faces-redirect=true";
+                      //return "/usuario/index";
+                     // return "/usuario/index";
+//                              try {
+//                                    System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
+//                                    FacesContext.getCurrentInstance().getExternalContext()
+//                                    .redirect("../usuario/index.xhtml");
+//                                    } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                    }
+                      return "index.xhtml?faces-redirect=true";
              
             }else{
         // se informa al usuario cuando no ha añadido ninguna imagen
@@ -335,6 +383,14 @@ private String idCategoria;
                
                
             return "crearProducto";
+            
+//                                  try {
+//                                    System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
+//                                    FacesContext.getCurrentInstance().getExternalContext()
+//                                    .redirect("../usuario/crearProducto.xhtml");
+//                                    } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                    }
                 
                 
             } 
@@ -357,6 +413,15 @@ private String idCategoria;
                
                
             return "crearProducto";
+//                                try {
+//                                    System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
+//                                    FacesContext.getCurrentInstance().getExternalContext()
+//                                    .redirect("../usuario/crearProducto.xhtml");
+//                                    } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                    }
+            
+            
           }
               
     
