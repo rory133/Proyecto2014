@@ -153,22 +153,32 @@
                                     </p:selectOneRadio>
                                 </h:panelGrid>
                         
+                                <h:outputText value="Ver Solo Mis Productos: " />
+                               
+                                        <p:selectBooleanCheckbox value="#{productoView.soloMios}">
+                                            <f:ajax event="change" render=":form2" />
+                                        </p:selectBooleanCheckbox>
+                        
                         
  
                     </h:panelGrid>
                 </h:form>
-                <h:form id="form2">
-                    <h:outputText value=" Numero de productos; #{productoView.listaProductos.size()}" id="cantidad"/>
-                        <p:dataGrid var="producto" value="#{productoView.listaProductos}" columns="3" 
+                <h:form id="form2" >
+                    <h:outputText value=" Numero de productos: #{productoView.listaProductos.size()}" id="cantidad"/>
+                    
+                    
+                        <p:dataGrid  var="producto" value="#{productoView.listaProductos}" columns="3" 
                             rows="12" paginator="true" id="productos"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            rowsPerPageTemplate="6,12,16">
+                            rowsPerPageTemplate="6,12,16" >
 
                             <f:facet name="header">
                                 Lista de Productos
                             </f:facet>
                             
-                            <p:panel header="#{producto.nombre}" style="text-align:center">
+                            <p:panel  header="#{producto.nombre}" style="text-align:center">
+                                
+
                              
                                 <h:panelGrid columns="1" style="width:100%">
                    
@@ -197,7 +207,7 @@
                         </p:dataGrid>
                 </h:form>
                     
-                    
+  
                     
                     
                     

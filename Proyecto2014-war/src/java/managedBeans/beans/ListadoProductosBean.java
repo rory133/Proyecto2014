@@ -12,6 +12,7 @@ package managedBeans.beans;
 import entidades.Categoria;
 import entidades.Imagen;
 import entidades.Producto;
+import entidades.Usuario;
 import facade.CategoriaFacade;
 import facade.ImagenFacade;
 import facade.ProductoFacade;
@@ -61,10 +62,19 @@ private List<Producto> listaProductos;
 private String nombreBuscado;
 private String filtro;
 private String vendidos;
+private boolean soloMios; 
 
 private FacesMessage facesMessage;
 private FacesContext faceContext;
 
+    public boolean isSoloMios() {
+        return soloMios;
+    }
+
+    public void setSoloMios(boolean soloMios) {
+        this.soloMios = soloMios;
+    }
+    
     public String getFiltro() {
         return filtro;
     }
@@ -132,7 +142,7 @@ private FacesContext faceContext;
     @PostConstruct
     public void init() {
        faceContext=FacesContext.getCurrentInstance();
-       
+       setSoloMios(false);
        imagenesProducto= new  ArrayList<>();
        listaProductos=new  ArrayList<>(); 
        setVendidos("todos");
@@ -164,7 +174,22 @@ private FacesContext faceContext;
        
     public void todosProductos(){
       // setListaProductos(productoFacade.findAll());
-       List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
+        
+        List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
+        if (soloMios){
+         List<Producto> listaProductos3= new  ArrayList<>();;
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+         Usuario usuario=(Usuario)session.getAttribute("usuario");
+         for(Producto productoEncontrado :listaProductos2){
+             if (productoEncontrado.getUsuarioIdusuario().getIdusuario().equals(usuario.getIdusuario())){
+                 listaProductos3.add(productoEncontrado);             
+                 
+             }
+         }
+         listaProductos2=listaProductos3;
+        }
+       
        System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
        //añadimos a la lista de imagenes la primera imagen de cada producto.
         imagenesProducto= new  ArrayList<>();
@@ -174,6 +199,8 @@ private FacesContext faceContext;
         externalContext.getSessionMap().put("idCategoria", 0);
        //setListaProductos(listaProductos2);
        for(Producto productoEncontrado :listaProductos2){
+           
+           
            System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
            List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
            System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
@@ -227,6 +254,22 @@ private FacesContext faceContext;
         }else{
        List<Producto> listaProductos2 =productoFacade.productosXNombreParcial(buscar,filtro,vendidos);
        
+                    if (soloMios){
+                         List<Producto> listaProductos3= new  ArrayList<>();
+                         FacesContext facesContext = FacesContext.getCurrentInstance();
+                         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+                         Usuario usuario=(Usuario)session.getAttribute("usuario");
+                         for(Producto productoEncontrado :listaProductos2){
+                             if (productoEncontrado.getUsuarioIdusuario().getIdusuario().equals(usuario.getIdusuario())){
+                                 listaProductos3.add(productoEncontrado);             
+
+                             }
+                         }
+                         listaProductos2=listaProductos3;
+                     }
+       
+       
+       
        if ((listaProductos2.isEmpty())){
            setNombreBuscado("");
            todosProductos();
@@ -279,6 +322,24 @@ private FacesContext faceContext;
   
             //List<Producto> listaProductos2 =productoFacade.productosXCategoria(Integer.toString(categoriaSeleccionada));
             List<Producto> listaProductos2 =productoFacade.productosXCategoria(categoriaSeleccionada,filtro,vendidos);
+                    if (soloMios){
+                         List<Producto> listaProductos3= new  ArrayList<>();
+                         //FacesContext facesContext = FacesContext.getCurrentInstance();
+                         //HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+                         Usuario usuario=(Usuario)session.getAttribute("usuario");
+                         for(Producto productoEncontrado :listaProductos2){
+                             if (productoEncontrado.getUsuarioIdusuario().getIdusuario().equals(usuario.getIdusuario())){
+                                 listaProductos3.add(productoEncontrado);             
+
+                             }
+                         }
+                         listaProductos2=listaProductos3;
+                     }
+            
+            
+            
+            
+            
             categoria = (Categoria)categoriaFacade.find(categoriaSeleccionada);
        
        if ((null==listaProductos2)|| (listaProductos2.isEmpty())){//no hay productos de la categoria seleccionada
