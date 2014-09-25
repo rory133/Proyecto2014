@@ -137,7 +137,36 @@ public class VisualizaImagen extends HttpServlet {
             e.printStackTrace();
         }
             
-        break;       
+        break;    
+       
+            
+       case "porIdImagen":         
+        try { 
+            String idImagen = request.getParameter("idImagen");
+            System.out.println("inside servlet idImagen–>" + idImagen);
+            Integer indice=Integer.parseInt(idImagen);
+      
+            byte[] bytearray = new byte[16777215];
+            int size = 0;
+            //convertir byte[] en InputStream
+           //  System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen());
+           // System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen().toString());
+            sImage = new ByteArrayInputStream(imagenFacade.find(indice).getImagen());
+                    //listadoProductos.getImagenesProducto().get(indice).getImagen();
+                    
+            
+            //sImage = new ByteArrayInputStream(crearProducto.getImagenesSubidas().get(indice).getContents());
+            response.reset();
+            response.setContentType("image/jpeg");
+                while ((size = sImage.read(bytearray)) != -1) {
+                    response.getOutputStream().
+                            write(bytearray, 0, size);
+                }    
+            } catch (Exception e) {
+            e.printStackTrace();
+        }
+            
+        break;   
          
       }
      

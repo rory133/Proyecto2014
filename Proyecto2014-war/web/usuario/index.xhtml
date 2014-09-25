@@ -202,16 +202,81 @@
                                     
                           
                                 </h:panelGrid>
+                                
+                                
+                                 <p:commandLink update=":form3:detalleProducto" oncomplete="PF('dialogoProducto').show()" title="Ver Detalles">
+                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                   <f:setPropertyActionListener value="#{producto}" target="#{productoView.productoSeleccionado}" />
+                                </p:commandLink>
                             </p:panel>
-
-                        </p:dataGrid>
-                </h:form>
+                         </p:dataGrid>
                     
-  
+                    
+
+                </h:form>
+                             
+
                     
                     
                     
                 </p:layoutUnit>
+                
+                
+                
+                      <h:form id="form3" >
+                    
+                             <p:dialog  header="Informacion Producto" widgetVar="dialogoProducto" modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                                <p:outputPanel id="detalleProducto" style="text-align:center;">
+                                    
+                                    <!--
+                                    <p:galleria  value="#{productoView.imagenesProductoSeleccionado}" var="image" panelWidth="500" panelHeight="313" showCaption="false"
+                                                            effect="fade" 
+                                                            effectSpeed="5000"
+                                                 >
+                                        <p:graphicImage value="../VisualizaImagen?tipo=porIdImagen&amp;idImagen=#{image.idimagen}"/>
+                                    </p:galleria>   
+                                    -->
+                                    
+                                    <p:commandButton type="button" onclick="PF('switcher').previous();"
+                                        icon="ui-icon-circle-triangle-w" id="prev"/>
+                                    <p:commandButton type="button" onclick="PF('switcher').next();"
+                                        icon="ui-icon-circle-triangle-e" id="next"/>
+
+                                    <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
+                                        slideshowAuto="false">
+                                        <ui:repeat value="#{productoView.imagenesProductoSeleccionado}" var="image" id="manuelSwitcherImages">
+                                            <p:graphicImage value="../VisualizaImagen?tipo=porIdImagen&amp;idImagen=#{image.idimagen}"/>
+                                        </ui:repeat>
+                                    </p:imageSwitch>
+                                    
+                                    
+                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado}"  columnClasses="label,value">
+                                    <h:outputText value="Nombre:" />
+                                    <h:outputText value="#{productoView.productoSeleccionado.nombre}" />
+                                    <h:outputText value="Descripcion:" />
+                                    <h:outputText value="#{productoView.productoSeleccionado.descripcion}" />                                    
+                                    <h:outputText value="Usuario Ofertante" />
+                                    <h:outputText value="#{productoView.productoSeleccionado.usuarioIdusuario.nombre}" />
+                                    <h:outputText value="Email Usuario" />
+                                    <h:outputText value="#{productoView.productoSeleccionado.usuarioIdusuario.email}" />                                    
+                                    <h:outputText value="Fecha puesta en venta:" />
+                                    <h:outputText value="#{productoView.productoSeleccionado.fechaProducto}" />
+                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="Precio:" ></h:outputText >
+                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="#{productoView.productoSeleccionado.precio}" ></h:outputText >
+                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="producto en Subasta:" ></h:outputText >
+                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="en modo subasta" ></h:outputText >
+                                 
+                                  
+                                  
+                                  </p:panelGrid>
+
+                                </p:outputPanel>
+                            </p:dialog>
+                    
+                       </h:form>
+                
+                
+                
 
             </p:layout>
             <h:outputText value="no estas reginstrado como socio y no pudes acceder a esta pagina"    rendered="#{ROLE_ADMIN}" />

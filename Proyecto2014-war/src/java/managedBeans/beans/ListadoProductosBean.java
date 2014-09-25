@@ -63,9 +63,31 @@ private String nombreBuscado;
 private String filtro;
 private String vendidos;
 private boolean soloMios; 
+private Producto productoSeleccionado;
+private List<Imagen> imagenesProductoSeleccionado;
 
 private FacesMessage facesMessage;
 private FacesContext faceContext;
+
+
+
+    public List<Imagen> getImagenesProductoSeleccionado() {
+        return imagenesProductoSeleccionado;
+    }
+
+    public void setImagenesProductoSeleccionado(List<Imagen> imagenesProductoSeleccionado) {
+        this.imagenesProductoSeleccionado = imagenesProductoSeleccionado;
+    }
+    
+    public Producto getProductoSeleccionado() {
+        return productoSeleccionado;
+    }
+
+    public void setProductoSeleccionado(Producto productoSeleccionado) {
+         System.out.println("introducido productoSeleccionado:::::::"+productoSeleccionado.getNombre());
+        buscaImagenesProductoSeleccionado(productoSeleccionado);
+        this.productoSeleccionado = productoSeleccionado;
+    }
 
     public boolean isSoloMios() {
         return soloMios;
@@ -400,6 +422,12 @@ private FacesContext faceContext;
 
     public List<Producto> todosProductosVenta(){
        return productoFacade.findAll();
+    }
+    
+    //buscamos las imagenes del producto seleccionado para mostrarselas al usuario
+    public void buscaImagenesProductoSeleccionado(Producto productoSele){
+        setImagenesProductoSeleccionado(imagenFacade.imagenesXProcducto(productoSele));
+        
     }
     
     
