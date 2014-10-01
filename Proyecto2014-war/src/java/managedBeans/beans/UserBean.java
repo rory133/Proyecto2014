@@ -9,6 +9,7 @@
 
 package managedBeans.beans;
 
+import ejbs.EmailService;
 import entidades.Login;
 import entidades.Usuario;
 import facade.LoginFacade;
@@ -41,6 +42,9 @@ private LoginFacade loginFacade;
 
 @EJB
 private UsuarioFacade usuarioFacade;
+
+@EJB 
+EmailService emailService;
 
 private FacesMessage facesMessage;
 private final FacesContext faceContext;
@@ -191,11 +195,21 @@ private String role;
           
           loginFacade.create(login);
           
+          String bienVenida="Bienvenido al portal BuyUp \n"+usuario.getNombre()+" "+usuario.getApellidos()+"\n";
+          bienVenida=bienVenida+"has sido dado de alta como usuario \n con el login: "+ login.getLogin()+"\n";
+          bienVenida=bienVenida+"y el password: "+login.getPassword();
+          
+          
+          emailService.envioIndividual(usuario.getEmail(),"BuyUp", bienVenida);
+          
           facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario creado correctamente", null);
           
           faceContext.addMessage(null, facesMessage);
                FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Vienvendio "  ));
+               
+               
+               
             return "index";
           
           

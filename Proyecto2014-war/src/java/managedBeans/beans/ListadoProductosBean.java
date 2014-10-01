@@ -30,6 +30,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
+
 /**
  *
  * @author juanma
@@ -50,6 +51,8 @@ private ImagenFacade imagenFacade;
 
 @EJB
 private CategoriaFacade categoriaFacade;
+
+
 
 private Imagen imagen;
 private Categoria categoria;
@@ -430,5 +433,5 @@ private FacesContext faceContext;
         
     }
     
-    
+
 }

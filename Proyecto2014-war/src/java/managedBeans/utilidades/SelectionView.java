@@ -18,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -37,7 +38,9 @@ import utilidades.Loggable;
 //@RequestScoped
 
 @ManagedBean(name="treeSelectionView")
+//@SessionScoped
 @ViewScoped  
+
 //@RequestScoped
 //@Loggable
 //public class SelectionView implements Serializable {
@@ -48,7 +51,7 @@ public class SelectionView  {
  private TreeNode root1;
  private  FacesContext faceContext;
 // @EJB
-// private ListadoProductosBean listadoProductoBean;
+ //private ListadoProductosBean listadoProductoBean;
 //    private TreeNode root2;
 //    private TreeNode root3;
     private TreeNode selectedNode;
@@ -94,7 +97,8 @@ public class SelectionView  {
             externalContext.getSessionMap().put("idCategoria", getIdCategoria());
            System.out.println("***en setSeletedNode*******entro en suma categoria se actualiza nombrecategoria  "+ getNombreCategoria());
              System.out.println("******en setSeletedNode****entro en suma categoria se actualiza IsCategoria  "+ getIdCategoria());
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Seleccionada categoria", categoriaSelec.getNombre());
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", selectedNode.getData().toString());
             FacesContext.getCurrentInstance().addMessage(null, message);
     }
  

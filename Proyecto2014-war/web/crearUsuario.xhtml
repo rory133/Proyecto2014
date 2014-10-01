@@ -13,7 +13,7 @@
         
     <h:form>
       <p:panel id="panel" header="CrearUsuario">
- 
+        <p:growl id="msgs1" showDetail="true" escape="false"/>
         <p:messages id="msgs" />
  
         <h:panelGrid columns="4" cellpadding="5">
@@ -73,7 +73,7 @@
                 <p:message for="pwd2" />
             </h:panelGrid>
  
-        <p:commandButton value="Crear cuenta"  update="panel" action="#{userBean.crearUsuario()}" icon="ui-icon-check" />
+        <p:commandButton value="Crear cuenta"  update="msgs1" action="#{userBean.crearUsuario()}" icon="ui-icon-check" />
     </p:panel>
 </h:form>
         

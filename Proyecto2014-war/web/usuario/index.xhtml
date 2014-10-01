@@ -82,6 +82,16 @@
 
                         <p:commandButton value="Seleccionar Categoría" update="msgs" icon="ui-icon-newwin"
                                             actionListener="#{treeSelectionView.displaySelectedSingle}"/>
+                        
+                          <p:commandButton id="boton2" value="Productos de la categoria selecionada"  update="msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
+                                 
+                                  
+                                  
+                                    <f:ajax event="click" render=":form2:productos" />
+                                    <f:ajax event="click" render=":form2:cantidad" />
+                                    
+                                    </p:commandButton>
+    
 
                   </h:form>
 
@@ -108,8 +118,9 @@
                         </h:commandButton>
                         -->
                         
-                        
-                       
+                        <p:commandButton id="botonEmail" value="prueba email"  update="msgs1"  action="#{emailPrueba.enviaPrueba()}" icon="ui-icon-check" >
+                                 
+                                  </p:commandButton>
                                     <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
                                    
                                     </p:inputText>
