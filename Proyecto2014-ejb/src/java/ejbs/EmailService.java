@@ -23,6 +23,7 @@ import javax.mail.internet.MimeMessage;
  */
 @Stateless
 @LocalBean
+//realiza el envio de los emails correspondientes
 public class EmailService {
     
     

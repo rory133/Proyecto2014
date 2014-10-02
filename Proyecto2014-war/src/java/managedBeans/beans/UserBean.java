@@ -9,24 +9,33 @@
 
 package managedBeans.beans;
 
+import static com.sun.faces.context.flash.ELFlash.getFlash;
 import ejbs.EmailService;
+import ejbs.GestionEventos;
 import entidades.Login;
 import entidades.Usuario;
 import facade.LoginFacade;
 import facade.UsuarioFacade;
+//import java.awt.Event;
 import java.io.IOException;
+import java.util.Observable;
 import javax.ejb.EJB;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.event.Event;
+import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import utilidades.Loggable;
+
 
 /**
  *
@@ -36,6 +45,8 @@ import utilidades.Loggable;
 @RequestScoped
 @ManagedBean(name="userBean")
 public class UserBean {
+    
+
 
 @EJB
 private LoginFacade loginFacade;
@@ -46,11 +57,20 @@ private UsuarioFacade usuarioFacade;
 @EJB 
 EmailService emailService;
 
+@EJB
+GestionEventos gestionEventos;
+
 private FacesMessage facesMessage;
 private final FacesContext faceContext;
 
 private Login login;
 private Usuario usuario;
+
+
+//@Inject
+//@SumadoSocio   
+//Event <Login> usuarioSumadoEvent;
+  
 
 
 @Pattern(regexp = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
@@ -72,12 +92,12 @@ private String web;
 @Size(min=4,max=100)
 private String localizacion;
 
-@Pattern(regexp = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+@Pattern(regexp = "^[a-zA-Z0-9]+(([',.-][a-zA-Z0-9])?[a-zA-Z0-9]*)*$")
 @Size(min=4,max=45)
 private String loginUsuario;
 
 
-@Pattern(regexp = "^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+@Pattern(regexp = "^[a-zA-Z0-9]+(([',.-][a-zA-Z0-9])?[a-zA-Z0-9]*)*$")
 @Size(min=4,max=20)
 private String password;
 
@@ -168,7 +188,8 @@ private String role;
         this.role = role;
     }
 
-    
+
+
   public String crearUsuario(){
    
       System.out.println("@@@crear Usuario: login "+ getLogin()+" password: "+ getPassword());
@@ -193,24 +214,33 @@ private String role;
           login.setPassword(getPassword());
           login.setRole("ROLE_SOCIO");
           
-          loginFacade.create(login);
-          
-          String bienVenida="Bienvenido al portal BuyUp \n"+usuario.getNombre()+" "+usuario.getApellidos()+"\n";
-          bienVenida=bienVenida+"has sido dado de alta como usuario \n con el login: "+ login.getLogin()+"\n";
-          bienVenida=bienVenida+"y el password: "+login.getPassword();
+         loginFacade.create(login);
+         
+         
           
           
-          emailService.envioIndividual(usuario.getEmail(),"BuyUp", bienVenida);
+       //   Login login2=(Login)loginFacade.find(getLoginUsuario());
+          
+          
+          
+          
+//          String bienVenida="Bienvenido al portal BuyUp \n"+usuario.getNombre()+" "+usuario.getApellidos()+"\n";
+//          bienVenida=bienVenida+"has sido dado de alta como usuario \n con el login: "+ login.getLogin()+"\n";
+//          bienVenida=bienVenida+"y el password: "+login.getPassword();          
+//          emailService.envioIndividual(usuario.getEmail(),"BuyUp", bienVenida);
           
           facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario creado correctamente", null);
           
           faceContext.addMessage(null, facesMessage);
                FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Vienvendio "  ));
+                new FacesMessage("Bienvendio "  ));
                
+               //se llama a gestionEventos para genere el evento correspondiente
+               gestionEventos.fireUsuarioSumadoEvent(login);
                
-               
-            return "index";
+               //mantenemos los menasajes en la redireccion
+            faceContext.getExternalContext().getFlash().setKeepMessages(true);
+             return "index.xhtml?faces-redirect=true";
           
           
 //        FacesContext.getCurrentInstance().addMessage(null,

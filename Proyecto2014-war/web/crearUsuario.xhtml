@@ -14,46 +14,51 @@
     <h:form>
       <p:panel id="panel" header="CrearUsuario">
         <p:growl id="msgs1" showDetail="true" escape="false"/>
-        <p:messages id="msgs" />
+       
  
-        <h:panelGrid columns="4" cellpadding="5">
+        <h:panelGrid columns="3" cellpadding="7">
             
             <h:outputLabel for="nombre" value="Nombre: " />
             <p:inputText id="nombre" value="#{userBean.nombre}" label="nombre">
-                <f:validateLength minimum="4" />
+                <f:validateLength minimum="2" />
+                <p:message for="nombre" />
             </p:inputText>
-            <p:message for="nombre" />
-             
             <h:outputText value="#{userBean.nombre}" />
+             
+           
             
             <h:outputLabel for="apellidos" value="Apellidos: " />
-            <p:inputText id="apellidos" value="#{userBean.apellidos}" label="apellidos"/>
+            <p:inputText id="apellidos" value="#{userBean.apellidos}" label="apellidos">
+            <f:validateLength minimum="2" />
             <p:message for="apellidos" />
+            </p:inputText>
             <h:outputText value="#{userBean.apellidos}" /> 
             
             <h:outputLabel for="email" value="Email: " />
-            <p:inputText id="email" value="#{userBean.email}" label="email"/>
+            <p:inputText id="email" value="#{userBean.email}" label="email">
             <p:message for="email" />
+            </p:inputText>
             <h:outputText value="#{userBean.email}" /> 
             
             <h:outputLabel for="web" value="web: " />
-            <p:inputText id="web" value="#{userBean.web}" label="web"/>
+            <p:inputText id="web" value="#{userBean.web}" label="web">
             <p:message for="web" />
+            </p:inputText>
             <h:outputText value="#{userBean.web}" /> 
             
             
             <h:outputLabel for="localizacion" value="localizacion: " />
             <p:inputText id="localizacion" value="#{userBean.localizacion}" label="localizacion">
                      <f:validateLength minimum="4" />
-            </p:inputText>
             <p:message for="localizacion" />
-          
+            </p:inputText>          
             <h:outputText value="#{userBean.localizacion}" /> 
             
             
             <h:outputLabel for="loginUsuario" value="loginUsuario: " />
-            <p:inputText id="loginUsuario" value="#{userBean.loginUsuario}" label="login"/>
+            <p:inputText id="loginUsuario" value="#{userBean.loginUsuario}" label="login">
             <p:message for="loginUsuario" />
+            </p:inputText>
             <h:outputText value="#{userBean.loginUsuario}" /> 
             
         </h:panelGrid>
@@ -73,7 +78,7 @@
                 <p:message for="pwd2" />
             </h:panelGrid>
  
-        <p:commandButton value="Crear cuenta"  update="msgs1" action="#{userBean.crearUsuario()}" icon="ui-icon-check" />
+        <p:commandButton value="Crear cuenta"  update="msgs1 nombre apellidos email web localizacion loginUsuario pwd1 pwd2" action="#{userBean.crearUsuario()}" icon="ui-icon-check" />
     </p:panel>
 </h:form>
         
