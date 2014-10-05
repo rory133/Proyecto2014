@@ -235,10 +235,11 @@
                 
                 
                       <h:form id="form3" >
-                    
-                             <p:dialog  header="Informacion Producto" widgetVar="dialogoProducto" modal="true" showEffect="fade" hideEffect="fade" resizable="true">
+                          <p:growl id="msgs3" showDetail="true" escape="false"/>
+                             <p:dialog  header="Informacion Producto" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="false"
+                                        width="500" height="650">
                                 <p:outputPanel id="detalleProducto" style="text-align:center;">
-                                    
+                                     
                                     <!--
                                     <p:galleria  value="#{productoView.imagenesProductoSeleccionado}" var="image" panelWidth="500" panelHeight="313" showCaption="false"
                                                             effect="fade" 
@@ -280,6 +281,17 @@
                                   
                                   
                                   </p:panelGrid>
+                                 
+                               
+                                    <p:commandButton id="boton" value="Comprar Producto" update="msgs3"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check" >
+  
+                                                 <f:param id="parametro1" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
+                                                 <f:param id="parametro2" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
+
+                                    </p:commandButton>
+
+                                    
+                                  
 
                                 </p:outputPanel>
                             </p:dialog>

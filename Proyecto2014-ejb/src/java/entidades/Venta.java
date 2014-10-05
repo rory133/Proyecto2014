@@ -62,12 +62,7 @@ public class Venta implements Serializable {
     @NotNull
     @Column(name = "precio_final")
     private float precioFinal;
-    @Size(max = 45)
-    @Column(name = "enviado")
-    private String enviado;
-    @Size(max = 45)
-    @Column(name = "recibido")
-    private String recibido;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ventaIdventa")
     private List<Denuncia> denunciaList;
     @JoinColumn(name = "comprador_idusuario", referencedColumnName = "idusuario")
@@ -114,21 +109,15 @@ public class Venta implements Serializable {
         this.precioFinal = precioFinal;
     }
 
-    public String getEnviado() {
-        return enviado;
-    }
-
-    public void setEnviado(String enviado) {
-        this.enviado = enviado;
-    }
-
-    public String getRecibido() {
-        return recibido;
-    }
-
-    public void setRecibido(String recibido) {
-        this.recibido = recibido;
-    }
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "enviado", nullable = false)
+    private boolean enviado;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "recibido", nullable = false)
+    private boolean recibido;
 
     @XmlTransient
     public List<Denuncia> getDenunciaList() {
@@ -154,6 +143,24 @@ public class Venta implements Serializable {
     public void setProductoIdproducto(Producto productoIdproducto) {
         this.productoIdproducto = productoIdproducto;
     }
+
+    public boolean isEnviado() {
+        return enviado;
+    }
+
+    public void setEnviado(boolean enviado) {
+        this.enviado = enviado;
+    }
+
+    public boolean isRecibido() {
+        return recibido;
+    }
+
+    public void setRecibido(boolean recibido) {
+        this.recibido = recibido;
+    }
+    
+    
 
     @Override
     public int hashCode() {
