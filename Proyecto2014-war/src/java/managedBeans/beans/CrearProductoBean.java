@@ -9,10 +9,12 @@
 
 package managedBeans.beans;
 
+import ejbs.SubastaTimer;
 import entidades.Categoria;
 import entidades.Imagen;
 import entidades.Login;
 import entidades.Producto;
+import entidades.Puja;
 import entidades.Usuario;
 import facade.CategoriaFacade;
 import facade.ImagenFacade;
@@ -55,6 +57,9 @@ private ImagenFacade imagenFacade;
 
 @EJB 
 CategoriaFacade categoriaFacade;
+
+@EJB
+SubastaTimer subastaTimer;
 
 
 
@@ -302,19 +307,35 @@ private String idCategoria;
              producto.setNombre(getNombre());
              producto.setPrecio(getPrecio());
              producto.setDescripcion(getDescripcion());
-             producto.setEnSubasta(isEnSubasta());
+             producto.setEnSubasta(false);
              producto.setVendido(false);
              producto.setFechaProducto(new java.util.Date(System.currentTimeMillis()));
              
              
              if (!isEnSubasta()){
                  System.out.println("creado producto "+ producto.getNombre()+" en modo Venta directa");
+                 //al no ser en modo subasta lo ponemos ya a verdadero
+                 producto.setExpirado(true);
                  
              }else{
                  System.out.println("creado producto "+ producto.getNombre()+" en modo subasta");
-             }
+                 producto.setExpirado(false);
+                 
                 
-                productoFacade.create(producto);
+                 
+             }
+                System.out.println("CREANDO PRODUCTOOOOOO: "+producto.getNombre());
+               // productoFacade.create(producto);
+                producto=productoFacade.salva(producto);
+                
+                
+                //le creamos un temporizador para que expire a los 7 dias
+                if (isEnSubasta()){
+                    
+                    producto.setEnSubasta(true);
+                    producto=productoFacade.salva(producto);
+                    subastaTimer.creaTemporizador(producto);
+                }
             for(UploadedFile uploadedFile:imagenesSubidas){
                     imagen=new Imagen();
                     //imagen.setImagen(uploadedFile.getContents());

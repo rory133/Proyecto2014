@@ -9,11 +9,15 @@
 
 package entidades;
 
+import facade.PujaFacade;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,17 +26,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PostLoad;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import utilidades.CalculaUltimaPuja;
 
 /**
  *
  * @author juanma
  */
+@EntityListeners({CalculaUltimaPuja.class})
 @Entity
 @Table(name = "producto", catalog = "portalsubastas", schema = "")
 @XmlRootElement
@@ -43,6 +53,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion"),
     @NamedQuery(name = "Producto.findByPrecio", query = "SELECT p FROM Producto p WHERE p.precio = :precio"),
     @NamedQuery(name = "Producto.findByVendido", query = "SELECT p FROM Producto p WHERE p.vendido = :vendido"),
+    @NamedQuery(name = "Producto.findByNoExpirado", query = "SELECT p FROM Producto p WHERE p.expirado = :expirado"),
     @NamedQuery(name = "Producto.findByEnSubasta", query = "SELECT p FROM Producto p WHERE p.enSubasta = :enSubasta")})
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -84,6 +95,13 @@ public class Producto implements Serializable {
     @Column(name = "fechaProducto")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaProducto;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "expirado", nullable = false)
+    private boolean expirado;
+    @Transient
+    private float ultimaPuja;
+
 
     public Producto() {
     }
@@ -92,13 +110,15 @@ public class Producto implements Serializable {
         this.idproducto = idproducto;
     }
 
-    public Producto(Integer idproducto, String nombre, String descripcion, float precio, boolean vendido, boolean enSubasta) {
+    public Producto(Integer idproducto, String nombre, String descripcion, float precio, boolean vendido, boolean enSubasta , boolean expirado, Date fechaProducto ) {
         this.idproducto = idproducto;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.vendido = vendido;
         this.enSubasta = enSubasta;
+        this.expirado = expirado;
+        this.fechaProducto = fechaProducto;
     }
 
     public Integer getIdproducto() {
@@ -172,6 +192,24 @@ public class Producto implements Serializable {
     public void setFechaProducto(Date fechaProducto) {
         this.fechaProducto = fechaProducto;
     }
+
+    public boolean isExpirado() {
+        return expirado;
+    }
+
+    public void setExpirado(boolean expirado) {
+        this.expirado = expirado;
+    }
+
+    public float getUltimaPuja() {
+        return ultimaPuja;
+    }
+
+    public void setUltimaPuja(float ultimaPuja) {
+        this.ultimaPuja = ultimaPuja;
+    }
+    
+
     
     
 

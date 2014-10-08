@@ -10,12 +10,16 @@
 package ejbs;
 
 import entidades.Login;
+import entidades.Producto;
+import entidades.Puja;
 import entidades.Venta;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import utilidades.CompraVentaDirecta;
+import utilidades.RealizadaPuja;
+import utilidades.SubastaExpirada;
 import utilidades.SumadoSocio;
 
 
@@ -36,6 +40,15 @@ Event <Login> usuarioSumadoEvent;
 @Inject
 @CompraVentaDirecta
 Event <Venta> productoAdquiridoVentaDirectaEvent;
+
+@Inject
+@RealizadaPuja
+Event <Puja> pujaRealizadaEvent;
+
+
+@Inject
+@SubastaExpirada
+Event <Producto> expiradoTiempoSubastaEvent;
   
    // generamos un evento al sumar un socio
     public void fireUsuarioSumadoEvent( Login login ) {
@@ -46,5 +59,11 @@ Event <Venta> productoAdquiridoVentaDirectaEvent;
         productoAdquiridoVentaDirectaEvent.fire(venta);
     } 
     
+    public void firePujaRealizada( Puja puja ) {
+        pujaRealizadaEvent.fire(puja);
+    } 
     
+    public void fireExpiradoTiempoSubasta(Producto producto){
+        expiradoTiempoSubastaEvent.fire(producto);
+    }
 }

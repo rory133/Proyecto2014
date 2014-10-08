@@ -11,6 +11,7 @@ package ejbs;
 
 
 import java.util.Properties;
+import javax.ejb.Asynchronous;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.mail.*;
@@ -26,7 +27,7 @@ import javax.mail.internet.MimeMessage;
 //realiza el envio de los emails correspondientes
 public class EmailService {
     
-    
+    @Asynchronous
   public void envioGrupo(String[] to, String subject, String contenido){
       try 
     {
@@ -90,7 +91,7 @@ public class EmailService {
   
   
   
-  
+  @Asynchronous//para que el envio no ralentice la aplicación
   public void envioIndividual(String to, String subject, String contenido){
       try 
     {

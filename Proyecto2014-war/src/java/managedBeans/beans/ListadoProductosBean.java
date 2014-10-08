@@ -18,6 +18,7 @@ import facade.ImagenFacade;
 import facade.ProductoFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -71,8 +72,12 @@ private List<Imagen> imagenesProductoSeleccionado;
 
 private FacesMessage facesMessage;
 private FacesContext faceContext;
+//tiempo que resta en subasta
 
-
+long elapsedDays;
+long elapsedHours;
+long elapsedMinutes;
+long elapsedSeconds;
 
     public List<Imagen> getImagenesProductoSeleccionado() {
         return imagenesProductoSeleccionado;
@@ -90,7 +95,46 @@ private FacesContext faceContext;
          System.out.println("introducido productoSeleccionado:::::::"+productoSeleccionado.getNombre());
         buscaImagenesProductoSeleccionado(productoSeleccionado);
         this.productoSeleccionado = productoSeleccionado;
+        setTiempoRestante(this.productoSeleccionado.getFechaProducto());
+        
+        
     }
+    	public void setTiempoRestante(Date endDate){
+ 
+                Date startDate=new java.util.Date(System.currentTimeMillis());
+		//milliseconds
+		long different = (endDate.getTime()+604800000) - startDate.getTime();
+ 
+		System.out.println("startDate : " + startDate);
+		System.out.println("endDate : "+ endDate);
+		System.out.println("different : " + different);
+ 
+		long secondsInMilli = 1000;
+		long minutesInMilli = secondsInMilli * 60;
+		long hoursInMilli = minutesInMilli * 60;
+		long daysInMilli = hoursInMilli * 24;
+                
+                setElapsedDays(different / daysInMilli);
+		long elapsedDays = different / daysInMilli;
+		different = different % daysInMilli;
+                
+                setElapsedHours(different / hoursInMilli);
+		long elapsedHours = different / hoursInMilli;
+		different = different % hoursInMilli;
+ 
+                setElapsedMinutes(different / minutesInMilli);
+		long elapsedMinutes = different / minutesInMilli;
+		different = different % minutesInMilli;
+                
+                setElapsedSeconds(different / secondsInMilli);
+		long elapsedSeconds = different / secondsInMilli;
+ 
+		System.out.printf(
+		    "%d days, %d hours, %d minutes, %d seconds%n", 
+		    elapsedDays,
+		    elapsedHours, elapsedMinutes, elapsedSeconds);
+ 
+	}
 
     public boolean isSoloMios() {
         return soloMios;
@@ -160,6 +204,41 @@ private FacesContext faceContext;
         this.nombreBuscado = nombreBuscado;
     }
 
+
+
+    public long getElapsedDays() {
+        return elapsedDays;
+    }
+
+    public void setElapsedDays(long elapsedDays) {
+        this.elapsedDays = elapsedDays;
+    }
+
+    public long getElapsedHours() {
+        return elapsedHours;
+    }
+
+    public void setElapsedHours(long elapsedHours) {
+        this.elapsedHours = elapsedHours;
+    }
+
+    public long getElapsedMinutes() {
+        return elapsedMinutes;
+    }
+
+    public void setElapsedMinutes(long elapsedMinutes) {
+        this.elapsedMinutes = elapsedMinutes;
+    }
+
+    public long getElapsedSeconds() {
+        return elapsedSeconds;
+    }
+
+    public void setElapsedSeconds(long elapsedSeconds) {
+        this.elapsedSeconds = elapsedSeconds;
+    }
+
+    
     
 
     
@@ -175,6 +254,13 @@ private FacesContext faceContext;
        todosProductos();
        
     }
+    
+    
+    
+    
+    
+    
+    
     
     //public List<Producto> todosProductos(){
     public void todosProductosSinFiltro(){

@@ -9,10 +9,14 @@
 
 package facade;
 
+import entidades.Producto;
 import entidades.Puja;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -31,5 +35,38 @@ public class PujaFacade extends AbstractFacade<Puja> {
     public PujaFacade() {
         super(Puja.class);
     }
-    
+    public List<Puja> pujaXProducto(Producto productoP){
+        List<Puja> lP=null;
+        
+        try{
+        Query query=getEntityManager().createQuery(
+                             "SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP ORDER BY puja2.fecha DESC");
+                //"SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP");
+        query.setParameter("productoP" , productoP);
+         lP=query.getResultList();
+        // System.out.println("Creating Timer...");
+        }catch (Exception e){
+            System.out.println("@@@error en contrando pujas del producto : "+productoP);
+            System.out.println(e.toString());
+        }
+        return lP;
+        
+    }
+    public List<Puja> pujaXIdProducto(Integer productoP){
+        List<Puja> lP=null;
+        
+        try{
+        Query query=getEntityManager().createQuery(
+                             "SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto.idproducto = :productoP ORDER BY puja2.oferta DESC");
+                //"SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP");
+        query.setParameter("productoP" , productoP);
+         lP=query.getResultList();
+        // System.out.println("Creating Timer...");
+        }catch (Exception e){
+            System.out.println("@@@error en contrando pujas del producto : "+productoP);
+            System.out.println(e.toString());
+        }
+        return lP;
+        
+    }
 }

@@ -42,6 +42,17 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return lP;
     }
     
+    public List<Producto> productosNoExpirados(){
+        Query query5=getEntityManager().createQuery(
+                             "SELECT producto5 FROM Producto producto5 WHERE producto5.expirado=false");
+        List<Producto> lP =query5.getResultList();
+        return lP;
+    }
+    public Producto salva(Producto producto){
+        return em.merge(producto);
+      
+    }
+    
     public List<Producto> productosXNombreParcial(String nombreP){
         
         
@@ -75,7 +86,8 @@ public class ProductoFacade extends AbstractFacade<Producto> {
     
     public List<Producto> productosXNombreParcial(String nombreP,String filtro, String vendidos){
         
-        
+       
+               
         List<Producto> lP=null;
         System.out.println("@@@psumado parametro antes del try  : "+"%"+nombreP+"%");
         try{

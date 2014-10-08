@@ -24,6 +24,7 @@
          <h:outputStylesheet library="css" name="default.css"  />
          <h:outputStylesheet library="css" name="cssLayout.css"  />
          
+
          
          
         </h:head>
@@ -96,8 +97,27 @@
                   </h:form>
 
                 </p:layoutUnit>
+                
+        <!--        
+               <script type="text/javascript">
+                    setInterval(function() { 
+                      document.getElementById('myForm:btnLoadData').submit();
+                    }, 5*1000);
+                </script>
+                    
+                <h:form id="myForm">
+                    <h:commandButton id="btnLoadData" value="Hidden" action="#{productoView.todosProductos()}"
+                        style="display:none">
+                        <f:ajax execute="@form" render=":form2" />
+                    </h:commandButton>
+                </h:form>                 
+                
+ -->
 
-                <p:layoutUnit position="center" id="centro">
+                <p:layoutUnit position="center" >
+                    
+                 
+                    
                     
                  <h:form id="form1">
                         <p:messages id="msgs1" />
@@ -118,9 +138,9 @@
                         </h:commandButton>
                         -->
                         
-                        <p:commandButton id="botonEmail" value="prueba email"  update="msgs1"  action="#{emailPrueba.enviaPrueba()}" icon="ui-icon-check" >
+                        
                                  
-                                  </p:commandButton>
+                                  
                                     <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
                                    
                                     </p:inputText>
@@ -176,12 +196,13 @@
                 </h:form>
                 <h:form id="form2" >
                     <h:outputText value=" Numero de productos: #{productoView.listaProductos.size()}" id="cantidad"/>
-                    
-                    
-                        <p:dataGrid  var="producto" value="#{productoView.listaProductos}" columns="3" 
+                  
+                    <p:poll interval="5" listener="#{productoView.todosProductos()}" update="productos" />
+                 
+                        <p:dataGrid   var="producto" value="#{productoView.listaProductos}" columns="3" 
                             rows="12" paginator="true" id="productos"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            rowsPerPageTemplate="6,12,16" >
+                            rowsPerPageTemplate="6,12,16"  >
 
                             <f:facet name="header">
                                 Lista de Productos
@@ -225,6 +246,8 @@
                     
 
                 </h:form>
+                    
+
                              
 
                     
@@ -236,7 +259,7 @@
                 
                       <h:form id="form3" >
                           <p:growl id="msgs3" showDetail="true" escape="false"/>
-                             <p:dialog  header="Informacion Producto" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="false"
+                             <p:dialog id="dlg" header="Informacion Producto" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="false"
                                         width="500" height="650">
                                 <p:outputPanel id="detalleProducto" style="text-align:center;">
                                      
@@ -262,7 +285,7 @@
                                     </p:imageSwitch>
                                     
                                     
-                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado}"  columnClasses="label,value">
+                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado}"  columnClasses="label,value" id="panelDetalle">
                                     <h:outputText value="Nombre:" />
                                     <h:outputText value="#{productoView.productoSeleccionado.nombre}" />
                                     <h:outputText value="Descripcion:" />
@@ -273,25 +296,47 @@
                                     <h:outputText value="#{productoView.productoSeleccionado.usuarioIdusuario.email}" />                                    
                                     <h:outputText value="Fecha puesta en venta:" />
                                     <h:outputText value="#{productoView.productoSeleccionado.fechaProducto}" />
-                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="Precio:" ></h:outputText >
-                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="#{productoView.productoSeleccionado.precio}" ></h:outputText >
-                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="producto en Subasta:" ></h:outputText >
-                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="en modo subasta" ></h:outputText >
+                                    <h:outputText  rendered="#{not (productoView.productoSeleccionado.enSubasta)}" value="Precio:" ></h:outputText >
+                                    <h:outputText  rendered="#{not (productoView.productoSeleccionado.enSubasta)}" value="#{productoView.productoSeleccionado.precio}" ></h:outputText >
+                                    <h:outputText  rendered="#{(productoView.productoSeleccionado.enSubasta)}" value="puja a superar:" ></h:outputText >
+                                    <h:outputText  rendered="#{(productoView.productoSeleccionado.enSubasta)}" value="#{(productoView.productoSeleccionado.ultimaPuja)}" ></h:outputText >
                                  
                                   
                                   
                                   </p:panelGrid>
                                  
                                
-                                    <p:commandButton id="boton" value="Comprar Producto" update="msgs3"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check" >
+                                    <p:commandButton rendered="#{not (productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.vendido )}" id="boton" value="Comprar Producto" update="msgs3"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check" >
   
                                                  <f:param id="parametro1" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
                                                  <f:param id="parametro2" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
 
                                     </p:commandButton>
-
+                                    <h:outputText rendered="#{not (productoView.productoSeleccionado.enSubasta)and (productoView.productoSeleccionado.vendido )}" value="Producto Vendido"  style="color: red" />
                                     
-                                  
+                                    <p:inputText rendered="#{(productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.expirado)}" id="puja" value="#{gestionProductoBean.pujaPropuesta}" label="puja">
+                                        <f:validateLength minimum="1" />
+                                    </p:inputText>
+                                    
+                                    <p:commandButton rendered="#{(productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.expirado)}" id="boton2" value="Realizar puja"  actionListener="#{gestionProductoBean.pujaXProducto()}" icon="ui-icon-check" update=":form2 msgs3 " 
+                                                         >
+  
+                                                 <f:param id="parametro3" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
+                                                 <f:param id="parametro4" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
+                                                 <f:ajax event="click" render=":form3:detalleProducto" />
+                                                 <f:ajax event="click" render=":form2:productos" />
+                                                 
+                                    </p:commandButton>
+                                    
+                                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                                    <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (not productoView.productoSeleccionado.expirado)}" 
+                                                  value="podrá pujar por el durante: " />
+                                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                                     <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (not productoView.productoSeleccionado.expirado)}" 
+                                                  value="#{productoView.elapsedDays} dias  #{productoView.elapsedHours} horas #{productoView.elapsedMinutes} minutos y #{productoView.elapsedSeconds} segundos " />
+                                                                    
+                                      <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (productoView.productoSeleccionado.expirado)}" value="expirado tiempo de puja"  style="color: red" />
+                                
 
                                 </p:outputPanel>
                             </p:dialog>
