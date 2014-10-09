@@ -70,10 +70,14 @@ private boolean soloMios;
 private Producto productoSeleccionado;
 private List<Imagen> imagenesProductoSeleccionado;
 
+//para controlar cuando se esta buscando por nombre
+private boolean buscandoPorNombre;
+//para controlar cuando se esta buscando por categoria
+private boolean buscandoPorCategoria;
+
 private FacesMessage facesMessage;
 private FacesContext faceContext;
 //tiempo que resta en subasta
-
 long elapsedDays;
 long elapsedHours;
 long elapsedMinutes;
@@ -141,6 +145,7 @@ long elapsedSeconds;
     }
 
     public void setSoloMios(boolean soloMios) {
+         System.out.println(" ACTUALIZADO SOLOMIOS A: "+soloMios);
         this.soloMios = soloMios;
     }
     
@@ -238,6 +243,22 @@ long elapsedSeconds;
         this.elapsedSeconds = elapsedSeconds;
     }
 
+    public boolean isBuscandoPorNombre() {
+        return buscandoPorNombre;
+    }
+
+    public void setBuscandoPorNombre(boolean buscandoPorNombre) {
+        this.buscandoPorNombre = buscandoPorNombre;
+    }
+
+    public boolean isBuscandoPorCategoria() {
+        return buscandoPorCategoria;
+    }
+
+    public void setBuscandoPorCategoria(boolean buscandoPorCategoria) {
+        this.buscandoPorCategoria = buscandoPorCategoria;
+    }
+
     
     
 
@@ -251,6 +272,7 @@ long elapsedSeconds;
        listaProductos=new  ArrayList<>(); 
        setVendidos("todos");
        setFiltro("todos");
+       //setBuscandoPorNombre(false);
        todosProductos();
        
     }
@@ -265,6 +287,7 @@ long elapsedSeconds;
     //public List<Producto> todosProductos(){
     public void todosProductosSinFiltro(){
       // setListaProductos(productoFacade.findAll());
+        setBuscandoPorNombre(false);
        List<Producto> listaProductos2 =productoFacade.findAll();
        System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
        //añadimos a la lista de imagenes la primera imagen de cada producto.
@@ -285,7 +308,8 @@ long elapsedSeconds;
        
     public void todosProductos(){
       // setListaProductos(productoFacade.findAll());
-        
+        setBuscandoPorCategoria(false);
+        setBuscandoPorNombre(false);
         List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
         if (soloMios){
          List<Producto> listaProductos3= new  ArrayList<>();;
@@ -324,8 +348,59 @@ long elapsedSeconds;
      
       // return getListaProductos();
     }
-    
+    public void actualizaVistaTodosProductos(){
+      // si estamos buscando por nombre se redirige
+         if (this.isBuscandoPorNombre()){
+          
+           buscaXNombre();
+         }
+         else if(isBuscandoPorCategoria()){
+           buscaXCategoria();
+         }
+         else{
+        setBuscandoPorNombre(false);
+        List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
+        if (soloMios){
+         List<Producto> listaProductos3= new  ArrayList<>();;
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+         Usuario usuario=(Usuario)session.getAttribute("usuario");
+         for(Producto productoEncontrado :listaProductos2){
+             if (productoEncontrado.getUsuarioIdusuario().getIdusuario().equals(usuario.getIdusuario())){
+                 listaProductos3.add(productoEncontrado);             
+                 
+             }
+         }
+         listaProductos2=listaProductos3;
+        }
+       
+       System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
+       //añadimos a la lista de imagenes la primera imagen de cada producto.
+        imagenesProducto= new  ArrayList<>();
+        listaProductos=new  ArrayList<>();
+        setNombreBuscado("");
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.getSessionMap().put("idCategoria", 0);
+       //setListaProductos(listaProductos2);
+       for(Producto productoEncontrado :listaProductos2){
+           
+           
+           System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
+           List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
+           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
+           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
+           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
+           imagenesProducto.add(imagenesXProcducto.get(0));
+           listaProductos.add(productoEncontrado);
+       }
+      }
+     
+      // return getListaProductos();
+    }
+        
     public void buscaXNombre(){
+        setBuscandoPorNombre(true);
+     
         System.out.println(" entro en buscaXNombre con texto introducido: "+ getNombreBuscado().toString()+"--");
       // setListaProductos(productoFacade.findAll());
         //if(((getNombreBuscado()==null)||(getNombreBuscado().isEmpty()))){
@@ -413,7 +488,7 @@ long elapsedSeconds;
        
 //        return    "index";
        }
-      
+      setNombreBuscado(buscar);
      }  
 
       // return getListaProductos();
@@ -425,6 +500,8 @@ long elapsedSeconds;
     
     
     public void buscaXCategoria(){
+             setBuscandoPorCategoria(true);
+             setBuscandoPorNombre(false);
              FacesContext facesContext = FacesContext.getCurrentInstance();
              HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
              Integer categoriaSeleccionada=(Integer)session.getAttribute("idCategoria");

@@ -70,10 +70,10 @@ public class SubastaTimer {
          System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO@@@@@@@@@@@@@creado temporizador para producto ..."+ producto.getNombre());
         Calendar cal = Calendar.getInstance();
         //cal.add(Calendar.DATE, 7);
-        cal.add(Calendar.MINUTE, 2);
-        Timer timer = timerService.createSingleActionTimer(cal.getTime(), new TimerConfig(producto, false));
+        cal.add(Calendar.MINUTE, 5);
+        Timer timer = timerService.createSingleActionTimer(cal.getTime(), new TimerConfig(producto,false));
        // timerService.createCalendarTimer(cal.getTime(), new TimerConfig(producto, false));
-        
+       
     }
     
     
