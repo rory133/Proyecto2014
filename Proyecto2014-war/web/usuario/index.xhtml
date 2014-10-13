@@ -51,9 +51,9 @@
                 -->
      
          
-        <p:layoutUnit id="izquierda" position="west" size="25%" header="Categorias" collapsible="false" >
-
-
+                <p:layoutUnit id="izquierda" position="west" size="25%" header="#{productoView.titulo}" collapsible="false" >
+                    
+            
             <h:form id="form6">
              <h:form id="form4" rendered="#{not productoView.soloMios}">  
                <p:growl id="msgs" showDetail="true" escape="false"/>
@@ -92,8 +92,56 @@
                 </h:form>
                   
                  <h:form id="form5" rendered="#{productoView.soloMios}">
-                    gestion 
+                      <p:growl id="messages" showDetail="true" />
+                    <p:commandButton id="dynaButton" value="Filtrar" type="button" icon="ui-icon-extlink" />
+                    <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
+                   
+                        <p:submenu label="Mis Productos Vendidos" icon="ui-icon-extlink">
+                                        <p:submenu label="Enviados" icon="ui-icon-extlink">
+                                                        <p:menuitem value="Cobrados" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
+                                                        <p:menuitem value="No Cobrados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
+                                        </p:submenu>   
+                                        <p:submenu label="No Enviados" icon="ui-icon-extlink">
+                                                        <p:menuitem value="Cobrados" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
+                                                        <p:menuitem value="No Cobrados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
+                                        </p:submenu>
+                                        <p:submenu label="Denunciados Por Falta de Envio" icon="ui-icon-extlink">
+                                                        <p:menuitem value="Envidaos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
+                                                        <p:menuitem value="No Enviados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check"/>
+                                        </p:submenu>  
+                          
+                       </p:submenu>
+                       <p:submenu label="Mis Productos Ofertados" icon="ui-icon-extlink">
+                                       
+                                                        <p:menuitem value="En Venta Directa" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check"/>
+                                                        <p:menuitem value="En subasta" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
+                       </p:submenu>
+                       <p:submenu label="Mis Productos Comprados" icon="ui-icon-extlink">
+                                        <p:submenu label="Recibidos" icon="ui-icon-extlink">
+                                                        <p:menuitem value="Envidaos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
+                                                        <p:menuitem value="No Enviados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
+                                        </p:submenu>   
+                                        <p:submenu label="No Recibidos" icon="ui-icon-extlink">
+                                                        <p:menuitem value="Envidaos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
+                                                        <p:menuitem value="No Enviados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
+                                        </p:submenu>
+                                        <p:submenu label="Denunciados Por Falta de Pago" icon="ui-icon-extlink">
+                                                        <p:menuitem value="Envidaos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
+                                                        <p:menuitem value="No Enviados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check"/>
+                                        </p:submenu>                           
+                       </p:submenu>
+                           
+                        
+
+                    </p:tieredMenu>
+
+ 
+    <p:separator />
                  </h:form>
+                        <p:commandButton id="boton0" value="Aplicar Filtros"   action="#{productoView.todosProductos()}" icon="ui-icon-check" >
+                          <f:ajax event="click" render=":form2 @all" />
+
+                        </p:commandButton>
                              
                 </h:form>
         

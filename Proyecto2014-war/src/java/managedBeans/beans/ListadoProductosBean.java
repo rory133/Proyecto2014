@@ -82,6 +82,8 @@ long elapsedDays;
 long elapsedHours;
 long elapsedMinutes;
 long elapsedSeconds;
+//el título del menu izquierdo variará segun veamos categorias y gestionemos nuestros pruductos.
+private String titulo;
 
     public List<Imagen> getImagenesProductoSeleccionado() {
         return imagenesProductoSeleccionado;
@@ -141,11 +143,14 @@ long elapsedSeconds;
 	}
 
     public boolean isSoloMios() {
+
         return soloMios;
     }
 
     public void setSoloMios(boolean soloMios) {
-         System.out.println(" ACTUALIZADO SOLOMIOS A: "+soloMios);
+        if (soloMios==true)
+              setTitulo("Gestiona Tus Productos");
+        else  setTitulo("Categorias");        
         this.soloMios = soloMios;
     }
     
@@ -259,6 +264,14 @@ long elapsedSeconds;
         this.buscandoPorCategoria = buscandoPorCategoria;
     }
 
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
     
     
 
@@ -272,8 +285,11 @@ long elapsedSeconds;
        listaProductos=new  ArrayList<>(); 
        setVendidos("todos");
        setFiltro("todos");
+       setTitulo("Categorias");
        //setBuscandoPorNombre(false);
        todosProductos();
+       setTitulo("Categorias");
+       
        
     }
     
