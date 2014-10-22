@@ -26,23 +26,147 @@
     <p:layout fullPage="true" rendered="#{ROLE_SOCIO}">
 
         <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                         <h:outputText value="cabecera usuario"/>
-            <br/>            
-            <h:outputText value="#{loginBean.login}"/>
-            <br/>            
-            <h:outputText value="#{sessionScope.usuario.nombre}" /> 
-            <br/>            
-            <h:outputText value="#{sessionScope.login.role}" />
-            <br/>
-           
-     
-            <h:form>       
-              <p:commandButton value="logout" icon="ui-icon-newwin"
-                               actionListener="#{loginBean.logout()}"/>
+            <div class="fondo-norte">
+                <div class="texto-norte">
+                    <h:form>  
+                     <h:outputText value="Socio: #{sessionScope.login.login}  " /> 
+                            
+                                            
+                     <p:commandLink id="salir"  actionListener="#{loginBean.logout()}">
+                             <h:outputText value="Logout " />
+                             <p:tooltip id="toolTipFade00" for="salir" value="Salir como usuario" />
+                        </p:commandLink>
+                       
+                        </h:form>
+                </div>
+
+            
+
+            <h:form id="tabla1" rendered="#{productoView.soloMios}">
+
+                <table border="0" width="100%" id="tabla1"  >
+
+                <tr cellpadding="0" style="height:5px" >
+ 
+                    <td>
+                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="filtraMisProductos">
+                                   
+                            <p:selectOneRadio id="filtroMisProductos" value="#{productoView.filtroMisProductos}">
+                                        <f:selectItem itemLabel="Ofertados" itemValue="ofertados" />
+                                        <f:selectItem itemLabel="Comprados" itemValue="comprados" />
+                                        <f:selectItem itemLabel="Vendidos" itemValue="vendidos" />
+                                        <f:ajax event="valueChange"  render=":form6:form5 @all"/>
+                             </p:selectOneRadio>
+                         <p:tooltip id="toolTipFade11" for="filtraMisProductos" value="Filtra tu productos mostrados" />                           
+                     </h:panelGrid>
+                </td>
+                <td>
+               
+                
+                <h:link outcome="crearProducto" id="crearNuevo" >
+                        <h:graphicImage library="images" name="nuevo.gif" />
+                        <p:tooltip id="toolTipFade02" for="crearNuevo" value="Crear un nuevo Producto" />
+                </h:link>
+                
+                </td>
+                
+                    <td>             
+                    
+               <h:form>
+                   <h:panelGrid id="aGestionarMisProductos3" columns="2" style="margin-bottom:10px" cellpadding="5">
+                      <h:outputText value="Gestionar Mis Productos:" id="botoncillo"/>
+                      <p:selectBooleanCheckbox value="#{productoView.soloMios}">
+
+                         <f:ajax event="change" render=":form6 @all"/>
+                        <p:tooltip id="toolTipFade2" for="aGestionarMisProductos3" value="salir de gestionar tus productos" />
+                      </p:selectBooleanCheckbox>
+                  </h:panelGrid>
+               </h:form>
+                 </td>
+                </tr>
+            </table>
+             </h:form>
+            
+            <h:form id="tabla2" rendered="#{not productoView.soloMios}">
+                  <p:growl id="growl1" />
+                <!--
+                    <p:growl id="msgs1" showDetail="true" escape="false"/>
+                 --> 
+                  <table border="0" width="100%" id="tabla2" rendered="#{productoView.soloMios}">
+                <tr>
+                    <td>
+                    <!-- 
+                        <p:commandButton id="boton0" value="Aplicar Filtros"   action="#{productoView.todosProductos()}" icon="ui-icon-check" >
+                          <f:ajax event="click" render=":form2" />
+                          <f:ajax event="click" render=":form2:productos" />
+                          <f:ajax event="click" render=":form2:productos:cantidad" />
+                        </p:commandButton>
+                
+                  
+                          <p:commandLink action="#{productoView.todosProductos()}">
+                                    <f:ajax event="click" render=":form2" />
+                                    <f:ajax event="click" render=":form2:productos" />
+                                    <f:ajax event="click" render=":form2:productos:cantidad" />
+                            <h:outputText value="aplicar filtro" />
+                        </p:commandLink>             
+                     -->
+                    </td>  
+                    <td>
+                        
+                                <h:panelGrid id="panelGrid1" columns="2" style="margin-bottom:10px" cellpadding="5">
+                                   
+                                    <p:selectOneRadio id="filtro" value="#{productoView.filtro}">
+                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
+                                        <f:selectItem itemLabel="Venta directa" itemValue="ventaDirecta" />
+                                        <f:selectItem itemLabel="Subasta" itemValue="subasta" />
+                                           <f:ajax event="valueChange"  render=":form2 @all"/>
+                                            <f:ajax event="valueChange" render=":form2:productos" />
+                                            <f:ajax event="valueChange" render=":form2:productos:cantidad" />
+                                           
+                                            
+                                    </p:selectOneRadio>
+                                    <p:tooltip id="toolTipFade11" for="panelGrid1" value="Filtra los productos a mostrar" />
+                                </h:panelGrid>
+                   
+                    </td> 
+                    <td class='alnright'>
+                        
+                                    <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
+                                   <p:tooltip id="toolTipFade1" for="nombre" value="introduce el texto a buscar" />
+                                    </p:inputText>
+                        
+
+                    </td> 
+                    <td class='alnleft'>
+
+                        <p:commandLink id="buscaXNombre" update="growl1" action="#{productoView.buscaXNombre()}">
+                                    <f:ajax event="click" render=":form2:productos" />
+                                    <f:ajax event="click" render=":form2:productos:cantidad" />
+                            
+                          
+                            <h:graphicImage library="images" name="buscar2.gif" />
+                            <p:tooltip id="toolTipFade2" for="buscaXNombre" value="Buscar texto introducido" />
+                        </p:commandLink>
+                    
+                    </td>
+                    <td>             
+                    
+                        <h:form>
+                            <h:panelGrid id="aGestionarMisProductos" columns="2" style="margin-bottom:10px" cellpadding="5">
+                          <h:outputText value="Gestionar Mis Productos:" id="aGestionarMisProductos2"/>
+                          <p:selectBooleanCheckbox value="#{productoView.soloMios}">
+                               <p:tooltip id="toolTipFade2" for="aGestionarMisProductos" value="Gestionar tus productos" />
+                             <f:ajax event="change" render=":form6 @all"/>
+
+                          </p:selectBooleanCheckbox>
+                          </h:panelGrid>
+                       </h:form>
+                    </td>
+                </tr>
+            </table>
             </h:form>
             
-            <h:link outcome="crearProducto" value="Crear un producto"  />
-
+         </div>   
         </p:layoutUnit>
                 <!--
                 <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
@@ -92,59 +216,60 @@
                 </h:form>
                   
                  <h:form id="form5" rendered="#{productoView.soloMios}">
-                      <p:growl id="messages" showDetail="true" />
-                    <p:commandButton id="dynaButton" value="Filtrar" type="button" icon="ui-icon-extlink" />
-                    <p:tieredMenu overlay="true" trigger="dynaButton" my="left top" at="left bottom" style="width:200px">
-                   
-                        <p:submenu label="Mis Productos Vendidos" icon="ui-icon-extlink">
-                                        <p:submenu label="Enviados" icon="ui-icon-extlink">
-                                                        <p:menuitem value="Cobrados" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
-                                                        <p:menuitem value="No Cobrados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
-                                        </p:submenu>   
-                                        <p:submenu label="No Enviados" icon="ui-icon-extlink">
-                                                        <p:menuitem value="Cobrados" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
-                                                        <p:menuitem value="No Cobrados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
-                                        </p:submenu>
-                                        <p:submenu label="Denunciados Por Falta de Envio" icon="ui-icon-extlink">
-                                                        <p:menuitem value="Envidaos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
-                                                        <p:menuitem value="No Enviados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check"/>
-                                        </p:submenu>  
-                          
-                       </p:submenu>
-                       <p:submenu label="Mis Productos Ofertados" icon="ui-icon-extlink">
-                                       
-                                                        <p:menuitem value="En Venta Directa" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check"/>
-                                                        <p:menuitem value="En subasta" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
-                       </p:submenu>
-                       <p:submenu label="Mis Productos Comprados" icon="ui-icon-extlink">
-                                        <p:submenu label="Recibidos" icon="ui-icon-extlink">
-                                                        <p:menuitem value="Envidaos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
-                                                        <p:menuitem value="No Enviados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
-                                        </p:submenu>   
-                                        <p:submenu label="No Recibidos" icon="ui-icon-extlink">
-                                                        <p:menuitem value="Envidaos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
-                                                        <p:menuitem value="No Enviados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check" />
-                                        </p:submenu>
-                                        <p:submenu label="Denunciados Por Falta de Pago" icon="ui-icon-extlink">
-                                                        <p:menuitem value="Envidaos" actionListener="#{menuView.save}" update="messages" icon="ui-icon-check" />
-                                                        <p:menuitem value="No Enviados" actionListener="#{menuView.update}" update="messages" icon="ui-icon-check"/>
-                                        </p:submenu>                           
-                       </p:submenu>
-                           
-                        
 
-                    </p:tieredMenu>
-
+                    
+                  
+                     <h:form rendered="#{productoView.filtroMisProductos eq 'ofertados'}" >
+                        <p:growl id="growl"  />
+                            <p:separator />
+                            <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misOfertadosSubasta}">
+                             <f:ajax event="click" render=":form2" />
+                            <h:outputText value="Subasta" />
+                        </p:commandLink>
+                               <p:separator />
+                        <p:commandLink id="ventaDirecta" actionListener="#{productoView.misOfertadosVentaDirecta}" >
+                            <f:ajax event="click" render=":form2" />
+                            <h:outputText value="Venta Directa" />
+                      
+                        </p:commandLink>
+                    </h:form>
+                     <h:form rendered="#{productoView.filtroMisProductos eq 'comprados'}" >
+                        <p:growl id="growl"  />
+                            <p:separator />
+                            <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosCompradosRecibidos(event)}">
+                             <f:ajax event="click" render=":form22" />
+                            <h:outputText value="Recibidos" />
+                        </p:commandLink>
+                               <p:separator />
+                               <p:commandLink id="ventaDirecta" update="growl" actionListener="#{productoView.misProductosCompradosNORecibidos(event)}" >
+                            <f:ajax event="click" render=":form22" />
+                            <h:outputText value="No Recibidos" />
+                      
+                        </p:commandLink>
+                    </h:form>
+                     <h:form rendered="#{productoView.filtroMisProductos eq 'vendidos'}" >
+                        <p:growl id="growl" />
+                            <p:separator />
+                            <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosVendidosEnviados(event)}">
+                             <f:ajax event="click" render=":form22" />
+                            <h:outputText value="Enviados" />
+                        </p:commandLink>
+                               <p:separator />
+                               <p:commandLink id="ventaDirecta" actionListener="#{productoView.misProductosVendidosNoEnviados(event)}" >
+                            <f:ajax event="click" render=":form22" />
+                            <h:outputText value="No Enviados" />
+                      
+                        </p:commandLink>
+                    </h:form>                        
+                    </h:form>
  
-    <p:separator />
-                 </h:form>
-                        <p:commandButton id="boton0" value="Aplicar Filtros"   action="#{productoView.todosProductos()}" icon="ui-icon-check" >
-                          <f:ajax event="click" render=":form2 @all" />
+                        <p:separator />
+    
 
-                        </p:commandButton>
-                             
+
+               
                 </h:form>
-        
+               
          </p:layoutUnit>
       
 
@@ -159,7 +284,7 @@
                         <p:messages id="msgs1" />
                     <h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">
                         <p:growl id="msgs2" showDetail="true" escape="false"/>
-                        
+                        <!--
                         <p:commandButton id="boton0" value="Aplicar Filtros"   action="#{productoView.todosProductos()}" icon="ui-icon-check" >
                           <f:ajax event="click" render=":form2" />
                           <f:ajax event="click" render=":form2:productos" />
@@ -180,7 +305,7 @@
                                 </h:panelGrid>
 
 
-
+                            -->
 
                                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
                                     <p:outputLabel for="vendido" value="vendido:" />
@@ -191,7 +316,11 @@
                                     </p:selectOneRadio>
                                 </h:panelGrid>
                          <br/>
-                              
+                         <p:commandButton id="boton0c" value="Aplicar Filtros4455"   action="#{productoView.misOfertadosVentaDirecta()}" icon="ui-icon-check" >
+                          <f:ajax event="click" render=":form2" />
+                          <f:ajax event="click" render=":form2:productos" />
+                          <f:ajax event="click" render=":form2:productos:cantidad" />
+                        </p:commandButton>                             
                                
              <h:form>
                  <h:outputText value="Gestionar Mis Productos:  #{productoView.soloMios}" id="botoncillo"/>
@@ -226,14 +355,28 @@
                                     
                                     </p:commandButton>
                         
+                        <h:outputText value=" tipo filtromisproductos: #{productoView.filtroMisProductos}" id="filtroMisPro"/>
+                        
+                        
+                        
+                        
+
+                 
+                 
+                 
+                        
 
                         
+                 
+                 
+                 
                         
  
                     </h:panelGrid>
                 </h:form>
-                <h:form id="form2" >
-                   
+                <h:form id="form2" rendered="#{productoView.filtroMisProductos eq 'ofertados'}" >
+                    <p:inputText id="nombrew" value="#{productoView.filtro}" label="busqueda1"/>
+                    <p:inputText id="nombreee" value="#{productoView.vendidos}" label="busqueda2"/>
                   
                     <p:poll interval="5" listener="#{productoView.actualizaVistaTodosProductos()}" update="productos" />
                  
@@ -285,7 +428,69 @@
 
                 </h:form>
                     
+                <h:form id="form22" rendered="#{productoView.filtroMisProductos ne 'ofertados'}" >
+                         <h:outputText value="en form22"/>
+                  
+                    <p:poll interval="5" listener="#{productoView.actualizaVistaTodosProductos()}" update="productos" />
+                 
+                    <p:dataGrid   var="venta" value="#{productoView.listaVentas}" columns="3" 
+                            rows="12" paginator="true" id="productos"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="6,12,16"  >
 
+                            <f:facet name="header">
+                                <h:outputText value=" Numero de productos : #{productoView.listaVentas.size()}" id="cantidadVentas"/>
+                            </f:facet>
+                            
+                        <p:panel  header="producto: #{venta.productoIdproducto.nombre}" style="text-align:center">
+                                <p:growl id="grow22"  />
+                                     <h:outputText value="Fecha de venta: " />
+                                     <h:outputText value="#{venta.fecha}" >
+                                       <f:convertDateTime pattern="d-M-yyyy" />
+                                    </h:outputText>
+                                <h:panelGrid columns="1" style="width:100%">
+                   
+                                  
+                                    
+                                  
+                                    
+                                    <h:graphicImage value="../VisualizaImagen?tipo=imagenUnica&amp;idProducto=#{venta.productoIdproducto.idproducto}" width="50" height="50">
+                                   
+                                    </h:graphicImage>
+                                    
+                             
+                                    <h:outputText value="Usuario Comprador : #{venta.compradorIdusuario.nombre}    #{venta.compradorIdusuario.apellidos}" />
+                                    <h:outputText value="Usuario Vendedor : #{venta.productoIdproducto.usuarioIdusuario.nombre}    #{venta.productoIdproducto.usuarioIdusuario.apellidos}" />
+                                 
+      
+                                    <h:outputText value="Precio : #{venta.precioFinal}" />
+
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                    <h:outputText value="¿Esta Enviado?: " />
+                                    <p:selectBooleanButton id="value1" value="#{venta.enviado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    <h:outputText value="¿Esta Recibido?: " />
+                                    <p:selectBooleanButton id="value2" value="#{venta.recibido}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    <h:outputText value="¿Esta Pagado?: " />
+                                    <p:selectBooleanButton id="value3" value="#{venta.pagado}" onLabel="Sí" offLabel="No" style="width:60px" />                                    
+                                    <h:outputText value="¿Esta Cobrado?: " />
+                                    <p:selectBooleanButton id="value4" value="#{venta.cobrado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    </h:panelGrid>
+                          
+                                </h:panelGrid>
+                            <p:commandButton id="boton1" value="Salvar"  update="grow22"  action="#{productoView.salvaVenta(venta)}" icon="ui-icon-check" >
+                               <f:param id="parametro3" name="venta" value="#{venta}" />
+                            </p:commandButton>
+                                       <p:separator />
+                                <p:commandLink update=":form33:detalleDenuncia" oncomplete="PF('creacionDenuncia').show()" title="crear Denuncia">
+                                    <h:outputText styleClass="ui-icon ui-icon-pin-s" style="margin:0 auto;" />
+                                    <f:setPropertyActionListener value="#{venta}" target="#{productoView.ventaSeleccionada}" />
+                                </p:commandLink>
+                            </p:panel>
+                         </p:dataGrid>
+                    
+                    
+
+                </h:form>
                              
 
                     
@@ -380,7 +585,53 @@
                             </p:dialog>
                     
                        </h:form>
-                
+                       <h:form id="form33" >
+                          
+                             <p:dialog id="dlg" header="Crear Denuncia" widgetVar="creacionDenuncia" 
+                                        width="500" height="350">
+                                 
+                                 
+                                <p:outputPanel id="detalleDenuncia" style="text-align:center;">
+                                    <p:growl id="growlDenuncia" showDetail="true" sticky="true" /> 
+                                    <p:messages id="msgsDenduncia" /> 
+                                    
+                                   
+                                   
+                                    <p:separator />
+                                    
+                                    <h:outputText value="crear denuncia por la venta del producto: #{productoView.ventaSeleccionada.productoIdproducto.nombre}  " />
+                                    <p:separator />
+                                    
+                                   
+                                <h:panelGrid columns="4" cellpadding="2">         
+            
+                                    <h:outputLabel for="motivoDenuncia" value="Motivo de la Denuncia: " />
+                                    <p:inputTextarea rows="5" cols="30" counter="display" maxlength="300"  counterTemplate="{0} caracteres restantes." autoResize="false" 
+                                                     id="motivoDenuncia" value="#{productoView.motivoDenuncia}" label="motivoDenuncia">   
+                                      <f:validateLength minimum="5" />
+                                    </p:inputTextarea>
+                                         <h:outputText id="display" />
+                                    <p:message for="motivoDenuncia" /> 
+                                </h:panelGrid> 
+
+                                    <p:separator />
+                                    
+                                    <h:outputLabel for="tipoDenuncia" value="Tipo Denuncia: " />
+                                    <h:selectOneMenu id="questionStatus" value="#{productoView.tipoDenuncia}" >
+                                        <f:selectItem itemLabel="NO_PAGADO" itemValue="NO_PAGADO" />
+                                        <f:selectItem itemLabel="NO_ENVIADO" itemValue="NO_ENVIADO" />
+
+                                    </h:selectOneMenu>
+                                    <p:separator />
+                                        <p:growl id="msgs33" showDetail="true" escape="false"/>
+                                        
+                                    <p:commandButton id="botonDenuncia" value="Denunciar Venta" update="growlDenuncia"    actionListener="#{productoView.creaDenuncia()}" icon="ui-icon-check" />
+                                 
+                                </p:outputPanel>
+                              
+                            </p:dialog>
+                    
+                       </h:form>               
                 
                 
 

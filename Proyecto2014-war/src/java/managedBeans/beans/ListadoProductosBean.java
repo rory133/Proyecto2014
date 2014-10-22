@@ -10,12 +10,16 @@
 package managedBeans.beans;
 
 import entidades.Categoria;
+import entidades.Denuncia;
 import entidades.Imagen;
 import entidades.Producto;
 import entidades.Usuario;
+import entidades.Venta;
 import facade.CategoriaFacade;
+import facade.DenunciaFacade;
 import facade.ImagenFacade;
 import facade.ProductoFacade;
+import facade.VentaFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +33,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 
 
@@ -53,7 +58,11 @@ private ImagenFacade imagenFacade;
 @EJB
 private CategoriaFacade categoriaFacade;
 
+@EJB
+private VentaFacade ventaFacade;
 
+@EJB
+private DenunciaFacade denunciaFacade;
 
 private Imagen imagen;
 private Categoria categoria;
@@ -61,6 +70,8 @@ private Categoria categoria;
 private List<Imagen> imagenesProducto;
 
 private List<Producto> listaProductos;
+
+private List<Venta> listaVentas;
 
 
 private String nombreBuscado;
@@ -74,6 +85,11 @@ private List<Imagen> imagenesProductoSeleccionado;
 private boolean buscandoPorNombre;
 //para controlar cuando se esta buscando por categoria
 private boolean buscandoPorCategoria;
+private String filtroMisProductos;
+private Denuncia denuncia;
+private Venta ventaSeleccionada;
+private String motivoDenuncia;
+private String tipoDenuncia;
 
 private FacesMessage facesMessage;
 private FacesContext faceContext;
@@ -150,7 +166,10 @@ private String titulo;
     public void setSoloMios(boolean soloMios) {
         if (soloMios==true)
               setTitulo("Gestiona Tus Productos");
-        else  setTitulo("Categorias");        
+        else {
+            setTitulo("Categorias");
+            setFiltroMisProductos("ofertados");
+        }        
         this.soloMios = soloMios;
     }
     
@@ -170,7 +189,15 @@ private String titulo;
         this.vendidos = vendidos;
     }
 
+    public Denuncia getDenuncia() {
+        return denuncia;
+    }
 
+    public void setDenuncia(Denuncia denuncia) {
+        this.denuncia = denuncia;
+    }
+
+    
 
 
 
@@ -272,6 +299,46 @@ private String titulo;
         this.titulo = titulo;
     }
 
+    public String getFiltroMisProductos() {
+        return filtroMisProductos;
+    }
+
+    public void setFiltroMisProductos(String filtroMisProductos) {
+        this.filtroMisProductos = filtroMisProductos;
+    }
+
+    public List<Venta> getListaVentas() {
+        return listaVentas;
+    }
+
+    public void setListaVentas(List<Venta> listaVentas) {
+        this.listaVentas = listaVentas;
+    }
+
+    public Venta getVentaSeleccionada() {
+        return ventaSeleccionada;
+    }
+
+    public void setVentaSeleccionada(Venta ventaSeleccionada) {
+        this.ventaSeleccionada = ventaSeleccionada;
+    }
+
+    public String getMotivoDenuncia() {
+        return motivoDenuncia;
+    }
+
+    public void setMotivoDenuncia(String motivoDenuncia) {
+        this.motivoDenuncia = motivoDenuncia;
+    }
+
+    public String getTipoDenuncia() {
+        return tipoDenuncia;
+    }
+
+    public void setTipoDenuncia(String tipoDenuncia) {
+        this.tipoDenuncia = tipoDenuncia;
+    }
+
     
     
 
@@ -286,6 +353,7 @@ private String titulo;
        setVendidos("todos");
        setFiltro("todos");
        setTitulo("Categorias");
+       setFiltroMisProductos("ofertados");
        //setBuscandoPorNombre(false);
        todosProductos();
        setTitulo("Categorias");
@@ -611,6 +679,143 @@ private String titulo;
         setImagenesProductoSeleccionado(imagenFacade.imagenesXProcducto(productoSele));
         
     }
+    public void misOfertadosVentaDirecta(){
+        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()");
+        setFiltro("ventaDirecta");
+        setVendidos("noVendidos");
+//        todosProductos();
+        actualizaVistaTodosProductos();
+    }
+
+    public void misOfertadosSubasta(){
+        System.out.println("misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()");
+        setFiltro("subasta");
+        setVendidos("noVendidos");
+//       todosProductos();
+        actualizaVistaTodosProductos();
+        
+    }
+    public void misOfertadosSubasta(ActionEvent event){
+        System.out.println("misOfertadosSubasta()mmisOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()");
+        String nickname;
+        nickname = (String)event.getComponent().getAttributes().get("username");
+        
+        System.out.println("misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta():"+nickname );
+        setFiltro("subasta");
+        setVendidos("noVendidos");
+        todosProductos();
+        actualizaVistaTodosProductos();
+        
+    }    
     
+    public void misOfertadosVentaDirecta(ActionEvent event){
+        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta(taDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta(");
+        String nickname;
+        nickname = (String)event.getComponent().getAttributes().get("username");
+               //.getComponent().getAttributes().get("username");
+        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta():"+nickname);
+        setFiltro("ventaDirecta");
+        setVendidos("noVendidos");
+        todosProductos();
+//        actualizaVistaTodosProductos();
+    }
+    
+    public void misProductosCompradosNORecibidos(ActionEvent event){
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
+         if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado que no hayas recibido","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+             
+         }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has comprados y no has recibido","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            setListaVentas(listaVentasTempo);
+         }
+        
+        
+
+    }
+    public void misProductosCompradosRecibidos(ActionEvent event){
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
+         if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado y que hayas recibido","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+             
+         }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has comprados y ya has recibido","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            setListaVentas(listaVentasTempo);
+         }
+        
+        
+
+    }
+    public void misProductosVendidosEnviados(ActionEvent event){
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorEnviados(usuario);
+         if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que hayas enviado","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+             
+         }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has vendido y ya has enviado","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            setListaVentas(listaVentasTempo);
+         }
+    }
+    
+    public void misProductosVendidosNoEnviados(ActionEvent event){
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorNoEnviados(usuario);
+         if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que no hayas enviado","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+             
+         }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has vendido y aun no has enviado","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            setListaVentas(listaVentasTempo);
+         }
+    }
+    
+    public void creaDenuncia(){
+
+        
+        denuncia=new Denuncia();
+        denuncia.setDenunciaIdusuario(usuarioLogado());
+        denuncia.setFechaDenuncia(new java.util.Date(System.currentTimeMillis()));
+        denuncia.setTipoDenuncia(getTipoDenuncia());
+        denuncia.setMotivo(getMotivoDenuncia());
+        denuncia.setVentaIdventa(ventaSeleccionada);
+        denuncia.setAtendida(false);
+        denuncia.setFechaAtencion(null);
+        denuncia.setAtiendeIdusuario1(null);
+        //denunciaFacade.create(denuncia);
+        denunciaFacade.salva(denuncia);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha crado correctamente la denuncia por "+denuncia.getTipoDenuncia(),"");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        
+        
+    }
+    
+    public void salvaVenta(Venta venta){
+
+        ventaFacade.salva(venta);
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"actualizados valores de la venta "+ venta.getFecha(),"");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    public Usuario usuarioLogado(){
+       
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+         return(Usuario)session.getAttribute("usuario");
+    }
 
 }

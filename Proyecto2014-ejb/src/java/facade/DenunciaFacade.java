@@ -31,5 +31,10 @@ public class DenunciaFacade extends AbstractFacade<Denuncia> {
     public DenunciaFacade() {
         super(Denuncia.class);
     }
+    public Denuncia salva(Denuncia denuncia){
+
+        return em.merge(denuncia);
+      
+    }
     
 }
