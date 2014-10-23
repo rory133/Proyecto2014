@@ -10,6 +10,7 @@
 package utilidades;
 
 import ejbs.EmailService;
+import entidades.Denuncia;
 import entidades.Login;
 import entidades.Producto;
 import entidades.Puja;
@@ -151,6 +152,29 @@ private List<Puja> listaPujas;
         
         
     }
+    public void realiadaDenuncia(@Observes @RealizadaDenuncia Denuncia denuncia ) {
+        
+         
+         Usuario usuarioDenunciado=denuncia.getVentaIdventa().getProductoIdproducto().getUsuarioIdusuario();
+         Usuario usuarioDenunciante= denuncia.getDenunciaIdusuario();
+         Producto productoDenunciado=denuncia.getVentaIdventa().getProductoIdproducto();
+        
+         //correo al denunciado
+          String mensajeADenunciado="información desde BuyUp \n";
+          mensajeADenunciado=mensajeADenunciado+"has recibido una denuncia por la venta del producto "+productoDenunciado.getNombre()  +" realizada el dia "+denuncia.getVentaIdventa().getFecha()+"\n";
+          mensajeADenunciado=mensajeADenunciado+"por la causa "+denuncia.getTipoDenuncia()+"\n";
+          mensajeADenunciado=mensajeADenunciado+"y el motivo siguiente \n"+denuncia.getMotivo()+"\n";
+          mensajeADenunciado=mensajeADenunciado+"Ponte en contacto con el usuario denunciante para aclarar el problema en el correo  "+usuarioDenunciante.getEmail()+"\n";
+          emailService.envioIndividual(usuarioDenunciado.getEmail(),"recibida denuncia en la venta de uno de tus productos en BuyUp", mensajeADenunciado);
+          
+          //correo al denunciante
+          String mensajeADenunciante="información desde BuyUp \n";
+          mensajeADenunciante=mensajeADenunciante+"Acabas de realizar una denuncia por la venta del producto "+productoDenunciado.getNombre()  +"\n";
+          mensajeADenunciante=mensajeADenunciante+"por la causa "+denuncia.getTipoDenuncia()+"\n";
+          mensajeADenunciante=mensajeADenunciante+"y el motivo siguiente \n"+denuncia.getMotivo()+"\n";
+          mensajeADenunciante=mensajeADenunciante+"Puedes ponerte en contacto con el usuario denunciado para aclarar el problema en el correo  "+usuarioDenunciado.getEmail()+"\n";
+          emailService.envioIndividual(usuarioDenunciante.getEmail(),"has realizado una denuncia por problemas en la venta de un producto en BuyUp", mensajeADenunciante);
+    }    
     
     
 }

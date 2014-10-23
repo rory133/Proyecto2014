@@ -126,3 +126,32 @@
 }
 .alnright { text-align: right; }
 .alnleft { text-align: left; }
+.fondo-centro{
+    background-color: #c8bfe7;
+}
+.ui-panel .ui-panel-content {
+   border:0 !important;
+   background-color: #c8bfe7;
+    
+    padding:0 !important;
+ 
+}
+.ui-tabs .ui-tabs-panel {
+      padding: 0px 0px;
+}
+.ui-panel .ui-panel-content {
+     padding: 0px 0px;
+}
+.ui-panel-content {
+   border:0px;
+   width:100%;
+   margin:0 auto;
+   padding:0px 0px 0px 0px ;
+   /* Irrelevant details omitted */ 
+}
+.ui-panel-position-left {
+    left: 0px;
+}
+.ui-panel-position-right {
+    right: 0px;
+}

@@ -9,6 +9,7 @@
 
 package ejbs;
 
+import entidades.Denuncia;
 import entidades.Login;
 import entidades.Producto;
 import entidades.Puja;
@@ -18,6 +19,7 @@ import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import utilidades.CompraVentaDirecta;
+import utilidades.RealizadaDenuncia;
 import utilidades.RealizadaPuja;
 import utilidades.SubastaExpirada;
 import utilidades.SumadoSocio;
@@ -49,6 +51,10 @@ Event <Puja> pujaRealizadaEvent;
 @Inject
 @SubastaExpirada
 Event <Producto> expiradoTiempoSubastaEvent;
+
+@Inject
+@RealizadaDenuncia
+Event <Denuncia> realizadaDenunciaEvent;
   
    // generamos un evento al sumar un socio
     public void fireUsuarioSumadoEvent( Login login ) {
@@ -65,5 +71,9 @@ Event <Producto> expiradoTiempoSubastaEvent;
     
     public void fireExpiradoTiempoSubasta(Producto producto){
         expiradoTiempoSubastaEvent.fire(producto);
+    }
+    
+    public void fireRealizadaDenuncia(Denuncia denuncia){
+        realizadaDenunciaEvent.fire(denuncia);
     }
 }

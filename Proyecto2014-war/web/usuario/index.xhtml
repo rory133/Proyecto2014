@@ -24,8 +24,9 @@
              
 
     <p:layout fullPage="true" rendered="#{ROLE_SOCIO}">
-
+       
         <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+            
             <div class="fondo-norte">
                 <div class="texto-norte">
                     <h:form>  
@@ -276,13 +277,13 @@
             
 
      <p:layoutUnit position="center" >
-                    
-                 
-                    
+                  <div class="fondo-centro">  
+                                     
                     
                  <h:form id="form1">
                         <p:messages id="msgs1" />
                     <h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">
+                       
                         <p:growl id="msgs2" showDetail="true" escape="false"/>
                         <!--
                         <p:commandButton id="boton0" value="Aplicar Filtros"   action="#{productoView.todosProductos()}" icon="ui-icon-check" >
@@ -371,7 +372,7 @@
                  
                  
                         
- 
+                         
                     </h:panelGrid>
                 </h:form>
                 <h:form id="form2" rendered="#{productoView.filtroMisProductos eq 'ofertados'}" >
@@ -383,15 +384,16 @@
                         <p:dataGrid   var="producto" value="#{productoView.listaProductos}" columns="3" 
                             rows="12" paginator="true" id="productos"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            rowsPerPageTemplate="6,12,16"  >
-
+                            rowsPerPageTemplate="6,12,16" 
+                            style=" border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%;">
+                            
                             <f:facet name="header">
                                 <h:outputText value=" Numero de productos: #{productoView.listaProductos.size()}" id="cantidad"/>
                             </f:facet>
-                            
-                            <p:panel  header="#{producto.nombre}" style="text-align:center">
+                             
+                            <p:panel header="#{producto.nombre}" style="text-align:center; border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%;">
                                 
-
+                                  <div class="fondo-centro">
                              
                                 <h:panelGrid columns="1" style="width:100%">
                    
@@ -421,7 +423,9 @@
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                                    <f:setPropertyActionListener value="#{producto}" target="#{productoView.productoSeleccionado}" />
                                 </p:commandLink>
+                              </div>
                             </p:panel>
+                              
                          </p:dataGrid>
                     
                     
@@ -429,6 +433,7 @@
                 </h:form>
                     
                 <h:form id="form22" rendered="#{productoView.filtroMisProductos ne 'ofertados'}" >
+                     <p:growl id="grow221"  />
                          <h:outputText value="en form22"/>
                   
                     <p:poll interval="5" listener="#{productoView.actualizaVistaTodosProductos()}" update="productos" />
@@ -495,7 +500,7 @@
 
                     
                     
-                    
+                  </div>
                 </p:layoutUnit>
                 
                 
@@ -625,13 +630,21 @@
                                     <p:separator />
                                         <p:growl id="msgs33" showDetail="true" escape="false"/>
                                         
-                                    <p:commandButton id="botonDenuncia" value="Denunciar Venta" update="growlDenuncia"    actionListener="#{productoView.creaDenuncia()}" icon="ui-icon-check" />
+                                        <p:commandButton id="botonDenuncia" value="Denunciar Venta" update=":form22:grow221"    actionListener="#{productoView.creaDenuncia()}" 
+                                                         icon="ui-icon-check" oncomplete="PF('creacionDenuncia').hide();" >
+                                            <p:confirm header="Confirmación" message="¿Se creará una denuncia?" icon="ui-icon-alert" />
+                                        </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>
                                  
                                 </p:outputPanel>
                               
                             </p:dialog>
                     
-                       </h:form>               
+                       </h:form>                
                 
                 
 

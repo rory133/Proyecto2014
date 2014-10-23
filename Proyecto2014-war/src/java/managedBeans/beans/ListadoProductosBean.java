@@ -9,6 +9,7 @@
 
 package managedBeans.beans;
 
+import ejbs.GestionEventos;
 import entidades.Categoria;
 import entidades.Denuncia;
 import entidades.Imagen;
@@ -63,6 +64,9 @@ private VentaFacade ventaFacade;
 
 @EJB
 private DenunciaFacade denunciaFacade;
+
+@EJB
+GestionEventos gestionEventos;
 
 private Imagen imagen;
 private Categoria categoria;
@@ -785,7 +789,7 @@ private String titulo;
     }
     
     public void creaDenuncia(){
-
+        
         
         denuncia=new Denuncia();
         denuncia.setDenunciaIdusuario(usuarioLogado());
@@ -798,6 +802,7 @@ private String titulo;
         denuncia.setAtiendeIdusuario1(null);
         //denunciaFacade.create(denuncia);
         denunciaFacade.salva(denuncia);
+        gestionEventos.fireRealizadaDenuncia(denuncia);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha crado correctamente la denuncia por "+denuncia.getTipoDenuncia(),"");
         FacesContext.getCurrentInstance().addMessage(null, message);
         
