@@ -358,6 +358,8 @@ public class ProductoFacade extends AbstractFacade<Producto> {
     public List<Producto> todosProductosFiltrados(String filtro, String vendidos){
                 List<Producto> lP=null;
         System.out.println("@@@todos filtrados ");
+        System.out.println("vendidos : "+ vendidos);
+        System.out.println("filtro : "+ filtro);
         try{
             Query query3=
                     //em.createQuery(

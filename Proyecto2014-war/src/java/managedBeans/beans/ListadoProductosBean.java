@@ -225,7 +225,7 @@ private String titulo;
 
     public List<Producto> getListaProductos() {
         try{
-        Thread.currentThread().sleep(200);
+        Thread.currentThread().sleep(10);
         }catch (Exception e)
             {
 
@@ -475,9 +475,9 @@ private String titulo;
            
            System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
            List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
-           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
-           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
-           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
+//           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
+//           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
+//           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
            imagenesProducto.add(imagenesXProcducto.get(0));
            listaProductos.add(productoEncontrado);
        }

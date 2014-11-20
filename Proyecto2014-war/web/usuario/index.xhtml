@@ -20,12 +20,13 @@
          
         </h:head>
 
-   <h:body>
+   <h:body style="background-color: #7092be; background: #7092be !important;" >
              
 
     <p:layout fullPage="true" rendered="#{ROLE_SOCIO}">
        
-        <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+        <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true"
+                      style="background-color: #7092be; background: #7092be !important;">
             
             <div class="fondo-norte">
                 <div class="texto-norte">
@@ -176,16 +177,18 @@
                 -->
      
          
-                <p:layoutUnit id="izquierda" position="west" size="25%" header="#{productoView.titulo}" collapsible="false" >
+                <p:layoutUnit id="izquierda" position="west" size="25%" header="#{productoView.titulo}" collapsible="false"
+                              style="background: #e1c1a2 !important;">
                     
             
-            <h:form id="form6">
-             <h:form id="form4" rendered="#{not productoView.soloMios}">  
+            <h:form id="form6" style="background-color: #e1c1a2; background: #e1c1a2 !important; width:100%; height: 100%">
+             <h:form id="form4" rendered="#{not productoView.soloMios}" style="background-color: #e1c1a2; background: #e1c1a2 !important;">  
                <p:growl id="msgs" showDetail="true" escape="false"/>
 
                         <p:tree value="#{treeSelectionView.root1}" var="doc"
                                     selectionMode="single"
-                                    selection="#{treeSelectionView.selectedNode}">
+                                    selection="#{treeSelectionView.selectedNode}"
+                                    style="background-color: #e1c1a2">
                             <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
                                 <h:outputText value="#{doc.nombre}"/>
                             </p:treeNode>
@@ -216,11 +219,11 @@
     
                 </h:form>
                   
-                 <h:form id="form5" rendered="#{productoView.soloMios}">
+                 <h:form id="form5" rendered="#{productoView.soloMios}" style="background-color: #e1c1a2 ; color: #e1c1a2; background: #e1c1a2 !important;">
 
                     
                   
-                     <h:form rendered="#{productoView.filtroMisProductos eq 'ofertados'}" >
+                     <h:form rendered="#{productoView.filtroMisProductos eq 'ofertados'}" style="background-color: #e1c1a2; background: #e1c1a2 !important;" >
                         <p:growl id="growl"  />
                             <p:separator />
                             <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misOfertadosSubasta}">
@@ -234,7 +237,7 @@
                       
                         </p:commandLink>
                     </h:form>
-                     <h:form rendered="#{productoView.filtroMisProductos eq 'comprados'}" >
+                     <h:form rendered="#{productoView.filtroMisProductos eq 'comprados'}" style="background-color: #e1c1a2" >
                         <p:growl id="growl"  />
                             <p:separator />
                             <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosCompradosRecibidos(event)}">
@@ -248,7 +251,7 @@
                       
                         </p:commandLink>
                     </h:form>
-                     <h:form rendered="#{productoView.filtroMisProductos eq 'vendidos'}" >
+                     <h:form rendered="#{productoView.filtroMisProductos eq 'vendidos'}" style="background-color: #e1c1a2; color: #e1c1a2">
                         <p:growl id="growl" />
                             <p:separator />
                             <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosVendidosEnviados(event)}">
@@ -276,37 +279,16 @@
 
             
 
-     <p:layoutUnit position="center" >
+     <p:layoutUnit position="center" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                   <div class="fondo-centro">  
-                                     
+                                   
                     
-                 <h:form id="form1">
+                 <h:form id="form1" rendered="false">
                         <p:messages id="msgs1" />
                     <h:panelGrid columns="5" style="margin-bottom:10px" cellpadding="5">
                        
                         <p:growl id="msgs2" showDetail="true" escape="false"/>
-                        <!--
-                        <p:commandButton id="boton0" value="Aplicar Filtros"   action="#{productoView.todosProductos()}" icon="ui-icon-check" >
-                          <f:ajax event="click" render=":form2" />
-                          <f:ajax event="click" render=":form2:productos" />
-                          <f:ajax event="click" render=":form2:productos:cantidad" />
-                        </p:commandButton>
-     
-                        
-                        
-                       
-                        
-                                <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-                                    <p:outputLabel for="filtro" value="filtrar:" />
-                                    <p:selectOneRadio id="filtro" value="#{productoView.filtro}">
-                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
-                                        <f:selectItem itemLabel="Venta directa" itemValue="ventaDirecta" />
-                                        <f:selectItem itemLabel="Subasta" itemValue="subasta" />
-                                    </p:selectOneRadio>
-                                </h:panelGrid>
 
-
-                            -->
 
                                 <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
                                     <p:outputLabel for="vendido" value="vendido:" />
@@ -317,44 +299,21 @@
                                     </p:selectOneRadio>
                                 </h:panelGrid>
                          <br/>
+                 
                          <p:commandButton id="boton0c" value="Aplicar Filtros4455"   action="#{productoView.misOfertadosVentaDirecta()}" icon="ui-icon-check" >
                           <f:ajax event="click" render=":form2" />
                           <f:ajax event="click" render=":form2:productos" />
                           <f:ajax event="click" render=":form2:productos:cantidad" />
                         </p:commandButton>                             
                                
-             <h:form>
-                 <h:outputText value="Gestionar Mis Productos:  #{productoView.soloMios}" id="botoncillo"/>
 
-                  <p:selectBooleanCheckbox value="#{productoView.soloMios}">
-                       
-                     <f:ajax event="change" render=":form6 @all"/>
-                                               
-                  </p:selectBooleanCheckbox>
-               </h:form>
                         
-                        <!--
-                        <h:commandButton id="boton0" value="Ver Todos" type="button" >
 
-                               <f:ajax render=":form2"  event="click" listener="#{productoView.todosProductos()}" />
-                        </h:commandButton>
-                        -->
                         
                         
                                  
                                   
-                                    <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
-                                   
-                                    </p:inputText>
-                        
-                                   <p:commandButton id="boton1" value="Buscar por nombre"  update="msgs1"  action="#{productoView.buscaXNombre()}" icon="ui-icon-check" >
-                                   <p:message for="boton1" />
-                                  
-                                  
-                                    <f:ajax event="click" render=":form2:productos" />
-                                    <f:ajax event="click" render=":form2:productos:cantidad" />
-                                    
-                                    </p:commandButton>
+
                         
                         <h:outputText value=" tipo filtromisproductos: #{productoView.filtroMisProductos}" id="filtroMisPro"/>
                         
@@ -375,9 +334,9 @@
                          
                     </h:panelGrid>
                 </h:form>
-                <h:form id="form2" rendered="#{productoView.filtroMisProductos eq 'ofertados'}" >
-                    <p:inputText id="nombrew" value="#{productoView.filtro}" label="busqueda1"/>
-                    <p:inputText id="nombreee" value="#{productoView.vendidos}" label="busqueda2"/>
+                     
+                <h:form id="form2" rendered="#{productoView.filtroMisProductos eq 'ofertados'}" style="background-color: #c8bfe7; background: #e1c1a2 !important; width:100%; height: 100%">
+
                   
                     <p:poll interval="5" listener="#{productoView.actualizaVistaTodosProductos()}" update="productos" />
                  
@@ -385,17 +344,17 @@
                             rows="12" paginator="true" id="productos"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             rowsPerPageTemplate="6,12,16" 
-                            style=" border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%;">
+                            style=" border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%; ; background-color: #c8bfe7; background: #c8bfe7 ">
                             
                             <f:facet name="header">
                                 <h:outputText value=" Numero de productos: #{productoView.listaProductos.size()}" id="cantidad"/>
                             </f:facet>
                              
-                            <p:panel header="#{producto.nombre}" style="text-align:center; border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%;">
+                            <p:panel header="#{producto.nombre}" style="text-align:center; border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%; background-color: #c8bfe7; background: #c8bfe7 ">
                                 
                                   <div class="fondo-centro">
                              
-                                <h:panelGrid columns="1" style="width:100%">
+                                <h:panelGrid columns="1" style="width:100%; background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
                    
                                   
                                     
@@ -432,22 +391,23 @@
 
                 </h:form>
                     
-                <h:form id="form22" rendered="#{productoView.filtroMisProductos ne 'ofertados'}" >
+                <h:form id="form22" rendered="#{productoView.filtroMisProductos ne 'ofertados'}" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
                      <p:growl id="grow221"  />
-                         <h:outputText value="en form22"/>
+                         
                   
                     <p:poll interval="5" listener="#{productoView.actualizaVistaTodosProductos()}" update="productos" />
                  
                     <p:dataGrid   var="venta" value="#{productoView.listaVentas}" columns="3" 
                             rows="12" paginator="true" id="productos"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            rowsPerPageTemplate="6,12,16"  >
+                            rowsPerPageTemplate="6,12,16" 
+                            style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
 
                             <f:facet name="header">
                                 <h:outputText value=" Numero de productos : #{productoView.listaVentas.size()}" id="cantidadVentas"/>
                             </f:facet>
                             
-                        <p:panel  header="producto: #{venta.productoIdproducto.nombre}" style="text-align:center">
+                        <p:panel  header="producto: #{venta.productoIdproducto.nombre}" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important">
                                 <p:growl id="grow22"  />
                                      <h:outputText value="Fecha de venta: " />
                                      <h:outputText value="#{venta.fecha}" >
@@ -470,15 +430,19 @@
       
                                     <h:outputText value="Precio : #{venta.precioFinal}" />
 
-                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos ne 'comprados'}">
                                     <h:outputText value="¿Esta Enviado?: " />
                                     <p:selectBooleanButton id="value1" value="#{venta.enviado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                  
+                                    <h:outputText value="¿Esta Cobrado?: " />
+                                    <p:selectBooleanButton id="value4" value="#{venta.cobrado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    </h:panelGrid>
+                                    
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos eq 'comprados'}">
                                     <h:outputText value="¿Esta Recibido?: " />
                                     <p:selectBooleanButton id="value2" value="#{venta.recibido}" onLabel="Sí" offLabel="No" style="width:60px" />
                                     <h:outputText value="¿Esta Pagado?: " />
                                     <p:selectBooleanButton id="value3" value="#{venta.pagado}" onLabel="Sí" offLabel="No" style="width:60px" />                                    
-                                    <h:outputText value="¿Esta Cobrado?: " />
-                                    <p:selectBooleanButton id="value4" value="#{venta.cobrado}" onLabel="Sí" offLabel="No" style="width:60px" />
                                     </h:panelGrid>
                           
                                 </h:panelGrid>
@@ -488,6 +452,7 @@
                                        <p:separator />
                                 <p:commandLink update=":form33:detalleDenuncia" oncomplete="PF('creacionDenuncia').show()" title="crear Denuncia">
                                     <h:outputText styleClass="ui-icon ui-icon-pin-s" style="margin:0 auto;" />
+                                    <h:outputText value ="denunciar"  />
                                     <f:setPropertyActionListener value="#{venta}" target="#{productoView.ventaSeleccionada}" />
                                 </p:commandLink>
                             </p:panel>
@@ -505,11 +470,12 @@
                 
                 
                 
-                      <h:form id="form3" >
+                      <h:form id="form3" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                           <p:growl id="msgs3" showDetail="true" escape="false"/>
                              <p:dialog id="dlg" header="Informacion Producto" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="false"
-                                        width="500" height="650">
-                                <p:outputPanel id="detalleProducto" style="text-align:center;">
+                                        width="500" height="650"
+                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+                                <p:outputPanel id="detalleProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
                                      
                                     <!--
                                     <p:galleria  value="#{productoView.imagenesProductoSeleccionado}" var="image" panelWidth="500" panelHeight="313" showCaption="false"
@@ -533,7 +499,8 @@
                                     </p:imageSwitch>
                                     
                                     
-                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado}"  columnClasses="label,value" id="panelDetalle">
+                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado}"  columnClasses="label,value" id="panelDetalle"
+                                      style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
                                     <h:outputText value="Nombre:" />
                                     <h:outputText value="#{productoView.productoSeleccionado.nombre}" />
                                     <h:outputText value="Descripcion:" />
@@ -590,13 +557,14 @@
                             </p:dialog>
                     
                        </h:form>
-                       <h:form id="form33" >
+                       <h:form id="form33" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
                           
                              <p:dialog id="dlg" header="Crear Denuncia" widgetVar="creacionDenuncia" 
-                                        width="500" height="350">
+                                        width="500" height="350"
+                                        style="background-color: #c8bfe7; background: #c8bfe7;">
                                  
                                  
-                                <p:outputPanel id="detalleDenuncia" style="text-align:center;">
+                                <p:outputPanel id="detalleDenuncia" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7;">
                                     <p:growl id="growlDenuncia" showDetail="true" sticky="true" /> 
                                     <p:messages id="msgsDenduncia" /> 
                                     

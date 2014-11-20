@@ -9,39 +9,113 @@
         <h:head>
             <f:facet name="Principal">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Pagina Principal</title>
+                <title>Pagina Principal Usuario</title>
             </f:facet>
 
-            <h:outputStylesheet name="./css/default.css"/>
-            <h:outputStylesheet name="./css/cssLayout.css"/>
+         <h:outputStylesheet library="css" name="default.css"  />
+         <h:outputStylesheet library="css" name="cssLayout.css"  />
+         
 
+         
+         
         </h:head>
 
-        <h:body>
+   <h:body style="background-color: #7092be" >
+             
 
-            <p:layout fullPage="true">
-                 <p:growl id="msgs" showDetail="true" escape="false"/>
-                 <p:growl id="msgs1" showDetail="true" escape="false"/>
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                    cabecera
-                    <h:link outcome="login" value="logarse" />
+    <p:layout fullPage="true" >
+       
+        <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
+            
+            <div class="fondo-norte">
+                <div class="texto-norte-principal">
+                    <h:form>  
+                                                       
+                    
+                    <h:link id="logarse" outcome="login" value="logarse" />
+                         <p:tooltip id="toolTipFade01" for="logarse" value="logarse como usuario" />
                     <br/>
-                    <h:link outcome="crearUsuario" value="Crear cuenta" />
-                </p:layoutUnit>
-                <!--
-                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                    Footer
-                </p:layoutUnit>
-                -->
+                    <h:link id="crearCuenta" outcome="crearUsuario" value="Crear cuenta" />
+                        <p:tooltip id="toolTipFade11" for="crearCuenta" value="Crear cuenta en el portal" />
+                                            
 
-                <p:layoutUnit position="west" size="25%" header="Categorias" collapsible="false">
-                    <h:form>
-                        <p:growl id="msgs" showDetail="true" escape="false"/>
+                       
+                   </h:form>
+                </div>
 
-                        <h3 style="margin-top:0">Single</h3>
+            
+            <h:form id="tabla2" rendered="#{not productoView.soloMios}">
+                  <p:growl id="growl1" />
+
+                  <table border="0" width="100%" id="tabla2" rendered="#{productoView.soloMios}">
+                <tr>
+
+                    <td>
+                        
+                                <h:panelGrid id="panelGrid1" columns="2" style="margin-bottom:10px" cellpadding="5">
+                                   
+                                    <p:selectOneRadio id="filtro" value="#{productoView.filtro}">
+                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
+                                        <f:selectItem itemLabel="Venta directa" itemValue="ventaDirecta" />
+                                        <f:selectItem itemLabel="Subasta" itemValue="subasta" />
+                                           <f:ajax event="valueChange"  render=":form2 @all"/>
+                                            <f:ajax event="valueChange" render=":form2:productos" />
+                                            <f:ajax event="valueChange" render=":form2:productos:cantidad" />
+                                           
+                                            
+                                    </p:selectOneRadio>
+                                    <p:tooltip id="toolTipFade11" for="panelGrid1" value="Filtra los productos a mostrar" />
+                                </h:panelGrid>
+                   
+                    </td> 
+                    <td class='alnright'>
+                        
+                                    <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
+                                   <p:tooltip id="toolTipFade1" for="nombre" value="introduce el texto a buscar" />
+                                    </p:inputText>
+                        
+
+                    </td> 
+                    <td class='alnleft'>
+
+                        <p:commandLink id="buscaXNombre" update="growl1" action="#{productoView.buscaXNombre()}">
+                                    <f:ajax event="click" render=":form2:productos" />
+                                    <f:ajax event="click" render=":form2:productos:cantidad" />
+                            
+                          
+                            <h:graphicImage library="images" name="buscar2.gif" />
+                            <p:tooltip id="toolTipFade2" for="buscaXNombre" value="Buscar texto introducido" />
+                        </p:commandLink>
+                    
+                    </td>
+                    <td>             
+                    
+
+                    </td>
+                </tr>
+            </table>
+            </h:form>
+
+            
+
+            
+         </div>   
+        </p:layoutUnit>
+
+     
+         
+                <p:layoutUnit id="izquierda" position="west" size="25%" header="#{productoView.titulo}" collapsible="false" 
+                              style="background-color: #e1c1a2">
+                    
+            
+            <h:form id="form6" style="background-color: #e1c1a2">
+         
+               <p:growl id="msgs" showDetail="true" escape="false"/>
+
                         <p:tree value="#{treeSelectionView.root1}" var="doc"
-                                selectionMode="single"
-                                selection="#{treeSelectionView.selectedNode}">
+                                    selectionMode="single"
+                                    selection="#{treeSelectionView.selectedNode}"
+                                    style="background-color: #e1c1a2">
                             <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
                                 <h:outputText value="#{doc.nombre}"/>
                             </p:treeNode>
@@ -55,21 +129,111 @@
                                 <h:outputText value="#{doc.nombre}" />
                             </p:treeNode>
                         </p:tree>
+                        
+                        <p:commandButton value="Información Categoría" update="msgs" icon="ui-icon-newwin"
+                                            actionListener="#{treeSelectionView.displaySelectedSingle}"/>
+                        
+                        
+                        
+                          <p:commandButton id="boton2" value="Ver Productos de la categoria selecionada"  update="msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
+                                 
+                                  
+                                  
+                                    <f:ajax event="click" render=":form2:productos" />
+                                    <f:ajax event="click" render=":form2:productos:cantidad" />
+                                    
+                                    </p:commandButton>
+    
+     
+                  
 
-                        <p:commandButton value="Display" update="msgs" icon="ui-icon-newwin"
-                                         actionListener="#{treeSelectionView.displaySelectedSingle}"/>
-                    </h:form>
+ 
+               <p:separator />
+    
 
+
+               
+                </h:form>
+               
+         </p:layoutUnit>
+      
+
+            
+
+        <p:layoutUnit position="center" style="background-color: #c8bfe7">
+                  <div class="fondo-centro">  
+                                     
+                    
+
+                <h:form id="form2" rendered="#{productoView.filtroMisProductos eq 'ofertados'}" style="background-color: #c8bfe7">
+                  
+                    <p:poll interval="2" listener="#{productoView.actualizaVistaTodosProductos()}" update="productos" />
+                 
+                        <p:dataGrid   var="producto" value="#{productoView.listaProductos}" columns="3" 
+                            rows="12" paginator="true" id="productos"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="6,12,16" 
+                            style=" border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%;">
+                                                        
+                            <f:facet name="header">
+                                <h:outputText value=" Numero de productos: #{productoView.listaProductos.size()}" id="cantidad"/>
+                            </f:facet>
+                             
+                            <p:panel header="#{producto.nombre}" style="text-align:center; border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%; background-color: #c8bfe7;">
+                                
+                                  <div class="fondo-centro">
+                             
+                                <h:panelGrid columns="1" style="width:100%">
+                   
+                                  
+                                    
+                                  
+                                    
+                                    <h:graphicImage value="./VisualizaImagen?tipo=imagenUnica&amp;idProducto=#{producto.idproducto}" width="50" height="50">
+                                   
+                                    </h:graphicImage>
+                                    
+                             
+                                    <h:outputText value="idproducto : #{producto.idproducto}" />
+                                    
+                                    <h:outputText value="Categoria : #{producto.categoriaIdcategoria.nombre}" />
+                                    
+                                    <h:outputText value="#{producto.precio}" />
+                                    <h:outputText value="usuario ofertador: #{producto.usuarioIdusuario.nombre}" />
+                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="en venta directa" ></h:outputText >
+                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="en modo subasta" ></h:outputText >
+                                    
+                          
+                                </h:panelGrid>
+                                
+                                
+
+                              </div>
+                            </p:panel>
+                              
+                         </p:dataGrid>
+                    
+                    
+
+                </h:form>
+                    
+
+                             
+
+                    
+                    
+                  </div>
                 </p:layoutUnit>
-
-                <p:layoutUnit position="center">
-                    Welcome to PrimeFaces
-                </p:layoutUnit>
+                
+                
+                
+               
+                
+                
 
             </p:layout>
 
-            <br />
-            <!--<h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />-->
+
         </h:body>
 
     </f:view>

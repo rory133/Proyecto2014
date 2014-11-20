@@ -127,6 +127,10 @@ public String validarUsuario(){
                 System.out.println("es adminstrador" );
                 return "/admin/index?faces-redirect=true";
             }else if (usuarioLogado.getRole().toString().matches("ROLE_SOCIO")){
+                if (usuarioLogado.getUsuarioIdusuario().getVotosNegativos()>2){
+                      System.out.println("<<<<<<<Bloqueadoooo>>>>>>>>");
+                    return "usuarioBloqueado?faces-redirect=true";
+                }
                 session.setAttribute("ROLE_ADMIN", false);
                 session.setAttribute("ROLE_SOCIO", true);
                   System.out.println("es socio");

@@ -7,70 +7,20 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     
-      <h:head>
+    <h:head>
+         <h:outputStylesheet library="css" name="default.css"  />
+         <h:outputStylesheet library="css" name="cssLayout.css"  />
+        <title>Login</title>
 
-        <title>Facelet Title</title>
-
-      <!--  <link rel="stylesheet" href="/JSFSession/public/css/cssFormulario.css"/>-->
 
     </h:head>
 
     <h:body>
-
-       
-
-           <!-- <h:form class="formulario">-->
-           
-           <!--
-           <h:form >
-                <h2>Acceso de Usuario</h2>
-       
-                <h:outputLabel value="Usuario" for="login"/>
-                <h:inputText value="#{loginBean.login}" id="login"  required="true" label="Keyword" /> 
-                  <h:outputLabel value="Password" for="password"/>
-                  <h:inputSecret  value="#{loginBean.password}" id="password"  required="true" label="Keyword3" /> 
-                <h:messages infoStyle="color: blue;list-style:none;" errorStyle="color:red;list-style:none;"/>
-
-             
-                 
-
-                    <h:commandButton value="Ingresar" action="#{loginBean.validarUsuario()}"  />
-
-               
-
-            </h:form>
-           <<span id="IL_AD8" class="IL_AD"> section </span> class="contenedorLogin">
-           -->
-           
-           
-           <!--
-           <section  class="contenedorLogin">
-            <h:form class="formulario">
-
-                <h2>Acceso de Usuario</h2>
-
-                <p>Rellene el siguiente formulario para ingresar al sistema (Simulación)</p>
-
-                <p><h:inputText pt:placeholder="Usuario" value="#{loginBean.login}" /></p>
-
-                <p><h:inputSecret pt:placeholder="Contraseña" value="#{loginBean.password}" /></p>
-
-                <h:messages infoStyle="color: blue;list-style:none;" errorStyle="color:red;list-style:none;"/>
-
-                <section class="seccionBotones">
-
-                    
-
-                    <h:commandButton value="Ingresar" action="#{loginBean.validarUsuario()}"  />
-
-                </section>
-
-            </h:form>
-           
-         </section>  
-                -->
-                
-           <h:form>
+            
+ <h:form>
+     
+     <div class="fondo-centro">  
+         <h:link outcome="index" value="volver" />
     <p:panel id="panel" header="Logarse">
  
         <p:messages id="msgs" />
@@ -93,9 +43,10 @@
  
         <p:commandButton value="Entrar"  update="panel" action="#{loginBean.validarUsuario()}" icon="ui-icon-check" />
     </p:panel>
+  </div>
 </h:form>
-         <h:link outcome="index" value="volver" />
- <!-- <f:validateRegex pattern=".+[@].+[.].+" /> -->
+         
+
     </h:body>
     
     

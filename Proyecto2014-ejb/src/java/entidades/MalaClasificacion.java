@@ -24,6 +24,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -57,6 +59,11 @@ public class MalaClasificacion implements Serializable {
     @JoinColumn(name = "usuario_avisa", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario usuarioAvisa;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 300)
+    @Column(name = "motivo")
+    private String motivo;
     @JoinColumn(name = "producto_idproducto", referencedColumnName = "idproducto")
     @ManyToOne(optional = false)
     private Producto productoIdproducto;
@@ -116,6 +123,14 @@ public class MalaClasificacion implements Serializable {
         this.productoIdproducto = productoIdproducto;
     }
 
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

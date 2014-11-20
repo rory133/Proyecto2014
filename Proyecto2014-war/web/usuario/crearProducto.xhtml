@@ -19,36 +19,28 @@
          
         </h:head>
 
-        <h:body>
+        <h:body style="background-color: #7092be; background: #7092be !important;">
 
- <p:layout fullPage="true" rendered="#{ROLE_SOCIO}">
+ <p:layout fullPage="true" rendered="#{ROLE_SOCIO}" style="background-color: #7092be; background: #7092be !important;">
 
                 <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                        cabecera usuario
-            <br/>            
-            <h:outputText value="#{loginBean.login}"/>
-            <br/>            
-            <h:outputText value="#{sessionScope.usuario.nombre}" /> 
-            <br/>            
-            <h:outputText value="#{sessionScope.login.role}" />
-            <br/>
-           
-     
-            <h:form>       
-              <p:commandButton value="logout" icon="ui-icon-newwin"
-                               actionListener="#{loginBean.logout()}"/>
-            </h:form>
+              <div class="fondo-norte">
+       
+                 <h:link outcome="/usuario/index" value="volver" />
+      
+            </div>
                 </p:layoutUnit>
 
 
-                <p:layoutUnit position="west" size="25%" header="Categorias" collapsible="false">
-                    <h:form>
+                <p:layoutUnit position="west" size="25%" header="Categorias" collapsible="false" >
+                    <h:form class="izquierda">
                         <p:growl id="msgs" showDetail="true" escape="false"/>
 
-                        <h3 style="margin-top:0">Selecciona la categoría</h3>
+                        <h3 style="margin-top:0">Selecciona la categoría que tendrá</h3>
                         <p:tree value="#{treeSelectionView.root1}" var="doc"
                                     selectionMode="single"
-                                    selection="#{treeSelectionView.selectedNode}">
+                                    selection="#{treeSelectionView.selectedNode}"
+                                    style="background-color: #e1c1a2">
                             <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
                                 <h:outputText value="#{doc.nombre}"/>
                             </p:treeNode>
@@ -77,6 +69,8 @@
                 </p:layoutUnit>
 
      <p:layoutUnit position="center">
+         <div class="fondo-centro">
+             
          <p:messages id="msgs" />
          <h:form enctype="multipart-data" id="form2">
 
@@ -85,6 +79,7 @@
    
           
          <p:panel id="panel" header="Crear Producto Nuevo">
+             <div class="fondo-centro">  
               <p:messages id="msgs" /> 
            <h:outputText value="Selecciona en el panel de la izquierda en que categoría lo quieres incluir" /> 
              
@@ -129,7 +124,7 @@
         </h:panelGrid>           
             
         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-            <h:outputText value="¿Poner en modo subasta?: " />
+            <h:outputText value="¿Ponerlo en modo subasta?: " />
             <p:selectBooleanCheckbox value="#{crearProductoBean.enSubasta}" />
         </h:panelGrid>
             
@@ -143,29 +138,36 @@
            
      </p:commandButton>
             <!-- //////////////////////////////////////////////////////////-->
+             </div>
       </p:panel>       
            
            
       </h:form> 
        <h:form enctype="multipart-data" id="form3">
+           <div class="fondo-centro">  
             <p:dataTable value="#{crearProductoBean.imagenesSubidas}" var="item" paginator="false" rows="5"  rowIndexVar="row" id="imagenes">
 
             <p:column>
+                <div class="fondo-centro">  
                <f:facet name="header">
                   <h:outputText value="Imagenes" />
                </f:facet>
                     
-                <h:outputLink value="../VisualizaImagen?tipo=crearProducto&amp;Image_id==#{row}" target="_blank" >
+                <h:outputLink value="../VisualizaImagen?tipo=crearProducto&amp;Image_id==#{row}" target="_blank"
+                              style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
+                    <div class="fondo-centro">  
                         <h:graphicImage value="../VisualizaImagen?tipo=crearProducto&amp;Image_id=#{row}" width="50" height="50">
                         </h:graphicImage>
+                    </div>
                </h:outputLink>
+                </div>
               </p:column>
             </p:dataTable>
             
-
+           </div>
          </h:form>      
             
-            <!-- //////////////////////////////////////////////////////////-->
+           
           
           
 
@@ -176,27 +178,24 @@
 
          
       <h:form enctype="multipart/form-data" id="form4">
+          <div class="fondo-centro">  
        <p:fileUpload fileUploadListener="#{crearProductoBean.fileUploadListener}"
 
                     required="true" mode="advanced" dragDropSupport="false"
                     multiple="true" sizeLimit="1000000" fileLimit="5" update="messages"
-                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
+                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                    style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                     <p:growl id="messages" showDetail="true" />
                    
         </p:fileUpload>
          
 
         <f:ajax event="click" render=":form3:imagenes" />
+          </div>
       </h:form>
          
-       <h:form>
-         <p:commandButton value="imprimir imagenes"   action="#{crearProductoBean.imprimirImagenes()}" icon="ui-icon-check" />
-       </h:form>
-          <h:link outcome="/usuario/index" value="volver" />
-       <h:form>
-           <p:commandButton value="Salir"   action="#{crearProductoBean.salir()}" icon="ui-icon-check" />
-       </h:form>
 
+         </div>
     </p:layoutUnit>
      
 
