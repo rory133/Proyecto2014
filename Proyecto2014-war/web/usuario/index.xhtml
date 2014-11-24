@@ -281,7 +281,7 @@
 
      <p:layoutUnit position="center" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                   <div class="fondo-centro">  
-                                   
+                <p:growl id="mensajesLayoutCenter" showDetail="true" escape="false"/>                   
                     
                  <h:form id="form1" rendered="false">
                         <p:messages id="msgs1" />
@@ -337,7 +337,7 @@
                      
                 <h:form id="form2" rendered="#{productoView.filtroMisProductos eq 'ofertados'}" style="background-color: #c8bfe7; background: #e1c1a2 !important; width:100%; height: 100%">
 
-                  
+                  <p:growl id="grow21"  showDetail="true" escape="false"/> 
                     <p:poll interval="5" listener="#{productoView.actualizaVistaTodosProductos()}" update="productos" />
                  
                         <p:dataGrid   var="producto" value="#{productoView.listaProductos}" columns="3" 
@@ -472,11 +472,13 @@
                 
                       <h:form id="form3" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                           <p:growl id="msgs3" showDetail="true" escape="false"/>
+                          <p:messages id="msgsDenduncia" /> 
                              <p:dialog id="dlg" header="Informacion Producto" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="false"
                                         width="500" height="650"
                                         style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+                                 
                                 <p:outputPanel id="detalleProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
-                                     
+                                    
                                     <!--
                                     <p:galleria  value="#{productoView.imagenesProductoSeleccionado}" var="image" panelWidth="500" panelHeight="313" showCaption="false"
                                                             effect="fade" 
@@ -499,7 +501,7 @@
                                     </p:imageSwitch>
                                     
                                     
-                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado}"  columnClasses="label,value" id="panelDetalle"
+                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado and not productoView.soloMios}"  columnClasses="label,value" id="panelDetalle"
                                       style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
                                     <h:outputText value="Nombre:" />
                                     <h:outputText value="#{productoView.productoSeleccionado.nombre}" />
@@ -519,14 +521,83 @@
                                   
                                   
                                   </p:panelGrid>
-                                 
+                                    
+
+                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado and  productoView.soloMios and productoView.productoSeleccionado.enSubasta and not productoView.productoSeleccionado.expirado }"  columnClasses="label,value" id="panelDetalle2"
+                                    style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
+                                      <p:growl id="msgsSalvar" showDetail="true" escape="false"/>  
+                                       
+
+                                    <h:outputText value="Nombre:" />
+                                    <h:inputText value="#{productoView.productoSeleccionado.nombre}" />
+                                    <h:outputText value="Descripcion: " />
+                                    <h:inputText value="#{productoView.productoSeleccionado.descripcion}" />
+                                    <h:outputText value="Precio de Salida: " />
+                                    <h:inputText value="#{productoView.productoSeleccionado.precio}"/>
+                                    <h:outputText  rendered="#{(productoView.productoSeleccionado.enSubasta) }" value="últimaPuja:" ></h:outputText >
+                                    <h:inputText  rendered="#{(productoView.productoSeleccionado.enSubasta)}" value="#{(productoView.productoSeleccionado.ultimaPuja)}" ></h:inputText >                                   
+                                    
+                                    
+                                  </p:panelGrid>
+                                    
+                                    <p:commandButton rendered="#{(productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.expirado)and productoView.soloMios}" id="botonSalvarSubasta" value="Salvar Producto" update=":form2:grow21"    actionListener="#{productoView.salvarProducto()}" 
+                                                     icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
+  
+                                               
+                                                 <f:param id="parametro112" name="idProductoASalvar" value="#{productoView.productoSeleccionado.idproducto}" />
+
+                                                                                <p:confirm header="Confirmación" message="¿Quieres Variar los datos del producto?" icon="ui-icon-alert" />
+                                        </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado and  productoView.soloMios and not productoView.productoSeleccionado.enSubasta}"  columnClasses="label,value" id="panelDetalle21"
+                                    style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
+                                         
+                                    <h:outputText value="Nombre producdo:" />
+                                    <h:inputText value="#{productoView.productoSeleccionado.nombre}" />
+                                    <h:outputText value="Descripcion:" />
+                                    <h:inputText value="#{productoView.productoSeleccionado.descripcion}" />
+                                    <h:outputText   value="Precio:" ></h:outputText >
+                                    <h:inputText  value="#{productoView.productoSeleccionado.precio}" ></h:inputText >
+                                                                       
+                                  </p:panelGrid>  
+                                    
+
+                                    <p:commandButton rendered="#{not(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.vendido and productoView.soloMios}" id="botonSalvarVentaDirecta" value="Salvar Producto" update=":form2:grow21"    actionListener="#{productoView.salvarProducto()}" 
+                                                     icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
+  
+                                               
+                                                 <f:param id="parametro111" name="idProductoASalvar" value="#{productoView.productoSeleccionado.idproducto}" />
+
+                                     <p:confirm header="Confirmación" message="¿Quieres Variar los datos del producto?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>  
                                
-                                    <p:commandButton rendered="#{not (productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.vendido )}" id="boton" value="Comprar Producto" update="msgs3"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check" >
+                                    <p:commandButton rendered="#{not (productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.vendido )and not productoView.soloMios}" id="boton" value="Comprar Producto" update="msgs3"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check" >
   
                                                  <f:param id="parametro1" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
                                                  <f:param id="parametro2" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
 
                                     </p:commandButton>
+                                    <p:commandButton rendered="#{productoView.soloMios}" id="botonBorrar" value="Prueba Borrar Producto" update="msgs3"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check" >
+  
+                                                 <f:param id="parametro11" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
+                                                 <f:param id="parametro21" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
+
+                                    </p:commandButton>                                    
+                                    
                                     <h:outputText rendered="#{not (productoView.productoSeleccionado.enSubasta)and (productoView.productoSeleccionado.vendido )}" value="Producto Vendido"  style="color: red" />
                                     
                                     <p:inputText rendered="#{(productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.expirado)}" id="puja" value="#{gestionProductoBean.pujaPropuesta}" label="puja">

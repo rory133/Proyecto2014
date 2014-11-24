@@ -33,6 +33,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import utilidades.Loggable;
+import managedBeans.beans.ListadoProductosBean;
+
 
 /**
  *
@@ -73,6 +75,7 @@ public class GestionProducto implements Serializable{
     private Puja puja;
     private Usuario usuario;
     private float pujaPropuesta;
+    private ListadoProductosBean listadoProductosBean;
 
     public VentaFacade getVentaFacade() {
         return ventaFacade;
@@ -263,6 +266,8 @@ public class GestionProducto implements Serializable{
 //            // gestionEventos.fireProductoAdquiridoVentaDirecta(venta);
 //            return "index.xhtml?faces-redirect=true";
     }
+    
+    
           
     
 }

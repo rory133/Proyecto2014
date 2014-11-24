@@ -14,12 +14,14 @@ import entidades.Categoria;
 import entidades.Denuncia;
 import entidades.Imagen;
 import entidades.Producto;
+import entidades.Puja;
 import entidades.Usuario;
 import entidades.Venta;
 import facade.CategoriaFacade;
 import facade.DenunciaFacade;
 import facade.ImagenFacade;
 import facade.ProductoFacade;
+import facade.PujaFacade;
 import facade.VentaFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,6 +69,8 @@ private DenunciaFacade denunciaFacade;
 
 @EJB
 GestionEventos gestionEventos;
+@EJB
+private PujaFacade pujaFacade;
 
 private Imagen imagen;
 private Categoria categoria;
@@ -94,6 +98,7 @@ private Denuncia denuncia;
 private Venta ventaSeleccionada;
 private String motivoDenuncia;
 private String tipoDenuncia;
+private List<Puja> pujasProducto ;
 
 private FacesMessage facesMessage;
 private FacesContext faceContext;
@@ -201,8 +206,16 @@ private String titulo;
         this.denuncia = denuncia;
     }
 
-    
+    public List<Puja> getPujasProducto() {
+        return pujasProducto;
+    }
 
+    public void setPujasProducto(List<Puja> pujasProducto) {
+        this.pujasProducto = pujasProducto;
+    }
+
+    
+    
 
 
 
@@ -821,6 +834,61 @@ private String titulo;
          FacesContext facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
          return(Usuario)session.getAttribute("usuario");
+    }
+    
+        public void salvarProducto(){
+        System.out.println("EN SALVAR PRODUCTO ");
+                //recogemos los parametros necesarios
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("idProductoASalvar");
+                  System.out.println("producto a Salvar antes de buscarlo con Map: "+idProducto);
+                 
+ 
+         
+          //producto a salvar
+           Producto productoASalvar=productoFacade.find((Integer)Integer.parseInt(idProducto));
+           if(productoASalvar.getEnSubasta()){
+                   pujasProducto=pujaFacade.pujaXProducto(productoASalvar);
+          
+              if((pujasProducto==null)||(pujasProducto.isEmpty())){//NO HAY PUJAS
+                  productoASalvar.setNombre(productoSeleccionado.getNombre());
+                  productoASalvar.setDescripcion(productoSeleccionado.getDescripcion());
+                  productoASalvar.setPrecio(productoSeleccionado.getPrecio());
+                  
+                  
+                  productoFacade.salva(productoASalvar);
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS ACTUALIZAR NUEVOS VALORES EN EL PRODUCTO "+productoASalvar.getNombre(),"");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+                
+
+              }else{
+                  System.out.println("producto a Salvar con pujas "+idProducto);
+                  productoASalvar.setNombre(productoSeleccionado.getNombre());
+                  productoASalvar.setDescripcion(productoSeleccionado.getDescripcion());
+                  
+                  
+                  
+                  productoFacade.salva(productoASalvar);
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS ACTUALIZAR NUEVOS VALORES EN EL PRODUCTO "+productoASalvar.getNombre()+" PERO EL PRECIO DE SALIDA NO PUEDE SER ACTUALIZADO AL TENER PUJAS","");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+                  
+                  
+              }
+               
+           }else{
+                  productoASalvar.setNombre(productoSeleccionado.getNombre());
+                  productoASalvar.setDescripcion(productoSeleccionado.getDescripcion());
+                  productoASalvar.setPrecio(productoSeleccionado.getPrecio());
+                  
+                  
+                  productoFacade.salva(productoASalvar);
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS ACTUALIZAR NUEVOS VALORES EN EL PRODUCTO "+productoASalvar.getNombre(),"");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+               
+           }
+        
+        
     }
 
 }
