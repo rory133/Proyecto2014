@@ -185,3 +185,11 @@
     text-align: right;
      bottom:0;
 }
+.fondo-norte-CrearUsuario{
+    background-color: #7092be;
+    background-image: url(/resources/images/fondo.png);height:100%;;
+    background-repeat: no-repeat;
+    
+    text-align: right;
+     bottom:0;
+}

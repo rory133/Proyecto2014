@@ -18,6 +18,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import utilidades.BorradoProductoConPujas;
 import utilidades.CompraVentaDirecta;
 import utilidades.RealizadaDenuncia;
 import utilidades.RealizadaPuja;
@@ -55,12 +56,19 @@ Event <Producto> expiradoTiempoSubastaEvent;
 @Inject
 @RealizadaDenuncia
 Event <Denuncia> realizadaDenunciaEvent;
+
+@Inject
+@BorradoProductoConPujas
+Event <Puja> borradoProductoConPujasEvent;
   
    // generamos un evento al sumar un socio
     public void fireUsuarioSumadoEvent( Login login ) {
         usuarioSumadoEvent.fire(login);
     } 
-
+    // generamos eventos para caja puja cuando se borra un producto que tenía
+    public void fireBorradoProductoConPujasEvent( Puja puja ) {
+        borradoProductoConPujasEvent.fire(puja);
+    } 
     public void fireProductoAdquiridoVentaDirecta( Venta venta ) {
         productoAdquiridoVentaDirectaEvent.fire(venta);
     } 

@@ -240,12 +240,12 @@
                      <h:form rendered="#{productoView.filtroMisProductos eq 'comprados'}" style="background-color: #e1c1a2" >
                         <p:growl id="growl"  />
                             <p:separator />
-                            <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosCompradosRecibidos(event)}">
+                            <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosCompradosRecibidos()}">
                              <f:ajax event="click" render=":form22" />
                             <h:outputText value="Recibidos" />
                         </p:commandLink>
                                <p:separator />
-                               <p:commandLink id="ventaDirecta" update="growl" actionListener="#{productoView.misProductosCompradosNORecibidos(event)}" >
+                               <p:commandLink id="ventaDirecta" update="growl" actionListener="#{productoView.misProductosCompradosNORecibidos()}" >
                             <f:ajax event="click" render=":form22" />
                             <h:outputText value="No Recibidos" />
                       
@@ -254,12 +254,12 @@
                      <h:form rendered="#{productoView.filtroMisProductos eq 'vendidos'}" style="background-color: #e1c1a2; color: #e1c1a2">
                         <p:growl id="growl" />
                             <p:separator />
-                            <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosVendidosEnviados(event)}">
+                            <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosVendidosEnviados()}">
                              <f:ajax event="click" render=":form22" />
                             <h:outputText value="Enviados" />
                         </p:commandLink>
                                <p:separator />
-                               <p:commandLink id="ventaDirecta" actionListener="#{productoView.misProductosVendidosNoEnviados(event)}" >
+                               <p:commandLink id="ventaDirecta" actionListener="#{productoView.misProductosVendidosNoEnviados()}" >
                             <f:ajax event="click" render=":form22" />
                             <h:outputText value="No Enviados" />
                       
@@ -366,13 +366,15 @@
                                     
                              
                                     <h:outputText value="idproducto : #{producto.idproducto}" />
-                                    
+                                     <h:outputText rendered="#{not (producto.enSubasta)}" value="___________________" />
                                     <h:outputText value="Categoria : #{producto.categoriaIdcategoria.nombre}" />
                                     
-                                    <h:outputText value="#{producto.precio}" />
+                                    <h:outputText rendered="#{not (producto.enSubasta)}" value="Precio : #{producto.precio}" />
+                                    <h:outputText rendered="#{producto.enSubasta}" value="Precio de salida: #{producto.precio}" />
+                                    <h:outputText rendered="#{producto.enSubasta}" value="Puja a superar: #{producto.ultimaPuja}" />
                                     <h:outputText value="usuario ofertador: #{producto.usuarioIdusuario.nombre}" />
-                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="en venta directa" ></h:outputText >
-                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="en modo subasta" ></h:outputText >
+                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="En venta directa" ></h:outputText >
+                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="En modo subasta" ></h:outputText >
                                     
                           
                                 </h:panelGrid>
@@ -395,10 +397,10 @@
                      <p:growl id="grow221"  />
                          
                   
-                    <p:poll interval="5" listener="#{productoView.actualizaVistaTodosProductos()}" update="productos" />
+                   <p:poll interval="1" listener="#{productoView.actualizaVistaVentas()}" update="listaVentas" />
                  
                     <p:dataGrid   var="venta" value="#{productoView.listaVentas}" columns="3" 
-                            rows="12" paginator="true" id="productos"
+                            rows="12" paginator="true" id="listaVentas"
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             rowsPerPageTemplate="6,12,16" 
                             style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
@@ -432,29 +434,44 @@
 
                                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos ne 'comprados'}">
                                     <h:outputText value="¿Esta Enviado?: " />
-                                    <p:selectBooleanButton id="value1" value="#{venta.enviado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    <h:outputText value="#{venta.enviado}" />
                                   
                                     <h:outputText value="¿Esta Cobrado?: " />
-                                    <p:selectBooleanButton id="value4" value="#{venta.cobrado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    <h:outputText value="#{venta.cobrado}" />
+                                     <h:outputText value="¿El Comprador lo ha marcado como recibido?: " />
+                                     <h:outputText value="#{venta.recibido}" />
+                                    <h:outputText value="¿El comprador lo ha marcado como pagado?: " />
+                                    <h:outputText value="#{venta.pagado}" />                                 
+                                    
                                     </h:panelGrid>
                                     
                                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos eq 'comprados'}">
                                     <h:outputText value="¿Esta Recibido?: " />
-                                    <p:selectBooleanButton id="value2" value="#{venta.recibido}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                     <h:outputText value="#{venta.recibido}" />
                                     <h:outputText value="¿Esta Pagado?: " />
-                                    <p:selectBooleanButton id="value3" value="#{venta.pagado}" onLabel="Sí" offLabel="No" style="width:60px" />                                    
+                                    <h:outputText value="#{venta.pagado}" />
+                                    <h:outputText value="¿El Vendedor lo ha marcado como Enviado?: " />
+                                    <h:outputText value="#{venta.enviado}" />
+                                    <h:outputText value="¿El vendedor lo ha marcado como cobrado?: " />
+                                    <h:outputText value="#{venta.cobrado}" />
                                     </h:panelGrid>
-                          
+                        
                                 </h:panelGrid>
-                            <p:commandButton id="boton1" value="Salvar"  update="grow22"  action="#{productoView.salvaVenta(venta)}" icon="ui-icon-check" >
-                               <f:param id="parametro3" name="venta" value="#{venta}" />
-                            </p:commandButton>
+
                                        <p:separator />
                                 <p:commandLink update=":form33:detalleDenuncia" oncomplete="PF('creacionDenuncia').show()" title="crear Denuncia">
                                     <h:outputText styleClass="ui-icon ui-icon-pin-s" style="margin:0 auto;" />
                                     <h:outputText value ="denunciar"  />
                                     <f:setPropertyActionListener value="#{venta}" target="#{productoView.ventaSeleccionada}" />
                                 </p:commandLink>
+                                          <p:separator />
+                                <p:commandLink update=":form333:detalleVenta" oncomplete="PF('editarVenta').show()" title="Editar Venta">
+                                    <f:setPropertyActionListener value="#{venta}" target="#{productoView.ventaSeleccionada2}" />
+                                    <h:outputText value ="editar venta"  />
+                                    
+                                </p:commandLink>
+                                          <p:separator />
+                                      
                             </p:panel>
                          </p:dataGrid>
                     
@@ -473,8 +490,8 @@
                       <h:form id="form3" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                           <p:growl id="msgs3" showDetail="true" escape="false"/>
                           <p:messages id="msgsDenduncia" /> 
-                             <p:dialog id="dlg" header="Informacion Producto" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="false"
-                                        width="500" height="650"
+                             <p:dialog id="dlg" header="Informacion Producto" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                                        width="500" height="550"
                                         style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
                                  
                                 <p:outputPanel id="detalleProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
@@ -511,8 +528,10 @@
                                     <h:outputText value="#{productoView.productoSeleccionado.usuarioIdusuario.nombre}" />
                                     <h:outputText value="Email Usuario" />
                                     <h:outputText value="#{productoView.productoSeleccionado.usuarioIdusuario.email}" />                                    
-                                    <h:outputText value="Fecha puesta en venta:" />
-                                    <h:outputText value="#{productoView.productoSeleccionado.fechaProducto}" />
+                                    <h:outputText value="Fecha puesta en venta:" />                                   
+                                    <h:outputText value="#{productoView.productoSeleccionado.fechaProducto}" >
+                                     <f:convertDateTime pattern="d-M-yyyy" />
+                                    </h:outputText>
                                     <h:outputText  rendered="#{not (productoView.productoSeleccionado.enSubasta)}" value="Precio:" ></h:outputText >
                                     <h:outputText  rendered="#{not (productoView.productoSeleccionado.enSubasta)}" value="#{productoView.productoSeleccionado.precio}" ></h:outputText >
                                     <h:outputText  rendered="#{(productoView.productoSeleccionado.enSubasta)}" value="puja a superar:" ></h:outputText >
@@ -525,8 +544,7 @@
 
                                     <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado and  productoView.soloMios and productoView.productoSeleccionado.enSubasta and not productoView.productoSeleccionado.expirado }"  columnClasses="label,value" id="panelDetalle2"
                                     style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
-                                      <p:growl id="msgsSalvar" showDetail="true" escape="false"/>  
-                                       
+                                                                      
 
                                     <h:outputText value="Nombre:" />
                                     <h:inputText value="#{productoView.productoSeleccionado.nombre}" />
@@ -534,13 +552,13 @@
                                     <h:inputText value="#{productoView.productoSeleccionado.descripcion}" />
                                     <h:outputText value="Precio de Salida: " />
                                     <h:inputText value="#{productoView.productoSeleccionado.precio}"/>
-                                    <h:outputText  rendered="#{(productoView.productoSeleccionado.enSubasta) }" value="últimaPuja:" ></h:outputText >
-                                    <h:inputText  rendered="#{(productoView.productoSeleccionado.enSubasta)}" value="#{(productoView.productoSeleccionado.ultimaPuja)}" ></h:inputText >                                   
+                                    <h:outputText   value="últimaPuja:" ></h:outputText >
+                                    <h:outputText  value="#{(productoView.productoSeleccionado.ultimaPuja)}"/>                                   
                                     
                                     
                                   </p:panelGrid>
                                     
-                                    <p:commandButton rendered="#{(productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.expirado)and productoView.soloMios}" id="botonSalvarSubasta" value="Salvar Producto" update=":form2:grow21"    actionListener="#{productoView.salvarProducto()}" 
+                                    <p:commandButton rendered="#{(productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.expirado)and productoView.soloMios}" id="botonSalvarSubasta" value="Salvar Producto" update=":form2:grow21 :form2"    actionListener="#{productoView.salvarProducto()}" 
                                                      icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
   
                                                
@@ -571,7 +589,7 @@
                                   </p:panelGrid>  
                                     
 
-                                    <p:commandButton rendered="#{not(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.vendido and productoView.soloMios}" id="botonSalvarVentaDirecta" value="Salvar Producto" update=":form2:grow21"    actionListener="#{productoView.salvarProducto()}" 
+                                    <p:commandButton rendered="#{not(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.vendido and productoView.soloMios}" id="botonSalvarVentaDirecta" value="Salvar Producto" update=":form2:grow21 :form2"    actionListener="#{productoView.salvarProducto()}" 
                                                      icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
   
                                                
@@ -585,26 +603,46 @@
                                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog>  
                                
-                                    <p:commandButton rendered="#{not (productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.vendido )and not productoView.soloMios}" id="boton" value="Comprar Producto" update="msgs3"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check" >
+                                    <p:commandButton rendered="#{not (productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.vendido )and not productoView.soloMios}" id="boton" value="Comprar Producto" update="msgs3 :form2:grow21 :form2"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check"
+                                                     oncomplete="PF('dialogoProducto').hide();">
   
                                                  <f:param id="parametro1" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
                                                  <f:param id="parametro2" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
 
+                                                <p:confirm header="Confirmación" message="¿Quieres comprar el producto?" icon="ui-icon-alert" />
                                     </p:commandButton>
-                                    <p:commandButton rendered="#{productoView.soloMios}" id="botonBorrar" value="Prueba Borrar Producto" update="msgs3"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check" >
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog> 
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <p:commandButton rendered="#{productoView.soloMios}" id="botonBorrar" value="Borrar Producto" update=":form2:grow21 :form2"    actionListener="#{productoView.borrarProductoNoVendido()}" 
+                                                     icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
   
-                                                 <f:param id="parametro11" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
-                                                 <f:param id="parametro21" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
+                                               
+                                                 <f:param id="parametroBorrar111" name="idProductoABorrar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                    </p:commandButton>                                    
+                                     <p:confirm header="Confirmación" message="¿Quieres Variar los datos del producto?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>                                      
                                     
                                     <h:outputText rendered="#{not (productoView.productoSeleccionado.enSubasta)and (productoView.productoSeleccionado.vendido )}" value="Producto Vendido"  style="color: red" />
                                     
-                                    <p:inputText rendered="#{(productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.expirado)}" id="puja" value="#{gestionProductoBean.pujaPropuesta}" label="puja">
+                                    <p:inputText rendered="#{(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.expirado and not productoView.soloMios}" id="puja" value="#{gestionProductoBean.pujaPropuesta}" label="puja">
                                         <f:validateLength minimum="1" />
                                     </p:inputText>
                                     
-                                    <p:commandButton rendered="#{(productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.expirado)}" id="boton2" value="Realizar puja"  actionListener="#{gestionProductoBean.pujaXProducto()}" icon="ui-icon-check" update=":form2 msgs3 " 
+                                    <p:commandButton rendered="#{(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.expirado and not productoView.soloMios}" id="boton2" value="Realizar puja"  actionListener="#{gestionProductoBean.pujaXProducto()}" icon="ui-icon-check" update=":form2 msgs3 " 
                                                          >
   
                                                  <f:param id="parametro3" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
@@ -615,10 +653,10 @@
                                     </p:commandButton>
                                     
                                     <h:outputText value="&lt;br/&gt;" escape="false" />
-                                    <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (not productoView.productoSeleccionado.expirado)}" 
+                                    <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and not productoView.productoSeleccionado.expirado and not productoView.soloMios}" 
                                                   value="podrá pujar por el durante: " />
                                     <h:outputText value="&lt;br/&gt;" escape="false" />
-                                     <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (not productoView.productoSeleccionado.expirado)}" 
+                                     <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and not productoView.productoSeleccionado.expirado and not productoView.soloMios}" 
                                                   value="#{productoView.elapsedDays} dias  #{productoView.elapsedHours} horas #{productoView.elapsedMinutes} minutos y #{productoView.elapsedSeconds} segundos " />
                                                                     
                                       <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (productoView.productoSeleccionado.expirado)}" value="expirado tiempo de puja"  style="color: red" />
@@ -678,13 +716,103 @@
                                             <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog>
+                                        
+                                        
+                                        
+ 
                                  
                                 </p:outputPanel>
                               
                             </p:dialog>
+                           
+                           
+                            
                     
                        </h:form>                
-                
+                       
+                          
+    
+                          <h:form id="form333" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"> 
+                           
+                             <p:dialog id="dialogoEditarVenta" header="Detalles Venta" widgetVar="editarVenta" 
+                                        width="500" height="350"
+                                        style="background-color: #c8bfe7; background: #c8bfe7;">
+                                
+                                 
+                                <p:outputPanel id="detalleVenta" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7;">
+                                    
+                                    <h:graphicImage value="../VisualizaImagen?tipo=imagenUnica&amp;idProducto=#{productoView.ventaSeleccionada2.productoIdproducto.idproducto}" width="50" height="50" style="alignment-adjust: central">
+                                   
+                                    </h:graphicImage>
+
+                                    
+                                    
+                                   <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos ne 'comprados'}">
+                                    <h:outputText value="¿Esta Enviado?: " />
+                                    <p:selectBooleanButton id="value1" value="#{productoView.ventaSeleccionada2.enviado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                  
+                                    <h:outputText value="¿Esta Cobrado?: " />
+                                    <p:selectBooleanButton id="value4" value="#{productoView.ventaSeleccionada2.cobrado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                     <h:outputText value="¿El Comprador lo ha marcado como recibido?: " />
+                                     <h:outputText value="#{productoView.ventaSeleccionada2.recibido}" />
+                                    <h:outputText value="¿El comprador lo ha marcado como pagado?: " />
+                                    <h:outputText value="#{productoView.ventaSeleccionada2.pagado}" />                                 
+                                    
+                                    </h:panelGrid>
+                                    
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos eq 'comprados'}">
+                                    <h:outputText value="¿Esta Recibido?: " />
+                                    <p:selectBooleanButton id="value2" value="#{productoView.ventaSeleccionada2.recibido}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    <h:outputText value="¿Esta Pagado?: " />
+                                    <p:selectBooleanButton id="value3" value="#{productoView.ventaSeleccionada2.pagado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    <h:outputText value="¿El Vendedor lo ha marcado como Enviado?: " />
+                                    <h:outputText value="#{productoView.ventaSeleccionada2.enviado}" />
+                                    <h:outputText value="¿El vendedor lo ha marcado como cobrado?: " />
+                                    <h:outputText value="#{productoView.ventaSeleccionada2.cobrado}" />
+                                    </h:panelGrid>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+
+                                    <p:separator />
+                                        
+
+                                        
+                                        <p:commandButton id="botonActualizaVenta" value="Guardar Venta" update=":form22:grow221"    actionListener="#{productoView.salvaVenta()}" 
+                                                         icon="ui-icon-check" oncomplete="PF('editarVenta').hide();" >
+                                             <f:ajax event="dialogReturn" render=":form22 @all" />
+                                        
+                                         
+                                        </p:commandButton>
+                                        <p:separator />
+                                        <p:commandButton  rendered="#{productoView.filtroMisProductos eq 'vendidos'}" id="botonBorrarVenta2" value="Borrar Venta" update=":form22:grow221"    actionListener="#{productoView.borrarVenta()}" 
+                                                     icon="ui-icon-check"  oncomplete="PF('editarVenta').hide();" >
+  
+                                               
+                                                <f:ajax event="dialogReturn" render=":form22" />
+                                                 <f:ajax event="dialogReturn" render=":form22:grow221" />
+                                            <f:param id="parametro222" name="idVentaABorrar" value="#{productoView.ventaSeleccionada2.idventa}" />
+
+                                        </p:commandButton>
+                                        
+    
+                                        
+
+                                        
+                                        
+ 
+                                 
+                                </p:outputPanel>
+                              
+                            </p:dialog>
+                    </h:form>
+                                     
                 
 
             </p:layout>

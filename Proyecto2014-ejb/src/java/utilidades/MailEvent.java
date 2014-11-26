@@ -68,6 +68,17 @@ private List<Puja> listaPujas;
 
               
     }
+    public void borradoProductoConPujaUsuario(@Observes @BorradoProductoConPujas Puja puja){
+        Usuario usuarioPujador=puja.getUsuarioIdusuario();
+        Producto productoPujado=puja.getProductoIdproducto();
+          String mensajeAVendedor="información desde BuyUp \n";
+          mensajeAVendedor=mensajeAVendedor+"El producto "+productoPujado.getNombre()  +" por el que habias pujado en nuestro portal \n";
+          mensajeAVendedor=mensajeAVendedor+"acaba de ser borrado por el Usuario que lo había puesto a la venta "+"\n";
+          
+
+          emailService.envioIndividual(usuarioPujador.getEmail(),"Borrado producto por el que habias pujado en BuyUp", mensajeAVendedor);
+        
+    }
     public void compradoPruductoVentaDirecta(@Observes @CompraVentaDirecta Venta venta ) {
         
          

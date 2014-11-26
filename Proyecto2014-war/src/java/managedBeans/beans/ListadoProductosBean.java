@@ -96,9 +96,11 @@ private boolean buscandoPorCategoria;
 private String filtroMisProductos;
 private Denuncia denuncia;
 private Venta ventaSeleccionada;
+private Venta ventaSeleccionada2;
 private String motivoDenuncia;
 private String tipoDenuncia;
 private List<Puja> pujasProducto ;
+private String ventasAMostrar;
 
 private FacesMessage facesMessage;
 private FacesContext faceContext;
@@ -214,6 +216,14 @@ private String titulo;
         this.pujasProducto = pujasProducto;
     }
 
+    public String getVentasAMostrar() {
+        return ventasAMostrar;
+    }
+
+    public void setVentasAMostrar(String ventasAMostrar) {
+        this.ventasAMostrar = ventasAMostrar;
+    }
+    
     
     
 
@@ -340,6 +350,16 @@ private String titulo;
         this.ventaSeleccionada = ventaSeleccionada;
     }
 
+    public Venta getVentaSeleccionada2() {
+        return ventaSeleccionada2;
+    }
+
+    public void setVentaSeleccionada2(Venta ventaSeleccionada2) {
+        this.ventaSeleccionada2 = ventaSeleccionada2;
+    }
+    
+    
+    
     public String getMotivoDenuncia() {
         return motivoDenuncia;
     }
@@ -374,6 +394,7 @@ private String titulo;
        //setBuscandoPorNombre(false);
        todosProductos();
        setTitulo("Categorias");
+       setVentasAMostrar("NoEnviados");
        
        
     }
@@ -737,10 +758,121 @@ private String titulo;
 //        actualizaVistaTodosProductos();
     }
     
+    public void misProductosCompradosNORecibidos(String sin){
+        System.out.println("compradoNORecibidos(String sin)");
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
+        setVentasAMostrar("NoRecibidos");
+        setListaVentas(listaVentasTempo);
+
+        
+        
+
+    }
+    public void misProductosCompradosRecibidos(String sin){
+        System.out.println("compradoRecibidos(String sin)");
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
+        setVentasAMostrar("Recibidos");
+        setListaVentas(listaVentasTempo);
+
+        
+        
+
+    }
+    public void misProductosVendidosEnviados(String sin){
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorEnviados(usuario);
+        setVentasAMostrar("Enviados");
+        setListaVentas(listaVentasTempo);
+
+    }
+    
+    public void misProductosVendidosNoEnviados(String sin){
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorNoEnviados(usuario);
+        setVentasAMostrar("NoEnviados");
+        setListaVentas(listaVentasTempo);
+
+    }
+    public void misProductosCompradosNORecibidos(){
+        System.out.println("compradoNORecibidos()");
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
+        setVentasAMostrar("NoRecibidos");
+         if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado que no hayas recibido","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+             
+         }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has comprados y no has recibido","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            setListaVentas(listaVentasTempo);
+         }
+        
+        
+
+    }
+    public void misProductosCompradosRecibidos(){
+        System.out.println("compradoRecibidos()");
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
+        setVentasAMostrar("Recibidos");
+         if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado y que hayas recibido","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+             
+         }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has comprados y ya has recibido","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            setListaVentas(listaVentasTempo);
+         }
+        
+        
+
+    }
+    public void misProductosVendidosEnviados(){
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorEnviados(usuario);
+        setVentasAMostrar("Enviados");
+         if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que hayas enviado","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+             
+         }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has vendido y ya has enviado","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            setListaVentas(listaVentasTempo);
+         }
+    }
+    
+    public void misProductosVendidosNoEnviados(){
+        setListaVentas(null);
+        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorNoEnviados(usuario);
+        setVentasAMostrar("NoEnviados");
+         if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que no hayas enviado","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+             
+         }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has vendido y aun no has enviado","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            setListaVentas(listaVentasTempo);
+         }
+    }
     public void misProductosCompradosNORecibidos(ActionEvent event){
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
+        setVentasAMostrar("NoRecibidos");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado que no hayas recibido","");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -758,6 +890,7 @@ private String titulo;
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
+        setVentasAMostrar("Recibidos");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado y que hayas recibido","");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -775,6 +908,7 @@ private String titulo;
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorEnviados(usuario);
+        setVentasAMostrar("Enviados");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que hayas enviado","");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -790,6 +924,7 @@ private String titulo;
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorNoEnviados(usuario);
+        setVentasAMostrar("NoEnviados");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que no hayas enviado","");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -799,6 +934,37 @@ private String titulo;
             FacesContext.getCurrentInstance().addMessage(null, message);
             setListaVentas(listaVentasTempo);
          }
+    }    
+    public void actualizaVistaVentas(){
+        switch (filtroMisProductos) {
+            case "comprados":
+                switch (ventasAMostrar) {
+                    case "Recibidos":
+                    misProductosCompradosRecibidos("sin");
+                    
+                    break;
+                    case "NoRecibidos":
+                    misProductosCompradosNORecibidos("sin");
+                    break;
+                    
+                }
+            
+            break;
+            case "vendidos":
+                    switch (ventasAMostrar) {
+                    case "Enviados":
+                    misProductosVendidosEnviados("sin");
+                    
+                    break;
+                    case "NoEnviados":
+                    misProductosVendidosNoEnviados("sin");
+                    break;
+                    
+                }
+            
+            break;
+            
+        }
     }
     
     public void creaDenuncia(){
@@ -828,6 +994,13 @@ private String titulo;
            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"actualizados valores de la venta "+ venta.getFecha(),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
     }
+    public void salvaVenta(){
+
+        ventaFacade.salva(ventaSeleccionada2);
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"actualizados valores de la venta del producto "+ ventaSeleccionada.getProductoIdproducto().getNombre(),"");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
 
     public Usuario usuarioLogado(){
        
@@ -842,7 +1015,7 @@ private String titulo;
          FacesContext facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
             String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("idProductoASalvar");
-                  System.out.println("producto a Salvar antes de buscarlo con Map: "+idProducto);
+                  
                  
  
          
@@ -890,5 +1063,60 @@ private String titulo;
         
         
     }
+        public void borrarProductoNoVendido(){
+                            //recogemos los parametros necesarios
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("idProductoABorrar");
+          //producto a salvar
+           Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
+           if(productoABorrar.getEnSubasta()){
+                   pujasProducto=pujaFacade.pujaXProducto(productoABorrar);
+          
+              if((pujasProducto==null)||(pujasProducto.isEmpty())){//NO HAY PUJAS
+                 
+                  
+                  productoFacade.remove(productoABorrar);
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
+                   FacesContext.getCurrentInstance().addMessage(null, message);                
+              }else{
+                  
+                  for(Puja puja :pujasProducto){
+                      gestionEventos.fireBorradoProductoConPujasEvent(puja);
+                  }
+                  
+                  
+                  productoFacade.remove(productoABorrar);
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
+                   FacesContext.getCurrentInstance().addMessage(null, message);    
+              }
+        }else{
+                   productoFacade.remove(productoABorrar);
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+           }
+
+        }
+        public String borrarVenta(){
+           //recogemos los parametros necesarios
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            String idVenta = (String) facesContext.getExternalContext().getRequestParameterMap().get("idVentaABorrar");
+             Venta venta=ventaFacade.find((Integer)Integer.parseInt(idVenta));
+             if (!venta.isCobrado()||!venta.isEnviado()||!venta.isPagado()||!venta.isRecibido()){
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Para Borrar una venta tiene que estar, enviada, recibida,"
+                           + "pagada y cobrada ","");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+                   return "index.xhtml?faces-redirect=true";  
+             }else{
+                  
+                 
+                   productoFacade.remove(venta.getProductoIdproducto());
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Borrada Venta,","");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+                   return "index.xhtml?faces-redirect=true";  
+             }
+            
+        }
 
 }

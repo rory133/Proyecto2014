@@ -6,13 +6,21 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+            <f:facet name="Principal">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Alta Usuario</title>
+            </f:facet>
+
+         <h:outputStylesheet library="css" name="default.css"  />
+         <h:outputStylesheet library="css" name="cssLayout.css"  />
     </h:head>
     <h:body>
-        
+        <div class="fondo-norte">
         
     <h:form>
+        
       <p:panel id="panel" header="CrearUsuario">
+          <div class="fondo-norte">
         <p:growl id="msgs1" showDetail="true" escape="false"/>
        
  
@@ -79,11 +87,12 @@
             </h:panelGrid>
  
         <p:commandButton value="Crear cuenta"  update="msgs1 nombre apellidos email web localizacion loginUsuario pwd1 pwd2" action="#{userBean.crearUsuario()}" icon="ui-icon-check" />
-    </p:panel>
+    </div>
+      </p:panel>
 </h:form>
         
-        
-        
+         <h:link outcome="/index" value="volver" />
+        </div>
     </h:body>
 </html>
 
