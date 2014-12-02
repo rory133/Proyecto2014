@@ -11,10 +11,7 @@
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>Pagina Principal Administrador</title>
             </f:facet>
-        <!--
-        <h:outputStylesheet name="./css/default.css"/>
-        <h:outputStylesheet name="./css/cssLayout.css"/>
-        -->
+
         <h:outputStylesheet library="css" name="default.css"  />
         <h:outputStylesheet library="css" name="cssLayout.css"  />
         
@@ -24,26 +21,33 @@
         <h:body>
 
             <p:layout fullPage="true" rendered="#{ROLE_ADMIN}">
-                
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                        cabecera administrador
-                   
-                                   <br/>     
-            
-            <h:outputText value="#{loginBean.login}"/>
-            <br/>            
-            <h:outputText value="#{sessionScope.usuario.nombre}" /> 
-            <br/>            
-            <h:outputText value="#{sessionScope.login.role}" />
-            <br/>
-                   
-            <h:form>
-            <p:commandButton value="logout" icon="ui-icon-newwin"
-                               actionListener="#{loginBean.logout()}"/>
-            </h:form>
-            <h:outputText value=" el role es: " />
-                <h:outputText value=" #{sessionScope.login.role }" />
-           
+                <p:growl id="msgs" showDetail="true" escape="false"/>
+                 <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true"
+                      style="background-color: #7092be; background: #7092be !important;">
+                       <p:growl id="msgsNort" showDetail="true" escape="false"/>
+            <div class="fondo-norte">
+                <div class="texto-norte">
+                    <h:form>  
+                     <h:outputText value="Socio: #{sessionScope.login.login}  " /> 
+                            
+                                            
+                     <p:commandLink id="salir"  actionListener="#{loginBean.logout()}">
+                             <h:outputText value="Logout " />
+                             <p:tooltip id="toolTipFade00" for="salir" value="Salir como usuario" />
+                        </p:commandLink>
+                       
+                        </h:form>
+                </div>
+                    <h:form>
+                        
+                            <p:selectOneRadio id="filtroAdministrador" value="#{administradorBean.filtroAdministrador}">
+                                        <f:selectItem itemLabel="Administrar Taxonomias" itemValue="Taxonomias" />
+                                        <f:selectItem itemLabel="Administrar Usuarios" itemValue="Usarios" />
+                                        <f:selectItem itemLabel="Administrar Productos" itemValue="Productos" />
+                                        <f:ajax event="valueChange"  render=":formIzquierdo @all"/>
+                             </p:selectOneRadio>
+                    </h:form>
+            </div>
                    
                 </p:layoutUnit>
                 <!--
@@ -52,36 +56,100 @@
                 </p:layoutUnit>
                 -->
 
-                <p:layoutUnit position="west" size="25%" header="Categorias" collapsible="false">
-                    <h:form>
-                        <p:growl id="msgs" showDetail="true" escape="false"/>
+                <p:layoutUnit position="west" size="25%" header="#{administradorBean.filtroAdministrador}" collapsible="false"
+                    styleClass="izquierdo">
+                    
+                    
+                      
+                    <h:form id="formIzquierdo">
+                          <div class="formIzquierdo"> 
+                        <p:growl id="msgs0" showDetail="true" escape="false"/>
 
-                        <h3 style="margin-top:0">Single</h3>
-                        <p:tree value="#{treeSelectionView.root1}" var="doc"
-                                    selectionMode="single"
-                                    selection="#{treeSelectionView.selectedNode}">
-                            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
-                                <h:outputText value="#{doc.nombre}"/>
-                            </p:treeNode>
-                            <p:treeNode type="document" icon="ui-icon-document">
-                                <h:outputText value="#{doc.nombre}" />
-                            </p:treeNode>
-                            <p:treeNode type="picture" icon="ui-icon-image">
-                                <h:outputText value="#{doc.nombre}" />
-                            </p:treeNode>
-                            <p:treeNode type="mp3" icon="ui-icon-video">
-                                <h:outputText value="#{doc.nombre}" />
-                            </p:treeNode>
-                        </p:tree>
 
-                        <p:commandButton value="Display" update="msgs" icon="ui-icon-newwin"
-                                            actionListener="#{treeSelectionView.displaySelectedSingle}"/>
-                  </h:form>
+ 
+                        
+                        
+                    <h:panelGroup id="tableRenderPanel" rendered="#{administradorBean.filtroAdministrador eq 'Taxonomias'}" styleClass="izquierdo">
+                        
+                        <h:panelGrid columns="2" cellpadding="5">
+                        <h:outputText value="Crear nueva categoria:" id="crearCategoria" styleClass="izquierdo"/>
+                        <p:selectBooleanCheckbox value="#{administradorBean.creandoCategoria}" styleClass="izquierdo">
+                               <p:tooltip id="toolTipFade2" for="crearCategoria" value="Crear una categoria nueva" />
+                                <f:ajax event="change" render=":formCentro"/>
+                         </p:selectBooleanCheckbox> 
+                        </h:panelGrid>  
+                      
+                             
+                              <ui:include src="../listadoCategorias.xhtml" />
+      
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+                             
+   
+                       
+                       
+                       <p:commandButton value="Editar Categoria Seleccionada" update="msgs0" icon="ui-icon-newwin"
+                                        actionListener="#{crearCategoriaBean.editarCategoria()}">
+                            <f:ajax event="dialogReturn" render=":formCentro"/>
+                            <p:ajax  listener="#{crearCategoriaBean.editarCategoria()}" update=":formCentro" />
+                       </p:commandButton>
+                             
+                        <p:commandButton value="Asignar nuevo padre" update="msgs0" icon="ui-icon-newwin"
+                                         actionListener="#{crearCategoriaBean.asignarPadre()}" rendered="#{crearCategoriaBean.cambiarPadre and not crearCategoriaBean.comoRaiz}">
 
+                       </p:commandButton>    
+                         
+                    </h:panelGroup>
+
+               
+               
+
+                
+                
+                
+                
+                          </div>   
+                </h:form>
+               
                 </p:layoutUnit>
+                
+                
+                
+                
 
-                <p:layoutUnit position="center">
-                    Welcome to PrimeFaces
+                <p:layoutUnit id="layout_center" position="center" styleClass="center">
+                    <p:growl id="msgsCenter" showDetail="true" escape="false"/>
+                    <h:form id="formCentro" styleClass="center">
+                      
+                        <p:growl id="msgs" showDetail="true" escape="false"/>
+                        <h:panelGroup id="tableRenderPanel" rendered="#{administradorBean.creandoCategoria}">
+                                 <ui:include src="../crearCategoria.xhtml" />
+
+                        </h:panelGroup>
+                    
+                        <h:panelGroup id="tableRenderPanelEditarCategoria" rendered="#{crearCategoriaBean.editandoCategoria}">
+                                 <ui:include src="../editarCategoria.xhtml" />
+
+                        </h:panelGroup>
+                    
+                    
+                    
+                    
+                    </h:form>
+
+                    
                 </p:layoutUnit>
 
             </p:layout>

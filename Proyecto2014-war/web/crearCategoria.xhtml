@@ -1,0 +1,51 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    
+
+    
+    
+
+            <h:form id="formCrearCategoria"> 
+                <p:growl id="msgs" showDetail="true" escape="false"/>
+             <h:panelGrid columns="2" cellpadding="5">
+                 <h:outputText value="Crearla como categoria raiz:" id="tipoCategoriaRaiz" styleClass="center"/>
+                 <p:selectBooleanCheckbox value="#{crearCategoriaBean.comoRaiz}" styleClass="center">
+                       <p:tooltip id="toolTipFade2" for="tipoCategoriaRaiz" value="Crear una categoria nueva como raiz" />
+              
+                </p:selectBooleanCheckbox> 
+             </h:panelGrid>
+             <h:panelGrid columns="4" cellpadding="5">
+
+
+                <h:outputLabel for="nombre" value="Nombre: " />
+                <p:inputText id="nombre" value="#{crearCategoriaBean.nombre}" label="nombre">
+                    <f:validateLength minimum="4" />
+                </p:inputText>
+                <p:message for="nombre" />
+                <h:outputText value="#{crearCategoriaBean.nombre}" />
+
+                <h:outputLabel for="descripcion" value="descripcion: " />
+                <p:inputTextarea rows="5" cols="30" counter="display" maxlength="400"  counterTemplate="{0} caracteres restantes." autoResize="false" 
+                 id="descripcion" value="#{crearCategoriaBean.descripcion}" label="descripcion">   
+                  <f:validateLength minimum="10" />
+                </p:inputTextarea>
+                <h:outputText id="display" />
+                 <h:outputLabel value="" />
+                 <h:outputLabel value="" />
+                <p:message for="descripcion" /> 
+            </h:panelGrid>    
+       
+                                                   
+                       <p:commandButton id="boton" value="Crear Categoria"   update="formCrearCategoria:msgs :formIzquierdo :msgsNort :msgsCenter :msgs" action="#{crearCategoriaBean.guardarCategoria()}" icon="ui-icon-check">
+                              <f:ajax event="dialogReturn" render=":formIzquierdo:formIzquierdo2"/>
+                       </p:commandButton>
+
+          </h:form>
+
+            
+    </ui:composition>

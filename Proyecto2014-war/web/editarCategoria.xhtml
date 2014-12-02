@@ -1,0 +1,94 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    
+
+    
+    
+
+            <h:form id="formEditarCategoria"> 
+                <p:growl id="msgs" showDetail="true" escape="false"/>
+                
+             
+                
+                
+             <h:panelGrid columns="2" cellpadding="5">
+                 <h:outputText value="Crearla como categoria raiz:" id="tipoCategoriaRaiz" styleClass="center"/>
+                 <p:selectBooleanCheckbox value="#{crearCategoriaBean.comoRaiz}" styleClass="center" id="marcarComoRaiz">
+                       <p:tooltip id="toolTipFade2" for="marcarComoRaiz" value="Crear una categoria nueva como raiz" />
+              
+                </p:selectBooleanCheckbox> 
+                 
+                 <h:outputText value="Cambiar Padre:" id="cambioPadre" styleClass="center"/>
+                 <p:selectBooleanCheckbox value="#{crearCategoriaBean.cambiarPadre}" styleClass="center" id="cambiarPadre">
+                       <p:tooltip id="toolTipFade3" for="cambiarPadre" value="Cambiar de padre la categoira" />
+                    <f:ajax event="change" render=":formIzquierdo:tableRenderPanel :formCentro"/>
+                </p:selectBooleanCheckbox> 
+                                  
+                 <h:outputLabel for="nombrePadre" value="Nombre Padre: " />
+                 <h:outputLabel id="nombrePadre" value="#{crearCategoriaBean.nombrePadre}" />
+             </h:panelGrid>
+             <h:panelGrid columns="4" cellpadding="5">
+
+
+                <h:outputLabel for="nombre" value="Nombre: " />
+                <p:inputText id="nombre" value="#{crearCategoriaBean.nombre}" label="nombre">
+                    <f:validateLength minimum="4" />
+                </p:inputText>
+                <p:message for="nombre" />
+                <h:outputText value="#{crearCategoriaBean.nombre}" />
+                
+
+
+                <h:outputLabel for="descripcion" value="descripcion: " />
+                <p:inputTextarea rows="5" cols="30" counter="display" maxlength="400"  counterTemplate="{0} caracteres restantes." autoResize="false" 
+                 id="descripcion" value="#{crearCategoriaBean.descripcion}" label="descripcion">   
+                  <f:validateLength minimum="10" />
+                </p:inputTextarea>
+                <h:outputText id="display" />
+                 <h:outputLabel value="" />
+                 <h:outputLabel value="" />
+                <p:message for="descripcion" /> 
+            </h:panelGrid> 
+              
+       
+                                                   
+                <p:commandButton id="boton" value="Salvar Categoria"   update="msgs" action="#{crearCategoriaBean.salvarCategoriaCambiada()}" icon="ui-icon-check">
+                              <f:ajax event="dialogReturn" render=":formIzquierdo:formIzquierdo2"/>
+                </p:commandButton>
+                
+                <p:commandButton id="botonBorrar" value="Borrar Categoria"   update="msgs" action="#{crearCategoriaBean.borrarCategoria()}" icon="ui-icon-check">
+                              <f:ajax event="dialogReturn" render=":formIzquierdo:formIzquierdo2"/>
+              
+                
+                <p:confirm header="Confirmación" message="¿Se borrará esta categoria y sus hijas?" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                
+                
+                
+                 <h:panelGroup id="tableRenderPanelCategoriaPadre" rendered="#{crearCategoriaBean.cambiarPadre and not crearCategoriaBean.comoRaiz}" 
+                               styleClass="center">
+                                 
+                                 <ui:include src="listadoCategorias.xhtml" />
+
+
+                                   <p:commandButton value="Asignar nuevo padre" update="msgs" icon="ui-icon-newwin"
+                                                     actionListener="#{crearCategoriaBean.asignarPadre()}" >
+
+                                   </p:commandButton> 
+
+                </h:panelGroup>   
+
+          </h:form>
+
+            
+    </ui:composition>

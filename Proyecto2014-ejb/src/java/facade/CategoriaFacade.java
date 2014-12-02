@@ -34,4 +34,9 @@ public class CategoriaFacade extends AbstractFacade<Categoria> {
         super(Categoria.class);
     }
     
+    public Categoria salva(Categoria categoria){
+        return em.merge(categoria);
+      
+    }
+    
 }

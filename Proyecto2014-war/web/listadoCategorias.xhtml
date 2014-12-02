@@ -1,20 +1,17 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <h:head>
-         <h:outputStylesheet library="css" name="default.css"  />
-         <h:outputStylesheet library="css" name="cssLayout.css"  />
-    </h:head>
-    <h:body>
+
+        <h:form id="formIzquierdo2">
                        <p:growl id="msgs" showDetail="true" escape="false"/>
 
-                        <p:tree value="#{treeSelectionView.root1}" var="doc"
+                        <p:tree value="#{gestorCategorias.root1}" var="doc"
+                                 style="background-color: #e1c1a2 ;  background: #e1c1a2 !important;"
                                     selectionMode="single"
-                                    selection="#{treeSelectionView.selectedNode}">
+                                    selection="#{gestorCategorias.selectedNode}">
                             <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
                                 <h:outputText value="#{doc.nombre}"/>
                             </p:treeNode>
@@ -28,6 +25,13 @@
                                 <h:outputText value="#{doc.nombre}" />
                             </p:treeNode>
                         </p:tree>
-    </h:body>
-</html>
+                        <p:commandButton value="Elegir categoria seleecionada" update="msgs" icon="ui-icon-newwin"
+                                         actionListener="#{gestorCategorias.sumaCategoria()}">
+                        </p:commandButton>
+                       <p:commandButton value="Información Categoría" update="msgs" icon="ui-icon-newwin"
+                            actionListener="#{gestorCategorias.displaySelectedSingle}"/>
+                       
+        </h:form>
+    </ui:composition>
+
 
