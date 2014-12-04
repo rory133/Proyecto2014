@@ -106,16 +106,53 @@
                             <p:ajax  listener="#{crearCategoriaBean.editarCategoria()}" update=":formCentro" />
                        </p:commandButton>
                              
-                        <p:commandButton value="Asignar nuevo padre" update="msgs0" icon="ui-icon-newwin"
-                                         actionListener="#{crearCategoriaBean.asignarPadre()}" rendered="#{crearCategoriaBean.cambiarPadre and not crearCategoriaBean.comoRaiz}">
-
-                       </p:commandButton>    
+   
                          
                     </h:panelGroup>
 
                
                
+                        <h:panelGroup id="formCentroProductos" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Productos'}">
 
+                            
+                            <h:form id="formFiltro" style="width: 500px; margin: 0 auto;">
+                                    <p:panel header="¿solo vendidos?:">
+                               
+                                <h:panelGrid id="panelGrid"  columns="2" style="margin-bottom:10px" cellpadding="2">
+                                   
+                                    <p:selectOneRadio id="vendido" value="#{gestionProductosAdministradorView.vendidos}">
+                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
+                                        <f:selectItem itemLabel="solo no vendidos" itemValue="noVendidos" />
+                                        <f:selectItem itemLabel="solo ya Vendidos" itemValue="yaVendidos" />
+
+                                    </p:selectOneRadio>
+                                    <p:tooltip id="toolTipFade1" for="panelGrid" value="Filtra entre ya vendidos o aun no vendidos" />
+                                </h:panelGrid>
+                                       
+                                    </p:panel>
+
+
+                                <p:panel header="Tipo de venta:">
+                               <h:panelGrid id="panelGrid1" columns="2" style="margin-bottom:10px" cellpadding="2">
+                                  
+                                   <p:selectOneRadio id="filtro" value="#{gestionProductosAdministradorView.filtro}">
+                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
+                                        <f:selectItem itemLabel="Venta directa" itemValue="ventaDirecta" /> 
+                                        <f:selectItem itemLabel="Subasta" itemValue="subasta" /> 
+                                          
+                                            
+                                    </p:selectOneRadio>
+                                    <p:tooltip id="toolTipFade11" for="panelGrid1" value="Filtra entre productos en venta directa o en modo subasta" />
+                                </h:panelGrid>
+                                    
+                                 </p:panel>
+                                
+                                
+                                
+                                
+                           </h:form>
+                             <p:commandButton value="Aplicar Filtros" update="formFiltro"/>
+                     </h:panelGroup>
                 
                 
                 
@@ -131,7 +168,7 @@
 
                 <p:layoutUnit id="layout_center" position="center" styleClass="center">
                     <p:growl id="msgsCenter" showDetail="true" escape="false"/>
-                    <h:form id="formCentro" styleClass="center">
+                    <h:form id="formCentro" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Taxonomias'}">
                       
                         <p:growl id="msgs" showDetail="true" escape="false"/>
                         <h:panelGroup id="tableRenderPanel" rendered="#{administradorBean.creandoCategoria}">
@@ -148,6 +185,15 @@
                     
                     
                     </h:form>
+                    
+                     <h:form id="formCentroProductos" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Productos'}">
+                        <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListadoProductos()}" update="formCentroProductos listaProductosPortal" />
+                        <h:panelGroup id="listaProductosPortal" >
+                        
+                           <ui:include src="listadoProductos.xhtml" />
+                     
+                        </h:panelGroup>
+                     </h:form>
 
                     
                 </p:layoutUnit>

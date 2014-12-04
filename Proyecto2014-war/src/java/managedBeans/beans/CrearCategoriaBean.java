@@ -94,7 +94,7 @@ public class CrearCategoriaBean {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
       
        if (comoRaiz){
-         System.out.println(" puesta idCategoriaPadre en contexto a -1 comoRaiz: "+comoRaiz);   
+//         System.out.println(" puesta idCategoriaPadre en contexto a -1 comoRaiz: "+comoRaiz);   
         externalContext.getSessionMap().put("idCategoriaPadre", -1);
         setCambiarPadre(false);
        }
@@ -106,7 +106,7 @@ public class CrearCategoriaBean {
     }
 
     public void setCambiarPadre(boolean cambiarPadre) {
-        System.out.println(" actualizado cambiarPadre: "+cambiarPadre); 
+//        System.out.println(" actualizado cambiarPadre: "+cambiarPadre); 
         if(cambiarPadre){
         setComoRaiz(false);
         }
@@ -198,14 +198,14 @@ public class CrearCategoriaBean {
         facesContext = FacesContext.getCurrentInstance();
         session = (HttpSession) facesContext.getExternalContext().getSession(false);
         Integer categoriaSeleccionadaPadreNuevaCategoria=(Integer)session.getAttribute("idCategoria");
-        System.out.println(" categoria padre seleccionada "+categoriaSeleccionadaPadreNuevaCategoria);
+//        System.out.println(" categoria padre seleccionada "+categoriaSeleccionadaPadreNuevaCategoria);
         if (((categoriaSeleccionadaPadreNuevaCategoria == null) || (categoriaSeleccionadaPadreNuevaCategoria<0))&&!comoRaiz) {
            
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"DEBES SELECCIONAR UNA CATEGORIA o marcarla como categoria raiz","SELECCIONA UNA EN EL PANEL IZQUIERDO");
             FacesContext.getCurrentInstance().addMessage(null, message);
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);            
-            System.out.println(" sin seleccionar padre: ");
+//            System.out.println(" sin seleccionar padre: ");
             return "index.xhtml?faces-redirect=true";
         }else{
             
@@ -232,11 +232,11 @@ public class CrearCategoriaBean {
         
     }
     public String salvarCategoriaCambiada(){
-        System.out.println(" entro en salvar Categoria: ");
-         System.out.println(" comoRaiz: "+comoRaiz);
-          System.out.println(" cambiarPadre: "+cambiarPadre);
-          System.out.println("getPadre(): "+getPadre());
-          System.out.println("padre: "+padre);
+//        System.out.println(" entro en salvar Categoria: ");
+//         System.out.println(" comoRaiz: "+comoRaiz);
+//          System.out.println(" cambiarPadre: "+cambiarPadre);
+//          System.out.println("getPadre(): "+getPadre());
+//          System.out.println("padre: "+padre);
           
         if ((!comoRaiz)&& (!cambiarPadre)) {
            
@@ -287,13 +287,13 @@ public class CrearCategoriaBean {
             categoriaSeleccionadaParaEditar.setNombre(nombre);
             categoriaSeleccionadaParaEditar.setIdPadre(getPadre());
             
-            System.out.println(" salvando categoria : ");
-            System.out.println(" ______________________ ");
-           System.out.println(" id : "+categoriaSeleccionadaParaEditar.getIdcategoria());
-           System.out.println("  nombre : "+categoriaSeleccionadaParaEditar.getNombre());
-           System.out.println(" descripcion : "+categoriaSeleccionadaParaEditar.getDescripcion());
-           System.out.println(" nombre padre : "+categoriaSeleccionadaParaEditar.getIdPadre().getNombre());
-            System.out.println(" ______________________ ");
+//            System.out.println(" salvando categoria : ");
+//            System.out.println(" ______________________ ");
+//           System.out.println(" id : "+categoriaSeleccionadaParaEditar.getIdcategoria());
+//           System.out.println("  nombre : "+categoriaSeleccionadaParaEditar.getNombre());
+//           System.out.println(" descripcion : "+categoriaSeleccionadaParaEditar.getDescripcion());
+//           System.out.println(" nombre padre : "+categoriaSeleccionadaParaEditar.getIdPadre().getNombre());
+//            System.out.println(" ______________________ ");
             categoriaFacade.salva(categoriaSeleccionadaParaEditar);
             
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -316,13 +316,13 @@ public class CrearCategoriaBean {
             categoriaSeleccionadaParaEditar.setNombre(nombre);
             categoriaSeleccionadaParaEditar.setIdPadre(null);
             
-            System.out.println(" salvando categoria : ");
-            System.out.println(" ______________________ ");
-           System.out.println(" id : "+categoriaSeleccionadaParaEditar.getIdcategoria());
-           System.out.println("  nombre : "+categoriaSeleccionadaParaEditar.getNombre());
-           System.out.println(" descripcion : "+categoriaSeleccionadaParaEditar.getDescripcion());
-           
-            System.out.println(" ______________________ ");
+//            System.out.println(" salvando categoria : ");
+//            System.out.println(" ______________________ ");
+//           System.out.println(" id : "+categoriaSeleccionadaParaEditar.getIdcategoria());
+//           System.out.println("  nombre : "+categoriaSeleccionadaParaEditar.getNombre());
+//           System.out.println(" descripcion : "+categoriaSeleccionadaParaEditar.getDescripcion());
+//           
+//            System.out.println(" ______________________ ");
             categoriaFacade.salva(categoriaSeleccionadaParaEditar);
             
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -373,10 +373,10 @@ public class CrearCategoriaBean {
         setPadre(categoriaFacade.find(categoriaSeleccionada));
         setCategoriaSeleccionadaParaPadre(getPadre());
         
-        System.out.println(" asignando padre: "+getCategoriaSeleccionadaParaPadre());
-        System.out.println(" id asignando padre: "+getCategoriaSeleccionadaParaPadre().getIdcategoria());
-        System.out.println(" categoria Editando: "+getCategoriaSeleccionadaParaEditar());
-        System.out.println(" id categoria Editando: "+getCategoriaSeleccionadaParaEditar().getIdcategoria());
+//        System.out.println(" asignando padre: "+getCategoriaSeleccionadaParaPadre());
+//        System.out.println(" id asignando padre: "+getCategoriaSeleccionadaParaPadre().getIdcategoria());
+//        System.out.println(" categoria Editando: "+getCategoriaSeleccionadaParaEditar());
+//        System.out.println(" id categoria Editando: "+getCategoriaSeleccionadaParaEditar().getIdcategoria());
         if (getCategoriaSeleccionadaParaEditar().getIdcategoria()==getCategoriaSeleccionadaParaPadre().getIdcategoria()){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"no puedes asignar una categoria como su propio padre","");
           
@@ -400,7 +400,7 @@ public class CrearCategoriaBean {
         facesContext = FacesContext.getCurrentInstance();
         session = (HttpSession) facesContext.getExternalContext().getSession(false);
         Integer idcategoriaSeleccionada=(Integer)session.getAttribute("idCategoria");
-        System.out.println(" entro en editar Categoria: idcategoriaSeleccionada "+idcategoriaSeleccionada);
+//        System.out.println(" entro en editar Categoria: idcategoriaSeleccionada "+idcategoriaSeleccionada);
         setCategoriaSeleccionada(categoriaFacade.find(idcategoriaSeleccionada));
         setCategoriaSeleccionadaParaEditar(getCategoriaSeleccionada());
         administrador.setCreandoCategoria(false);
@@ -420,14 +420,14 @@ public class CrearCategoriaBean {
 //            categoria.setIdPadre(categoriaFacade.find(categoriaSeleccionada).getIdPadre());
 //          Categoria  categoria=categoriaFacade.find(categoriaSeleccionada);
             setNombre(categoriaSeleccionadaParaEditar.getNombre());
-             System.out.println(" nombre  Categoria: "+getNombre());
+//             System.out.println(" nombre  Categoria: "+getNombre());
             setDescripcion(categoriaSeleccionadaParaEditar.getDescripcion());
-             System.out.println(" descipcion  Categoria: "+getDescripcion());
+//             System.out.println(" descipcion  Categoria: "+getDescripcion());
              
              setPadre(categoriaSeleccionadaParaEditar.getIdPadre());
               if(categoriaSeleccionadaParaEditar.getIdPadre()!=null)
               {
-                  System.out.println(" padre: "+getPadre().getNombre());
+//                  System.out.println(" padre: "+getPadre().getNombre());
                   setNombrePadre(getPadre().getNombre());
                   setComoRaiz(false);
               }else{

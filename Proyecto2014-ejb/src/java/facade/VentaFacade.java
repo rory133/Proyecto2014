@@ -98,7 +98,18 @@ public class VentaFacade extends AbstractFacade<Venta> {
         }
       return null;
     }    
-    
+    public Venta ventaXProducto(Producto productoP){
+     try{
+      Query  query=getEntityManager().createQuery(
+                             "SELECT venta4 FROM Venta venta4 WHERE  venta4.productoIdproducto = :produtoP");
+      query.setParameter("productoP" , productoP);
+         return (Venta)query.getSingleResult();
+      }catch (Exception e){
+            System.out.println("@@@error en contrando ventas del usuario : "+productoP);
+            System.out.println(e.toString());
+        }
+      return null;
+    }   
     public Venta salva(Venta venta){
       
         return em.merge(venta);
