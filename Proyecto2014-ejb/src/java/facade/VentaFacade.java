@@ -101,11 +101,11 @@ public class VentaFacade extends AbstractFacade<Venta> {
     public Venta ventaXProducto(Producto productoP){
      try{
       Query  query=getEntityManager().createQuery(
-                             "SELECT venta4 FROM Venta venta4 WHERE  venta4.productoIdproducto = :produtoP");
+                             "SELECT venta4 FROM Venta venta4 WHERE  venta4.productoIdproducto = :productoP");
       query.setParameter("productoP" , productoP);
          return (Venta)query.getSingleResult();
       }catch (Exception e){
-            System.out.println("@@@error en contrando ventas del usuario : "+productoP);
+            System.out.println("@@@error en contrando ventas del Producto : "+productoP);
             System.out.println(e.toString());
         }
       return null;

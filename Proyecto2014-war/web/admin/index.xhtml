@@ -187,7 +187,12 @@
                     </h:form>
                     
                      <h:form id="formCentroProductos" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Productos'}">
+                         
+                         <!--
                         <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListadoProductos()}" update="formCentroProductos listaProductosPortal" />
+                        -->
+                        <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update="formCentroProductos listaProductosPortal" />
+                        
                         <h:panelGroup id="listaProductosPortal" >
                         
                            <ui:include src="listadoProductos.xhtml" />

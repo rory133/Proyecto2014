@@ -10,9 +10,12 @@
 package facade;
 
 import entidades.Denuncia;
+import entidades.Venta;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -35,6 +38,19 @@ public class DenunciaFacade extends AbstractFacade<Denuncia> {
 
         return em.merge(denuncia);
       
+    }
+    
+    public List<Denuncia> denunciaXVenta(Venta ventaP){
+     try{
+      Query  query=getEntityManager().createQuery(
+                             "SELECT denuncia2 FROM Denuncia denuncia2 WHERE denuncia2.ventaIdventa = :ventaP");
+      query.setParameter("ventaP" , ventaP);
+         return query.getResultList();
+      }catch (Exception e){
+            System.out.println("@@@error en contrando denuncia de la venta : "+ventaP);
+            System.out.println(e.toString());
+        }
+      return null;
     }
     
 }

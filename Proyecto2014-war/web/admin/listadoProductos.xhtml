@@ -5,9 +5,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-        <h:form id="listaProductos"> 
+    
+    
+   
+     <h:form id="listaProductos"> 
             
-               <p:dataTable id="tablaListadoProductos" var="producto" value="#{gestionProductosAdministradorView.listaProductos}"
+         <p:dataTable id="tablaListadoProductos" var="productoCompleto" value="#{gestionProductosAdministradorView.listaProductosCompletos}"
                   paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
                  paginator="true" rows="10" style="margin-bottom:20px">
                
@@ -18,42 +21,40 @@
                     Productos del portal
                 </f:facet>
                 <p:column headerText="Imagen">
-                    <h:graphicImage value="../VisualizaImagen?tipo=imagenUnica&amp;idProducto=#{producto.idproducto}" width="50" height="50">
+                    <h:graphicImage value="../VisualizaImagen?tipo=imagenUnica&amp;idProducto=#{productoCompleto.producto.idproducto}" width="50" height="50">
                                    
                     </h:graphicImage>
                 </p:column>
                 <p:column headerText="Fecha">
-                    <h:outputText value="#{producto.fechaProducto}" >
+                    <h:outputText value="#{productoCompleto.producto.fechaProducto}" >
                                   <f:convertDateTime pattern="d-M-yyyy" />
                      </h:outputText>
                 </p:column>
                 <p:column headerText="Nombre">
-                    <h:outputText value="#{producto.nombre}" />
+                    <h:outputText value="#{productoCompleto.producto.nombre}" />
                 </p:column>
                 <p:column headerText="Descripción">
-                    <h:outputText value="#{producto.descripcion}" />
+                    <h:outputText value="#{productoCompleto.producto.descripcion}" />
                 </p:column>
                 <p:column headerText="Precio">
-                    <h:outputText value="#{producto.precio}" />
+                    <h:outputText value="#{productoCompleto.producto.precio}" />
                 </p:column>
                 <p:column headerText="Usuario Vendedor">
-                    <h:outputText value="#{producto.usuarioIdusuario.nombre} " />
-                    <h:outputText value=" #{producto.usuarioIdusuario.apellidos}" />
+                    <h:outputText value="#{productoCompleto.producto.usuarioIdusuario.nombre} " />
+                    <h:outputText value=" #{productoCompleto.producto.usuarioIdusuario.apellidos}" />
                 </p:column>
                 <p:column headerText="en modo subasta?">
-                    <h:outputText value="#{producto.enSubasta}" />
+                    <h:outputText value="#{productoCompleto.producto.enSubasta}" />
                 </p:column>
                 <p:column headerText="está vendido?">
-                    <h:outputText value="#{producto.vendido}" />
+                    <h:outputText value="#{productoCompleto.producto.vendido}" />
                 </p:column>
 
                  <p:column headerText="Venta">
-                     <h:outputText value="#{gestionProductosAdministradorView.ventaDelProducto.idventa}" rendered="#{producto.vendido}"/>
+                     <h:outputText value="#{productoCompleto.venta.idventa}" rendered="#{productoCompleto.producto.vendido}"/>
+                     <h:outputText value="#{productoCompleto.venta.fecha}" rendered="#{productoCompleto.producto.vendido}"/>
                 </p:column>
-                    <p:column headerText="Venta2"> 
-                        <f:selectItems value="#{gestionProductosAdministradorView.encuentraVentaProducto(producto)}"
-                                       var="venta" itemLabel="#{gestionProductosAdministradorView.ventaDelProducto}" itemValue="#{gestionProductosAdministradorView.ventaDelProducto.idventa}" />
-                 </p:column>
+
 
     </p:dataTable>
 
