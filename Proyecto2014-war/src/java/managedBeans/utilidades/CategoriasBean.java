@@ -44,7 +44,7 @@ import utilidades.Loggable;
 //@RequestScoped
 //@Loggable
 //public class SelectionView implements Serializable {
-public class CategoriasBean  {
+public class CategoriasBean implements Serializable  {
  private Categoria categoriaSelec;
  private String nombreCategoria;
  private Integer idCategoria;

@@ -18,14 +18,18 @@ import facade.ImagenFacade;
 import facade.ProductoFacade;
 import facade.PujaFacade;
 import facade.VentaFacade;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.Dependent;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import utilidades.DatosProductoCompleto;
 
 /**
@@ -58,6 +62,9 @@ GestionEventos gestionEventos;
 @EJB
 private PujaFacade pujaFacade;
 
+private FacesMessage facesMessage;
+private FacesContext facesContext;
+
 private List<Producto> listaProductos;
 
 private Venta ventaDelProducto;
@@ -69,6 +76,10 @@ private String vendidos;//todos, yaVendidos, noVendidos
 private DatosProductoCompleto datosProductoCompleto;
 
 private List<DatosProductoCompleto>listaProductosCompletos;
+
+private DatosProductoCompleto datosProductoCompletoSeleccionado;
+
+
 
 
 ///////////////////////////////////////////////
@@ -122,9 +133,19 @@ private List<DatosProductoCompleto>listaProductosCompletos;
     public void setListaProductosCompletos(List<DatosProductoCompleto> listaProductosCompletos) {
         this.listaProductosCompletos = listaProductosCompletos;
     }
-    
-    
 
+    public DatosProductoCompleto getDatosProductoCompletoSeleccionado() {
+        return datosProductoCompletoSeleccionado;
+    }
+
+    public void setDatosProductoCompletoSeleccionado(DatosProductoCompleto datosProductoCompletoSeleccionado) {
+         this.datosProductoCompletoSeleccionado = datosProductoCompletoSeleccionado;
+    }
+
+
+    
+    
+    
     
 ////////////////////////////////////////////////
     public GestionProductosAdministradorBean() {
@@ -133,8 +154,10 @@ private List<DatosProductoCompleto>listaProductosCompletos;
     
     @PostConstruct
     public void init() {
+         facesContext=FacesContext.getCurrentInstance();
        setVendidos("todos");
        setFiltro("todos");
+      
       // setListaProductos(productoFacade.todosProductosFiltrados(filtro, vendidos));
        actualizaListaProductosCompletos();
     }
@@ -180,11 +203,11 @@ private List<DatosProductoCompleto>listaProductosCompletos;
         }
           System.out.println("@@tamaño FINAL listaProductosCompletos2: "+listaProductosCompletos2.size());
           
-           for(DatosProductoCompleto datosProductoCompleto3: listaProductosCompletos2){
-               System.out.println("##############################################################################################");
-               System.out.println("###productoen lista productos completo: "+ datosProductoCompleto3.getProducto().getNombre()+" ###########################");
-                System.out.println("##############################################################################################");
-           }
+//           for(DatosProductoCompleto datosProductoCompleto3: listaProductosCompletos2){
+//               System.out.println("##############################################################################################");
+//               System.out.println("###productoen lista productos completo: "+ datosProductoCompleto3.getProducto().getNombre()+" ###########################");
+//                System.out.println("##############################################################################################");
+//           }
          
          setListaProductosCompletos(listaProductosCompletos2);
         
@@ -195,6 +218,41 @@ private List<DatosProductoCompleto>listaProductosCompletos;
     public void encuentraVentaProducto(Producto producto){
         
        setVentaDelProducto(ventaFacade.ventaXProducto(producto));
+        
+    }
+    public String borrarProducto(){
+                            //recogemos los parametros necesarios
+         System.out.println("#######borrarProducto");
+        facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoABorrar");
+             System.out.println("#######id producto a borrar: "+idProducto);
+          //producto a salvar
+           Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
+            
+                  
+                  productoFacade.remove(productoABorrar);
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+                   FacesContext context = FacesContext.getCurrentInstance();
+                   context.getExternalContext().getFlash().setKeepMessages(true);   
+        return "index.xhtml?faces-redirect=true";
+    }
+    
+        public String borrarProducto2(){
+                            //recogemos los parametros necesarios
+         System.out.println("#######borrarProducto");
+         
+                 // facesContext=FacesContext.getCurrentInstance();
+         
+         
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO ","");
+                   facesContext.getCurrentInstance().addMessage(null, message);
+                   FacesContext context = facesContext.getCurrentInstance();
+                   context.getExternalContext().getFlash().setKeepMessages(true);  
+         
+         return "index.xhtml?faces-redirect=true";
+   
         
     }
 }

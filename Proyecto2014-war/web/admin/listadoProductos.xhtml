@@ -9,7 +9,7 @@
     
    
      <h:form id="listaProductos"> 
-            
+            <p:growl id="msgsCenter2" showDetail="true" escape="false"/>
          <p:dataTable id="tablaListadoProductos" var="productoCompleto" value="#{gestionProductosAdministradorView.listaProductosCompletos}"
                   paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
                  paginator="true" rows="10" style="margin-bottom:20px">
@@ -30,10 +30,17 @@
                                   <f:convertDateTime pattern="d-M-yyyy" />
                      </h:outputText>
                 </p:column>
-                <p:column headerText="Nombre">
+                <p:column headerText="Nombre" >
                     <h:outputText value="#{productoCompleto.producto.nombre}" />
+                    
+                        <p:commandLink update=":formCentroProductos:listaProductos:formEdicionProducto:panelProducto" oncomplete="PF('detallesProducto').show()" title="Ver Detalles">
+                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                    <f:setPropertyActionListener value="#{productoCompleto}" target="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado}" />
+                        </p:commandLink>
+                    
+                    
                 </p:column>
-                <p:column headerText="Descripción">
+             <p:column headerText="Descripción" width="80" resizable="true"  >
                     <h:outputText value="#{productoCompleto.producto.descripcion}" />
                 </p:column>
                 <p:column headerText="Precio">
@@ -46,20 +53,98 @@
                 <p:column headerText="en modo subasta?">
                     <h:outputText value="#{productoCompleto.producto.enSubasta}" />
                 </p:column>
+             
                 <p:column headerText="está vendido?">
                     <h:outputText value="#{productoCompleto.producto.vendido}" />
                 </p:column>
+                 <p:column headerText="Denuncias">
+                     <h:outputText value="Numero de denuncias: #{productoCompleto.denuncias.size()}" rendered="#{productoCompleto.denuncias.size()  gt 0}"/>
 
-                 <p:column headerText="Venta">
-                     <h:outputText value="#{productoCompleto.venta.idventa}" rendered="#{productoCompleto.producto.vendido}"/>
-                     <h:outputText value="#{productoCompleto.venta.fecha}" rendered="#{productoCompleto.producto.vendido}"/>
+                </p:column>  
+             
+                 <p:column headerText="Pujas">
+                     <h:outputText value="Numero de pujas: #{productoCompleto.pujas.size()}" rendered="#{productoCompleto.producto.enSubasta}"/>
+
+                </p:column>               
+                 <p:column headerText="Venta" width="80" resizable="true">
+                     <h:outputText value="id venta: #{productoCompleto.venta.idventa}" rendered="#{productoCompleto.producto.vendido}"/>
+                      <BR/>
+                      <h:outputText value="Vendido el:" rendered="#{productoCompleto.producto.vendido}"/>
+                     <h:outputText value="#{productoCompleto.venta.fecha}" rendered="#{productoCompleto.producto.vendido}">
+                             <f:convertDateTime pattern="d-M-yyyy" />
+                     </h:outputText>
                 </p:column>
+             
+             <p:column headerText="Eliminar" width="80">
+                 
+                     <p:commandButton action="#{gestionProductosAdministradorView.borrarProducto()}"  value="Borrar" icon="ui-icon-trash" 
+                                      id="botonBorrarProducto" update=":formCentroProductos:listaProductos:msgsCenter2">
+                         <p:tooltip id="toolTipFade03" for="botonBorrarProducto" value="Borrar este producto" />
+                         <f:param id="productoABorrar" name="productoABorrar" value="#{productoCompleto.producto.idproducto}" />
+                            
+                                     <p:confirm header="Confirmación" message="¿Quieres borrar este producto definitivamente?" icon="ui-icon-alert" />
+                      </p:commandButton>
+                               
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                            <h:form>
+                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog> 
+                
+		 </p:column>  
+
+    
+           
 
 
     </p:dataTable>
+            
 
+                         <h:panelGroup id="producto" >
+                        
+                           <ui:include src="edicionProducto.xhtml" />
+                     
+                        </h:panelGroup>
             
-            
-        </h:form>
+        
+    <!--
+    <h:form id="formEdicionProducto">
+                    <p:dialog id="dlg" header="Informacion Producto" widgetVar="detallesProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                                        width="500" height="550"
+                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+                             <p:outputPanel id="panelProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
+
+      
+
+                                    <p:commandButton type="button" onclick="PF('switcher').previous();"
+                                        icon="ui-icon-circle-triangle-w" id="prev"/>
+                                    <p:commandButton type="button" onclick="PF('switcher').next();"
+                                        icon="ui-icon-circle-triangle-e" id="next"/>
+
+                                    <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
+                                        slideshowAuto="false">
+                                        <ui:repeat value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.imagenes}" var="imagen" id="manuelSwitcherImages">
+                                            <p:graphicImage value="../VisualizaImagen?tipo=porIdImagen&amp;idImagen=#{imagen.idimagen}"/>
+                                        </ui:repeat>
+                                    </p:imageSwitch>
+
+
+                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado and not productoView.soloMios}"  columnClasses="label,value" id="panelDetalle"
+                                      style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
+                                    <h:outputText value="Nombre:" />
+                                    <h:inputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.nombre}" />
+                                    <h:outputText value="Descripcion:" />
+                                    <h:inputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.descripcion}" />
+                                  </p:panelGrid>
+
+                     </p:outputPanel>
+                </p:dialog>
+    
+       </h:form>
+         
+         -->
+    
+   </h:form> 
 </ui:composition>
 

@@ -213,3 +213,19 @@
     margin-left:  0 auto;
     background-color: #c8bfe7!important;
 }
+.buttonBorrar {
+   /* background-image: url(/resources/images/elimiarProducto.jpg);*/
+     background-image: url(images/elimiarProducto.jpg);
+      background-repeat: no-repeat;
+    
+     width:100%; 
+     height: 100%;
+}
+.buttonBorrar2 {
+    background-image: url(images/elimiarProducto.jpg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 100%;
+      display: inline-block;
+
+}
