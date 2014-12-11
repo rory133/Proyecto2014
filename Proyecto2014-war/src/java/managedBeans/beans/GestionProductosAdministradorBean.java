@@ -10,7 +10,9 @@
 package managedBeans.beans;
 
 import ejbs.GestionEventos;
+import entidades.Denuncia;
 import entidades.Producto;
+import entidades.Puja;
 import entidades.Venta;
 import facade.CategoriaFacade;
 import facade.DenunciaFacade;
@@ -18,12 +20,11 @@ import facade.ImagenFacade;
 import facade.ProductoFacade;
 import facade.PujaFacade;
 import facade.VentaFacade;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -39,7 +40,7 @@ import utilidades.DatosProductoCompleto;
 @ManagedBean(name = "gestionProductosAdministradorView")
 
 @SessionScoped
-public class GestionProductosAdministradorBean {
+public class GestionProductosAdministradorBean implements Serializable {
 
     @EJB
 private ProductoFacade productoFacade;
@@ -79,7 +80,9 @@ private List<DatosProductoCompleto>listaProductosCompletos;
 
 private DatosProductoCompleto datosProductoCompletoSeleccionado;
 
+private List<Denuncia>denunciasSeleccionadas;
 
+private List<Puja>pujasSeleccionadas;
 
 
 ///////////////////////////////////////////////
@@ -140,6 +143,22 @@ private DatosProductoCompleto datosProductoCompletoSeleccionado;
 
     public void setDatosProductoCompletoSeleccionado(DatosProductoCompleto datosProductoCompletoSeleccionado) {
          this.datosProductoCompletoSeleccionado = datosProductoCompletoSeleccionado;
+    }
+
+    public List<Denuncia> getDenunciasSeleccionadas() {
+        return denunciasSeleccionadas;
+    }
+
+    public void setDenunciasSeleccionadas(List<Denuncia> denunciasSeleccionadas) {
+        this.denunciasSeleccionadas = denunciasSeleccionadas;
+    }
+
+    public List<Puja> getPujasSeleccionadas() {
+        return pujasSeleccionadas;
+    }
+
+    public void setPujasSeleccionadas(List<Puja> pujasSeleccionadas) {
+        this.pujasSeleccionadas = pujasSeleccionadas;
     }
 
 

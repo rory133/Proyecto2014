@@ -23,11 +23,11 @@ import java.util.List;
 public class DatosProductoCompleto {
     
     
-   Producto producto;
-   Venta venta;
-   List<Denuncia>denuncias;
-   List<Imagen>imagenes;
-   List<Puja>pujas;
+   private Producto producto;
+   private Venta venta;
+   private List<Denuncia>denuncias;
+   private List<Imagen>imagenes;
+   private List<Puja>pujas;
 
     public Producto getProducto() {
         return producto;

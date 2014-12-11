@@ -37,6 +37,9 @@
                                     <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.nombre}" />
                                     <h:outputText value="Descripcion:" />
                                     <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.descripcion}" />
+                                    <h:outputText value="Expirado:" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.enSubasta}" />
+                                    <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.expirado}" 
+                                                  rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.enSubasta}" />
                                   </p:panelGrid>
 
          </p:outputPanel>

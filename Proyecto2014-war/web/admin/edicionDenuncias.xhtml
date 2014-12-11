@@ -1,0 +1,64 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+          
+    
+    <h:form id="formEdicionDenuncias">
+        
+        
+    <p:dialog id="dlg" header="Informacion Denuncias" widgetVar="detallesDenuncias" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                                        width="500" height="550"
+                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+     <p:outputPanel id="panelDenuncias" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">   
+     
+        <p:dataTable id="tablaListadoDenuncias" var="denuncia" value="#{gestionProductosAdministradorView.denunciasSeleccionadas}"
+                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                 paginator="true" rows="10" style="margin-bottom:20px">
+             
+             
+                <f:facet name="header">
+                    Denuncias del Producto seleccionado
+                </f:facet>
+            
+                <p:column headerText="Realizada por:">
+                    <h:outputText value="#{denuncia.denunciaIdusuario.nombre} "/>
+                    <h:outputText value="#{denuncia.denunciaIdusuario.apellidos}"/>              
+                    
+                </p:column>
+            
+                <p:column headerText="Fecha Denuncia:">
+                    <h:outputText value="#{denuncia.fechaDenuncia}" >
+                                  <f:convertDateTime pattern="d-M-yyyy" />
+                     </h:outputText>
+                </p:column>
+                <p:column headerText="Tipo:">
+                    <h:outputText value="#{denuncia.tipoDenuncia}"/>
+                </p:column>    
+            
+                <p:column headerText="Motivo:">
+                    <h:outputText value="#{denuncia.motivo}"/>
+                </p:column>  
+            
+                <p:column headerText="Atendida por:">
+                    <h:outputText value="#{denuncia.atiendeIdusuario1.nombre}"/>
+                    <h:outputText value="#{denuncia.atiendeIdusuario1.apellidos}"/>              
+                    
+                </p:column>      
+                <p:column headerText="Fecha Atención:">
+                    <h:outputText value="#{denuncia.fechaAtencion}" >
+                                  <f:convertDateTime pattern="d-M-yyyy" />
+                     </h:outputText>
+                </p:column>            
+             
+        </p:dataTable>
+      </p:outputPanel>
+    </p:dialog>
+        
+        
+        
+        
+    </h:form> 
+</ui:composition>

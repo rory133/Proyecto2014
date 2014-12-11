@@ -1,0 +1,52 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+          
+    
+    <h:form id="formEdicionPujas">
+        
+        
+    <p:dialog id="dlg" header="Informacion pujas" widgetVar="detallesPujas" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                                        width="500" height="550"
+                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+        
+        <p:outputPanel id="panelPujas" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
+        <p:dataTable id="tablaListadoDenuncias" var="puja" value="#{gestionProductosAdministradorView.pujasSeleccionadas}"
+                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                 paginator="true" rows="10" style="margin-bottom:20px">
+             
+             
+                <f:facet name="header">
+                    Pujas del Producto seleccionado
+
+                </f:facet>
+            
+                <p:column headerText="Realizada por:">
+                    <h:outputText value="#{puja.usuarioIdusuario.nombre}"/>
+                    <h:outputText value="#{puja.usuarioIdusuario.apellidos}"/>              
+                    
+                </p:column>
+            
+                <p:column headerText="Fecha Puja:">
+                    <h:outputText value="#{puja.fecha}" >
+                                  <f:convertDateTime pattern="d-M-yyyy" />
+                     </h:outputText>
+                </p:column>
+                <p:column headerText="Oferta realizada:">
+                    <h:outputText value="#{puja.oferta}"/>
+                </p:column>    
+             
+         </p:dataTable>
+            
+       </p:outputPanel>
+             
+    </p:dialog>
+        
+        
+        
+        
+    </h:form> 
+</ui:composition>

@@ -59,12 +59,19 @@
                 </p:column>
                  <p:column headerText="Denuncias">
                      <h:outputText value="Numero de denuncias: #{productoCompleto.denuncias.size()}" rendered="#{productoCompleto.denuncias.size()  gt 0}"/>
+                        <p:commandLink update=":formCentroProductos:listaProductos:formEdicionDenuncias:panelDenuncias" oncomplete="PF('detallesDenuncias').show()" title="Ver Detalles">
+                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                    <f:setPropertyActionListener value="#{productoCompleto.denuncias}" target="#{gestionProductosAdministradorView.denunciasSeleccionadas}" />
+                        </p:commandLink>
 
                 </p:column>  
              
                  <p:column headerText="Pujas">
                      <h:outputText value="Numero de pujas: #{productoCompleto.pujas.size()}" rendered="#{productoCompleto.producto.enSubasta}"/>
-
+                        <p:commandLink update=":formCentroProductos:listaProductos:formEdicionPujas:panelPujas" oncomplete="PF('detallesPujas').show()" title="Ver Detalles">
+                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                    <f:setPropertyActionListener value="#{productoCompleto.pujas}" target="#{gestionProductosAdministradorView.pujasSeleccionadas}" />
+                        </p:commandLink>
                 </p:column>               
                  <p:column headerText="Venta" width="80" resizable="true">
                      <h:outputText value="id venta: #{productoCompleto.venta.idventa}" rendered="#{productoCompleto.producto.vendido}"/>
@@ -104,6 +111,19 @@
                          <h:panelGroup id="producto" >
                         
                            <ui:include src="edicionProducto.xhtml" />
+                     
+                        </h:panelGroup>
+            
+            
+                        <h:panelGroup id="pujas" >
+                        
+                           <ui:include src="edicionPujas.xhtml" />
+                     
+                        </h:panelGroup>
+            
+                        <h:panelGroup id="denuncias" >
+                        
+                           <ui:include src="edicionDenuncias.xhtml" />
                      
                         </h:panelGroup>
             
