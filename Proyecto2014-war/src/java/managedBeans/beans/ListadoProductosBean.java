@@ -987,6 +987,24 @@ private String titulo;
         
         
     }
+    public void creaDenunciaMalClasificado(){
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+         String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("idProductoMalClasificado");
+        
+         Producto productoMalClasificado=productoFacade.find((Integer)Integer.parseInt(idProducto));
+          System.out.println("marcar como mal clasificado PRODUCTO "+productoMalClasificado.getNombre()+" idproducto "+idProducto );
+         
+         productoMalClasificado.setMarcadoMalClasificado(true);
+         productoFacade.salva(productoMalClasificado);
+         
+
+//        gestionEventos.fireRealizadaDenuncia(denuncia);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha marcado el producto "+productoMalClasificado.getNombre()+" como mal clasificado" ,"");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        
+        
+    }    
     
     public void salvaVenta(Venta venta){
 

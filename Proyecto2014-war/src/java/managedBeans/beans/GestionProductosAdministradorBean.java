@@ -74,6 +74,8 @@ private String filtro;//todos, ventaDirecta, subasta
 
 private String vendidos;//todos, yaVendidos, noVendidos
 
+private String denunciados;//todos, fa, noVendidos
+
 private DatosProductoCompleto datosProductoCompleto;
 
 private List<DatosProductoCompleto>listaProductosCompletos;
@@ -257,21 +259,23 @@ private List<Puja>pujasSeleccionadas;
                    context.getExternalContext().getFlash().setKeepMessages(true);   
         return "index.xhtml?faces-redirect=true";
     }
-    
-        public String borrarProducto2(){
+    public String borrarProductoPorImprocedente(){
                             //recogemos los parametros necesarios
          System.out.println("#######borrarProducto");
-         
-                 // facesContext=FacesContext.getCurrentInstance();
-         
-         
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO ","");
-                   facesContext.getCurrentInstance().addMessage(null, message);
-                   FacesContext context = facesContext.getCurrentInstance();
-                   context.getExternalContext().getFlash().setKeepMessages(true);  
-         
-         return "index.xhtml?faces-redirect=true";
-   
-        
+        facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoABorrar");
+             System.out.println("#######id producto a borrar: "+idProducto);
+          //producto a salvar
+           Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
+            
+                  
+                  productoFacade.remove(productoABorrar);
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+                   FacesContext context = FacesContext.getCurrentInstance();
+                   context.getExternalContext().getFlash().setKeepMessages(true);   
+        return "index.xhtml?faces-redirect=true";
     }
+
 }

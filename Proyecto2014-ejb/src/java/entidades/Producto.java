@@ -99,6 +99,10 @@ public class Producto implements Serializable {
     @NotNull
     @Column(name = "expirado", nullable = false)
     private boolean expirado;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "marcadoMalClasificado")
+    private boolean marcadoMalClasificado;
     @Transient
     private float ultimaPuja;
 
@@ -208,8 +212,16 @@ public class Producto implements Serializable {
     public void setUltimaPuja(float ultimaPuja) {
         this.ultimaPuja = ultimaPuja;
     }
-    
 
+    public boolean isMarcadoMalClasificado() {
+        return marcadoMalClasificado;
+    }
+
+    public void setMarcadoMalClasificado(boolean marcadoMalClasificado) {
+        this.marcadoMalClasificado = marcadoMalClasificado;
+    }
+    
+    
     
     
 

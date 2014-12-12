@@ -43,8 +43,8 @@
              <p:column headerText="Descripción" width="80" resizable="true"  >
                     <h:outputText value="#{productoCompleto.producto.descripcion}" />
                 </p:column>
-                <p:column headerText="Precio">
-                    <h:outputText value="#{productoCompleto.producto.precio}" />
+                <p:column headerText="Denunciado por mal Clasificado" width="80" resizable="true" >
+                    <h:graphicImage library="images" name="boton rojo.png" style=" vertical-align: middle; margin-left:  30px " rendered="#{productoCompleto.producto.marcadoMalClasificado}"/>
                 </p:column>
                 <p:column headerText="Usuario Vendedor">
                     <h:outputText value="#{productoCompleto.producto.usuarioIdusuario.nombre} " />
@@ -128,42 +128,7 @@
                         </h:panelGroup>
             
         
-    <!--
-    <h:form id="formEdicionProducto">
-                    <p:dialog id="dlg" header="Informacion Producto" widgetVar="detallesProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
-                                        width="500" height="550"
-                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
-                             <p:outputPanel id="panelProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
 
-      
-
-                                    <p:commandButton type="button" onclick="PF('switcher').previous();"
-                                        icon="ui-icon-circle-triangle-w" id="prev"/>
-                                    <p:commandButton type="button" onclick="PF('switcher').next();"
-                                        icon="ui-icon-circle-triangle-e" id="next"/>
-
-                                    <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
-                                        slideshowAuto="false">
-                                        <ui:repeat value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.imagenes}" var="imagen" id="manuelSwitcherImages">
-                                            <p:graphicImage value="../VisualizaImagen?tipo=porIdImagen&amp;idImagen=#{imagen.idimagen}"/>
-                                        </ui:repeat>
-                                    </p:imageSwitch>
-
-
-                                    <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado and not productoView.soloMios}"  columnClasses="label,value" id="panelDetalle"
-                                      style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
-                                    <h:outputText value="Nombre:" />
-                                    <h:inputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.nombre}" />
-                                    <h:outputText value="Descripcion:" />
-                                    <h:inputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.descripcion}" />
-                                  </p:panelGrid>
-
-                     </p:outputPanel>
-                </p:dialog>
-    
-       </h:form>
-         
-         -->
     
    </h:form> 
 </ui:composition>

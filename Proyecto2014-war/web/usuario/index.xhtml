@@ -660,7 +660,17 @@
                                                   value="#{productoView.elapsedDays} dias  #{productoView.elapsedHours} horas #{productoView.elapsedMinutes} minutos y #{productoView.elapsedSeconds} segundos " />
                                                                     
                                       <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (productoView.productoSeleccionado.expirado)}" value="expirado tiempo de puja"  style="color: red" />
-                                
+                                       <BR/>
+                                      <p:commandButton id="botonDenunciaMalClasificado" value="Marcar como mal clasificado"    actionListener="#{productoView.creaDenunciaMalClasificado()}" 
+                                                         icon="ui-icon-check" update=":form2 msgs3" >
+                                            <p:confirm header="Confirmación" message="¿Marcará el producto como mal clasificado?" icon="ui-icon-alert" />
+                                            <f:param id="parametroProductoMalClasificado" name="idProductoMalClasificado" value="#{productoView.productoSeleccionado.idproducto}" />
+                                        </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>                                      
 
                                 </p:outputPanel>
                             </p:dialog>
