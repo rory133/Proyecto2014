@@ -33,10 +33,14 @@
                 <p:column headerText="Nombre" >
                     <h:outputText value="#{productoCompleto.producto.nombre}" />
                     
-                        <p:commandLink update=":formCentroProductos:listaProductos:formEdicionProducto:panelProducto" oncomplete="PF('detallesProducto').show()" title="Ver Detalles">
+                        <p:commandLink update=":formEdicionProducto:panelProducto :formBotonEliminarComoMalClasificado" oncomplete="PF('detallesProducto').show()" title="Ver Detalles">
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                                     <f:setPropertyActionListener value="#{productoCompleto}" target="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado}" />
                         </p:commandLink>
+                    
+
+                    
+                    
                     
                     
                 </p:column>
@@ -45,6 +49,7 @@
                 </p:column>
                 <p:column headerText="Denunciado por mal Clasificado" width="80" resizable="true" >
                     <h:graphicImage library="images" name="boton rojo.png" style=" vertical-align: middle; margin-left:  30px " rendered="#{productoCompleto.producto.marcadoMalClasificado}"/>
+                
                 </p:column>
                 <p:column headerText="Usuario Vendedor">
                     <h:outputText value="#{productoCompleto.producto.usuarioIdusuario.nombre} " />
@@ -108,11 +113,7 @@
     </p:dataTable>
             
 
-                         <h:panelGroup id="producto" >
-                        
-                           <ui:include src="edicionProducto.xhtml" />
-                     
-                        </h:panelGroup>
+
             
             
                         <h:panelGroup id="pujas" >

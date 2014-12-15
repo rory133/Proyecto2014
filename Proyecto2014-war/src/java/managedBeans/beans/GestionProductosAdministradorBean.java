@@ -277,5 +277,26 @@ private List<Puja>pujasSeleccionadas;
                    context.getExternalContext().getFlash().setKeepMessages(true);   
         return "index.xhtml?faces-redirect=true";
     }
+    public String atenderDenunciaMalClasificado(){
+        
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+         String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoAEliminarMarca");
+          System.out.println("######atenderDenunciaMalClasificado"+idProducto);
+         Producto productoMalClasificado=productoFacade.find((Integer)Integer.parseInt(idProducto));
+          
+       
+         
+         productoMalClasificado.setMarcadoMalClasificado(false);
+         productoFacade.salva(productoMalClasificado);
+         
 
+//        gestionEventos.fireRealizadaDenuncia(denuncia);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha eliminado la marca de mal clasificado del producto "+productoMalClasificado.getNombre() ,"");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getFlash().setKeepMessages(true);   
+        return "index.xhtml?faces-redirect=true";
+        
+    }    
 }

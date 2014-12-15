@@ -982,7 +982,7 @@ private String titulo;
         //denunciaFacade.create(denuncia);
         denunciaFacade.salva(denuncia);
         gestionEventos.fireRealizadaDenuncia(denuncia);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha crado correctamente la denuncia por "+denuncia.getTipoDenuncia(),"");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha creado correctamente la denuncia por "+denuncia.getTipoDenuncia(),"");
         FacesContext.getCurrentInstance().addMessage(null, message);
         
         
@@ -993,7 +993,7 @@ private String titulo;
          String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("idProductoMalClasificado");
         
          Producto productoMalClasificado=productoFacade.find((Integer)Integer.parseInt(idProducto));
-          System.out.println("marcar como mal clasificado PRODUCTO "+productoMalClasificado.getNombre()+" idproducto "+idProducto );
+//          System.out.println("marcar como mal clasificado PRODUCTO "+productoMalClasificado.getNombre()+" idproducto "+idProducto );
          
          productoMalClasificado.setMarcadoMalClasificado(true);
          productoFacade.salva(productoMalClasificado);

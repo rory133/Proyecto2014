@@ -5,15 +5,15 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui">
           
-    
-    <h:form id="formEdicionProducto">
-        
+  
+   
+
         
     <p:dialog id="dlg" header="Informacion Producto" widgetVar="detallesProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
                                         width="500" height="550"
                                         style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
         
-     
+       <h:form id="formEdicionProducto">
       <p:outputPanel id="panelProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
 
       
@@ -33,21 +33,67 @@
 
                                     <p:panelGrid  columns="2" columnClasses="label,value" id="panelDetalle"
                                       style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
+                                    <h:outputText value="IdProducto:" />
+                                    <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
                                     <h:outputText value="Nombre:" />
                                     <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.nombre}" />
                                     <h:outputText value="Descripcion:" />
                                     <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.descripcion}" />
+                                    <h:outputText value="Precio:" />
+                                    <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.precio}" />
+
                                     <h:outputText value="Expirado:" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.enSubasta}" />
                                     <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.expirado}" 
                                                   rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.enSubasta}" />
+                                    <h:outputText value="Marcado como mal clasificado?:" />
+                                    <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado}" />
+                                    
+
                                   </p:panelGrid>
 
+                                    
+
          </p:outputPanel>
+        
+        
+
+        
+
+        
+        
+        
+        
+        </h:form>
+        
+           
+        
+       <h:form id="formBotonEliminarComoMalClasificado" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado}"> 
+                <p:commandButton action="#{gestionProductosAdministradorView.atenderDenunciaMalClasificado()}"  value="Atender denuncia como mál clasificado" icon="ui-icon-trash" 
+                  id="botonEliminarComoMalClasificado" update=":formCentroProductos:listaProductos:msgsCenter2">
+                 <p:tooltip id="toolTipFade04" for="botonEliminarComoMalClasificado" value="Elimnar marca como mal clasificado" />
+                 <f:param id="idProductoMalClasificado" name="productoAEliminarMarca" value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
+
+                             <p:confirm header="Confirmación" message="¿Se eliminará la marca de mal clasificado?" icon="ui-icon-alert" />
+              </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                    <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+
+        
+
+       </h:form>
     </p:dialog>
         
+
         
-        
-        
-    </h:form> 
+       
+   
+    
+
+
 </ui:composition>
 
