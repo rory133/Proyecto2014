@@ -53,7 +53,7 @@
 
                                     
 
-         </p:outputPanel>
+         
         
         
 
@@ -62,12 +62,10 @@
         
         
         
-        
+        </p:outputPanel>
         </h:form>
         
-           
-        
-       <h:form id="formBotonEliminarComoMalClasificado" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado}"> 
+        <h:form id="formBotonEliminarComoMalClasificado" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado}"> 
                 <p:commandButton action="#{gestionProductosAdministradorView.atenderDenunciaMalClasificado()}"  value="Atender denuncia como mál clasificado" icon="ui-icon-trash" 
                   id="botonEliminarComoMalClasificado" update=":formCentroProductos:listaProductos:msgsCenter2">
                  <p:tooltip id="toolTipFade04" for="botonEliminarComoMalClasificado" value="Elimnar marca como mal clasificado" />
@@ -85,7 +83,29 @@
 
         
 
-       </h:form>
+       </h:form>  
+        
+       <h:form id="formBotonBorrarProductoPorImprocedente" > 
+           <p:commandButton action="#{gestionProductosAdministradorView.borrarProductoPorImprocedente()}"  value="Borrar producto por inapropiado" icon="ui-icon-trash" 
+                  id="botonEliminarPorImprocedente" update=":formCentroProductos:listaProductos:msgsCenter2">
+                 <p:tooltip id="toolTipFade6" for="botonEliminarPorImprocedente" value="Eliminar el producto por improcedente" />
+                 <f:param id="idProductoABorrar" name="productoABorrar" value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
+
+                             <p:confirm header="Confirmación" message="¿Se eliminará este producto?" icon="ui-icon-alert" />
+              </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                    <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+
+        
+
+       </h:form>  
+        
+ 
     </p:dialog>
         
 

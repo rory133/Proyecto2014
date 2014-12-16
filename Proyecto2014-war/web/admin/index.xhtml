@@ -147,11 +147,27 @@
                                     
                                  </p:panel>
                                 
+                               <p:panel header="filtrar por denuncias:">
+                               <h:panelGrid id="panelGrid2" columns="2" style="margin-bottom:10px" cellpadding="2">
+                                  
+                                   <p:selectOneRadio id="filtroDenuncias" value="#{gestionProductosAdministradorView.denunciados}">
+                                        <f:selectItem itemLabel="sin filtros" itemValue="todos" />
+                                        <f:selectItem itemLabel="falta de envio" itemValue="faltaEnvio" /> 
+                                        <f:selectItem itemLabel="falta de pago" itemValue="faltaPago" /> 
+                                        <f:selectItem itemLabel="mal clasificados" itemValue="malClasificado" /> 
+                                          
+                                            
+                                    </p:selectOneRadio>
+                                    <p:tooltip id="toolTipFade13" for="panelGrid2" value="Filtrar denunciados por los usuarios" />
+                                </h:panelGrid>
+                                    
+                                 </p:panel>
+                                
                                 
                                 
                                 
                            </h:form>
-                             <p:commandButton value="Aplicar Filtros" update="formFiltro"/>
+                            <p:commandButton value="Aplicar Filtros" update="formFiltro :formCentroProductos" />
                      </h:panelGroup>
                 
                 
@@ -197,17 +213,18 @@
                         
                            <ui:include src="listadoProductos.xhtml" />
                            
-                           
+
 
                      
                         </h:panelGroup>
+
                      </h:form>
-                        <h:panelGroup id="producto" >
+
+                          <h:panelGroup id="producto" >
                         
                            <ui:include src="edicionProducto.xhtml" />
                      
                         </h:panelGroup>
-
                     
                 </p:layoutUnit>
 

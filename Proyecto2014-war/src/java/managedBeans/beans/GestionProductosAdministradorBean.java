@@ -74,7 +74,8 @@ private String filtro;//todos, ventaDirecta, subasta
 
 private String vendidos;//todos, yaVendidos, noVendidos
 
-private String denunciados;//todos, fa, noVendidos
+private String denunciados;//todos, malClasificado, FaltaPago, faltaEnvio
+
 
 private DatosProductoCompleto datosProductoCompleto;
 
@@ -163,6 +164,14 @@ private List<Puja>pujasSeleccionadas;
         this.pujasSeleccionadas = pujasSeleccionadas;
     }
 
+    public String getDenunciados() {
+        return denunciados;
+    }
+
+    public void setDenunciados(String denunciados) {
+        this.denunciados = denunciados;
+    }
+
 
     
     
@@ -178,7 +187,7 @@ private List<Puja>pujasSeleccionadas;
          facesContext=FacesContext.getCurrentInstance();
        setVendidos("todos");
        setFiltro("todos");
-      
+       setDenunciados("todos");
       // setListaProductos(productoFacade.todosProductosFiltrados(filtro, vendidos));
        actualizaListaProductosCompletos();
     }
@@ -190,6 +199,9 @@ private List<Puja>pujasSeleccionadas;
     
     public void actualizaListaProductosCompletos(){
         //datosProductoCompleto=new  ArrayList<>();
+        
+        
+        
         List<DatosProductoCompleto> listaProductosCompletos2  = new ArrayList<DatosProductoCompleto>();
         setListaProductosCompletos(null);
         List<Producto> listaProductos2=productoFacade.todosProductosFiltrados(filtro, vendidos);
@@ -199,8 +211,12 @@ private List<Puja>pujasSeleccionadas;
         for(Producto producto: listaProductos2){
             DatosProductoCompleto datosProductoCompleto2= new  DatosProductoCompleto();
             System.out.println("@@Añadimos producto : "+producto.getNombre());
+            
             datosProductoCompleto2.setProducto(producto);
             datosProductoCompleto2.setImagenes(imagenFacade.imagenesXProcducto(producto));
+           
+            
+            
             if(producto.getVendido()){
                 System.out.println("@@AbuscoVentas del producto "+ producto.getNombre()+" vendido "+producto.getVendido());
                 datosProductoCompleto2.setVenta(ventaFacade.ventaXProducto(producto));
@@ -219,21 +235,59 @@ private List<Puja>pujasSeleccionadas;
                 datosProductoCompleto2.setDenuncias(null);
             }
             
-            listaProductosCompletos2.add(datosProductoCompleto2);
+            
+            if(denunciados.equals("todos")) { 
+                listaProductosCompletos2.add(datosProductoCompleto2);
+            }else if(denunciados.equals("malClasificado")) { 
+                if(datosProductoCompleto2.getProducto().isMarcadoMalClasificado()){
+                    listaProductosCompletos2.add(datosProductoCompleto2);
+                }
+                
+            }else if(denunciados.equals("faltaPago")) {
+                if(datosProductoCompleto2.getVenta()!=null && compruebaDenuciaActiva(datosProductoCompleto2.getVenta().getDenunciaList(),"NO_PAGADO"))
+                    
+                    listaProductosCompletos2.add(datosProductoCompleto2);
+                
+            }else if(denunciados.equals("faltaEnvio")) {
+                if(datosProductoCompleto2.getVenta()!=null && compruebaDenuciaActiva(datosProductoCompleto2.getVenta().getDenunciaList(),"NO_ENVIADO")){
+                    
+                    listaProductosCompletos2.add(datosProductoCompleto2);
+                
+            }
+            
+            
             System.out.println("@@tamaño listaProductosCompletos2: "+listaProductosCompletos2.size());
         }
           System.out.println("@@tamaño FINAL listaProductosCompletos2: "+listaProductosCompletos2.size());
           
-//           for(DatosProductoCompleto datosProductoCompleto3: listaProductosCompletos2){
-//               System.out.println("##############################################################################################");
-//               System.out.println("###productoen lista productos completo: "+ datosProductoCompleto3.getProducto().getNombre()+" ###########################");
-//                System.out.println("##############################################################################################");
-//           }
+
          
-         setListaProductosCompletos(listaProductosCompletos2);
+          
+          
+          setListaProductosCompletos(listaProductosCompletos2);
         
         
         
+        
+        
+        
+
+
+        
+        
+        
+        
+        
+        }
+        
+    }
+    public boolean compruebaDenuciaActiva(List<Denuncia> denuncias, String tipo){
+        for(Denuncia denuncia:denuncias){
+            if (!denuncia.getAtendida()&& denuncia.getTipoDenuncia().equals(tipo)){
+                return true;
+            }
+        }
+        return false;
     }
     
     public void encuentraVentaProducto(Producto producto){
@@ -269,8 +323,9 @@ private List<Puja>pujasSeleccionadas;
           //producto a salvar
            Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
             
-                  
+                  gestionEventos.fireBorradoProductoPorImprocedenteEvent(productoABorrar);
                   productoFacade.remove(productoABorrar);
+                  
                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);
                    FacesContext context = FacesContext.getCurrentInstance();

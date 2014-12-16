@@ -186,6 +186,21 @@ private List<Puja> listaPujas;
           mensajeADenunciante=mensajeADenunciante+"Puedes ponerte en contacto con el usuario denunciado para aclarar el problema en el correo  "+usuarioDenunciado.getEmail()+"\n";
           emailService.envioIndividual(usuarioDenunciante.getEmail(),"has realizado una denuncia por problemas en la venta de un producto en BuyUp", mensajeADenunciante);
     }    
-    
+    public void borradoPruductoPorImprocedente(@Observes @BorradoProductoPorImprocedente Producto producto ) {
+        
+         
+         Usuario usuario=producto.getUsuarioIdusuario();
+         
+        
+        
+         //correo al vendedor
+          String mensajeAUsuario="información desde BuyUp \n";
+          mensajeAUsuario=mensajeAUsuario+"El producto "+producto.getNombre()  +" que tenias a la venta en nuestro portal \n";
+          mensajeAUsuario=mensajeAUsuario+"acaba de ser borrado por resultar inapropiado para el portal \n";
+         emailService.envioIndividual(usuario.getEmail(),"borrado por inapropiado uno de tus productos en BuyUp", mensajeAUsuario);
+          
+  
+              
+    }    
     
 }
