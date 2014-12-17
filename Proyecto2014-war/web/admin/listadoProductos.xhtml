@@ -33,7 +33,7 @@
                 <p:column headerText="Nombre" >
                     <h:outputText value="#{productoCompleto.producto.nombre}" />
                     
-                        <p:commandLink update=":formEdicionProducto:panelProducto :formBotonEliminarComoMalClasificado" oncomplete="PF('detallesProducto').show()" title="Ver Detalles">
+                        <p:commandLink update=":formEdicionProducto:panelProducto" oncomplete="PF('detallesProducto').show()" title="Ver Detalles">
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                                     <f:setPropertyActionListener value="#{productoCompleto}" target="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado}" />
                         </p:commandLink>

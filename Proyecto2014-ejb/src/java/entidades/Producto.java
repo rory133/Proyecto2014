@@ -54,6 +54,7 @@ import utilidades.CalculaUltimaPuja;
     @NamedQuery(name = "Producto.findByPrecio", query = "SELECT p FROM Producto p WHERE p.precio = :precio"),
     @NamedQuery(name = "Producto.findByVendido", query = "SELECT p FROM Producto p WHERE p.vendido = :vendido"),
     @NamedQuery(name = "Producto.findByNoExpirado", query = "SELECT p FROM Producto p WHERE p.expirado = :expirado"),
+    @NamedQuery(name = "Producto.findByMarcadoMalClasificado", query = "SELECT p FROM Producto p WHERE p.marcadoMalClasificado = :marcadoMalClasificado"),
     @NamedQuery(name = "Producto.findByEnSubasta", query = "SELECT p FROM Producto p WHERE p.enSubasta = :enSubasta")})
 public class Producto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -101,7 +102,7 @@ public class Producto implements Serializable {
     private boolean expirado;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "marcadoMalClasificado")
+    @Column(name = "marcadoMalClasificado", nullable = false)
     private boolean marcadoMalClasificado;
     @Transient
     private float ultimaPuja;

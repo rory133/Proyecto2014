@@ -65,9 +65,9 @@
         </p:outputPanel>
         </h:form>
         
-        <h:form id="formBotonEliminarComoMalClasificado" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado}"> 
+        <h:form id="formBotonEliminarComoMalClasificado" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado eq true}"> 
                 <p:commandButton action="#{gestionProductosAdministradorView.atenderDenunciaMalClasificado()}"  value="Atender denuncia como mál clasificado" icon="ui-icon-trash" 
-                  id="botonEliminarComoMalClasificado" update=":formCentroProductos:listaProductos:msgsCenter2">
+                                 id="botonEliminarComoMalClasificado" update=":formCentroProductos:listaProductos:msgsCenter2 :formCentroProductos" >
                  <p:tooltip id="toolTipFade04" for="botonEliminarComoMalClasificado" value="Elimnar marca como mal clasificado" />
                  <f:param id="idProductoMalClasificado" name="productoAEliminarMarca" value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
 

@@ -202,16 +202,18 @@ private List<Puja>pujasSeleccionadas;
         
         
         
-        List<DatosProductoCompleto> listaProductosCompletos2  = new ArrayList<DatosProductoCompleto>();
+        List<DatosProductoCompleto> listaProductosCompletos2  = new ArrayList<>();
         setListaProductosCompletos(null);
-        List<Producto> listaProductos2=productoFacade.todosProductosFiltrados(filtro, vendidos);
+        List<Producto> listaProductos2=new ArrayList<>();
+        listaProductos2=productoFacade.todosProductosFiltrados(filtro, vendidos);
       //  setListaProductos(productoFacade.todosProductosFiltrados(filtro, vendidos));
         
          System.out.println("@@tamaño listaProductos2: "+listaProductos2.size());
         for(Producto producto: listaProductos2){
             DatosProductoCompleto datosProductoCompleto2= new  DatosProductoCompleto();
-            System.out.println("@@Añadimos producto : "+producto.getNombre());
-            
+            System.out.println("WWWWAñadimos producto : "+producto.getNombre());
+            System.out.println("WWWWW tiene marca de mal clasificado : "+producto.isMarcadoMalClasificado());
+            System.out.println("WWWWW expirado : "+producto.isExpirado());
             datosProductoCompleto2.setProducto(producto);
             datosProductoCompleto2.setImagenes(imagenFacade.imagenesXProcducto(producto));
            
@@ -236,7 +238,8 @@ private List<Puja>pujasSeleccionadas;
             }
             
             
-            if(denunciados.equals("todos")) { 
+            if(denunciados.equals("todos")) {
+                 System.out.println("@@añadimos producto:"+ datosProductoCompleto2.getProducto().getNombre()+ "denuncia mal clasificado? "+datosProductoCompleto2.getProducto().isMarcadoMalClasificado());
                 listaProductosCompletos2.add(datosProductoCompleto2);
             }else if(denunciados.equals("malClasificado")) { 
                 if(datosProductoCompleto2.getProducto().isMarcadoMalClasificado()){

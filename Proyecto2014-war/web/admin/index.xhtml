@@ -44,7 +44,9 @@
                                         <f:selectItem itemLabel="Administrar Taxonomias" itemValue="Taxonomias" />
                                         <f:selectItem itemLabel="Administrar Usuarios" itemValue="Usarios" />
                                         <f:selectItem itemLabel="Administrar Productos" itemValue="Productos" />
-                                        <f:ajax event="valueChange"  render=":formIzquierdo @all"/>
+                                        <f:ajax event="valueChange"  render=":formIzquierdo @all "/>
+                                        <f:ajax event="valueChange"  render=":formIzquierdo @all "/>
+                                        <f:ajax  listener="#{gestionProductosAdministradorView.actualizaListadoProductos()}" render=":formCentroProductos:listaProductosPortal"/>
                              </p:selectOneRadio>
                     </h:form>
             </div>
@@ -168,6 +170,7 @@
                                 
                            </h:form>
                             <p:commandButton value="Aplicar Filtros" update="formFiltro :formCentroProductos" />
+                       
                      </h:panelGroup>
                 
                 
@@ -203,7 +206,7 @@
                     </h:form>
                     
                      <h:form id="formCentroProductos" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Productos'}">
-                         
+                      <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update="formCentroProductos listaProductosPortal"/>   
                          <!--
                         <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListadoProductos()}" update="formCentroProductos listaProductosPortal" />
                          
