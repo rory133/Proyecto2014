@@ -11,7 +11,13 @@
         
     <p:dialog id="dlg" header="Informacion Producto" widgetVar="detallesProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
                                         width="500" height="550"
-                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+                                       style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+         <!--
+        <h:form id="categoriasParaCambiar" rendered= "#{gestionProductosAdministradorView.viendoCategorias}">
+            <ui:include src="../listadoCategorias.xhtml" />
+            
+        </h:form>
+-->
         
        <h:form id="formEdicionProducto">
       <p:outputPanel id="panelProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
@@ -104,12 +110,11 @@
         
 
        </h:form>  
-        
- 
+
     </p:dialog>
         
 
-        
+
        
    
     

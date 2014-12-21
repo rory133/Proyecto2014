@@ -10,6 +10,7 @@
 package managedBeans.beans;
 
 import ejbs.GestionEventos;
+import entidades.Categoria;
 import entidades.Denuncia;
 import entidades.Producto;
 import entidades.Puja;
@@ -22,15 +23,19 @@ import facade.PujaFacade;
 import facade.VentaFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import org.primefaces.context.RequestContext;
 import utilidades.DatosProductoCompleto;
 
 /**
@@ -63,6 +68,8 @@ GestionEventos gestionEventos;
 @EJB
 private PujaFacade pujaFacade;
 
+private HttpSession session;  
+
 private FacesMessage facesMessage;
 private FacesContext facesContext;
 
@@ -86,6 +93,8 @@ private DatosProductoCompleto datosProductoCompletoSeleccionado;
 private List<Denuncia>denunciasSeleccionadas;
 
 private List<Puja>pujasSeleccionadas;
+
+private boolean viendoCategorias;
 
 
 ///////////////////////////////////////////////
@@ -172,6 +181,15 @@ private List<Puja>pujasSeleccionadas;
         this.denunciados = denunciados;
     }
 
+    public boolean isViendoCategorias() {
+        return viendoCategorias;
+    }
+
+    public void setViendoCategorias(boolean viendoCategorias) {
+        System.out.println(" cambio viendoCategorias: "+viendoCategorias);
+        this.viendoCategorias = viendoCategorias;
+    }
+
 
     
     
@@ -190,6 +208,10 @@ private List<Puja>pujasSeleccionadas;
        setDenunciados("todos");
       // setListaProductos(productoFacade.todosProductosFiltrados(filtro, vendidos));
        actualizaListaProductosCompletos();
+       setViendoCategorias(false);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.getSessionMap().put("idCategoria", -1);       
+       
     }
     
     public void actualizaListadoProductos(){
@@ -197,7 +219,7 @@ private List<Puja>pujasSeleccionadas;
         setListaProductos(productoFacade.todosProductosFiltrados(filtro, vendidos));
     }
     
-    public void actualizaListaProductosCompletos(){
+    public String actualizaListaProductosCompletos(){
         //datosProductoCompleto=new  ArrayList<>();
         
         
@@ -269,20 +291,8 @@ private List<Puja>pujasSeleccionadas;
           
           setListaProductosCompletos(listaProductosCompletos2);
         
-        
-        
-        
-        
-        
-
-
-        
-        
-        
-        
-        
-        }
-        
+       }
+        return "index.xhtml?faces-redirect=true";
     }
     public boolean compruebaDenuciaActiva(List<Denuncia> denuncias, String tipo){
         for(Denuncia denuncia:denuncias){
@@ -356,5 +366,64 @@ private List<Puja>pujasSeleccionadas;
         context.getExternalContext().getFlash().setKeepMessages(true);   
         return "index.xhtml?faces-redirect=true";
         
-    }    
+    }
+    public String cambiarCategoriaAProducto(){
+        
+        facesContext = FacesContext.getCurrentInstance();
+        session = (HttpSession) facesContext.getExternalContext().getSession(false);
+        Integer categoriaNueva=(Integer)session.getAttribute("idCategoria");
+        System.out.println(" entro en cambiar Categoria: "+ categoriaNueva);
+//        System.out.println(" categoria padre seleccionada "+categoriaSeleccionadaPadreNuevaCategoria);
+        if (categoriaNueva < 0) {
+           
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"DEBES SELECCIONAR UNA CATEGORIA ","SELECCIONA UNA EN EL PANEL SUPERIOR");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);            
+            System.out.println(" sin categoria Seleccionada ");
+            return "index.xhtml?faces-redirect=true";
+        }else{
+            System.out.println(" categoriaSeleccinoada "+categoriaNueva);
+            Categoria categoria=categoriaFacade.find(categoriaNueva);
+           String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoACambiarCategoria");
+            
+          //producto a salvar
+           Producto productoACambiarCategoria=productoFacade.find((Integer)Integer.parseInt(idProducto));
+           
+           productoACambiarCategoria.setCategoriaIdcategoria(categoria);
+           productoFacade.salva(productoACambiarCategoria);
+            
+
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            externalContext.getSessionMap().put("idCategoria", -1);
+            setViendoCategorias(false);
+            
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"salvado producto "," exitosamente");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);
+                return "index.xhtml?faces-redirect=true";
+            
+            
+        }
+        
+    }   
+    
+    
+//    public void cerrarDialogoDetallesProducto(){   
+//      RequestContext.getCurrentInstance().closeDialog("detallesProducto");
+//   }
+//    public void abreDialogoCategorias() {
+//        cerrarDialogoDetallesProducto();
+//      Map<String, Object> options = new HashMap<>();
+//      options.put("contentHeight", "'100%'");
+//      options.put("contentWidth", "'100%'");
+//      options.put("height", "170");
+//      options.put("width", "500");
+//      options.put("modal", true);
+//      
+//      RequestContext.getCurrentInstance().openDialog("categoriasParaCambiar", options,
+//            null);
+//
+//   }
 }

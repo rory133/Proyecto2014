@@ -1,0 +1,83 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+          
+  
+   
+
+        
+    <p:dialog id="dlgCambioCat" header="Cambiar categoria del producto" widgetVar="categoriasParaCambiar" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                                        width="500" height="550"
+                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
+        <h:form id="formCategoriasACambiar">  
+            
+          <p:outputPanel id="panelCategorias" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;"> 
+             
+                   
+                       
+
+                        <p:tree value="#{gestorCategorias.root1}" var="doc"
+                                 style="background-color: #e1c1a2 ;  background: #e1c1a2 !important;"
+                                    selectionMode="single"
+                                    selection="#{gestorCategorias.selectedNode}">
+                            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                                <h:outputText value="#{doc.nombre}"/>
+                            </p:treeNode>
+                            <p:treeNode type="document" icon="ui-icon-document">
+                                <h:outputText value="#{doc.nombre}" />
+                            </p:treeNode>
+                            <p:treeNode type="picture" icon="ui-icon-image">
+                                <h:outputText value="#{doc.nombre}" />
+                            </p:treeNode>
+                            <p:treeNode type="mp3" icon="ui-icon-video">
+                                <h:outputText value="#{doc.nombre}" />
+                            </p:treeNode>
+                        </p:tree>
+
+                       
+      
+                 <p:growl id="msgs" showDetail="true" escape="false"/>
+                    <p:commandButton value="Elegir categoria seleecionada" update="msgs" icon="ui-icon-newwin"
+                                         actionListener="#{gestorCategorias.sumaCategoria()}">
+                        </p:commandButton>
+                     <p:commandButton value="Asignar Categoria" update="msgs" icon="ui-icon-newwin"
+                                      actionListener="#{gestionProductosAdministradorView.cambiarCategoriaAProducto()}"
+                                      oncomplete="PF('categoriasParaCambiar').hide();">
+                         <f:param id="idProductoMalClasificado" name="productoACambiarCategoria" value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
+                       
+                      <p:confirm header="Confirmación" message="¿Se Cambiará el producto de categoría" icon="ui-icon-alert" />
+                  </p:commandButton>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                        <h:form>
+                        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </h:form>
+                    </p:confirmDialog>        
+       
+         
+                           <p:panelGrid  columns="2" columnClasses="label,value" id="panelDetalle"
+                                      style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
+                               
+
+                                    <h:outputText value="Nombre:" />
+                                    <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.nombre}" />
+                                    <h:outputText value="Categoria actual :" />
+                                    <h:outputText value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.categoriaIdcategoria.nombre}" />
+                           </p:panelGrid>
+            </p:outputPanel> 
+       </h:form>
+    </p:dialog>
+        
+
+
+       
+   
+    
+
+
+</ui:composition>
+

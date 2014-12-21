@@ -98,7 +98,7 @@ public class CategoriasBean implements Serializable  {
            System.out.println("***seleccionada categoria:  "+ getNombreCategoria());
 //             System.out.println("******en setSeletedNode****entro en suma categoria se actualiza IsCategoria  "+ getIdCategoria());
 
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Seleccionada: ", selectedNode.getData().toString());
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Descripcion: ", selectedNode.getData().toString());
             FacesContext.getCurrentInstance().addMessage(null, message);
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);  
@@ -142,9 +142,13 @@ public class CategoriasBean implements Serializable  {
         if(selectedNode != null) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", selectedNode.getData().toString());
             FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);            
         }else{
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "sin categoria seleccionada", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);            
         }
         
     }

@@ -44,8 +44,14 @@
                     
                     
                 </p:column>
-             <p:column headerText="Descripción" width="80" resizable="true"  >
-                    <h:outputText value="#{productoCompleto.producto.descripcion}" />
+             <p:column headerText="Categoría" width="80" resizable="true"  >
+                 <h:outputText value="#{productoCompleto.producto.categoriaIdcategoria.nombre}" />
+                 
+                  <p:commandLink update=":formCategoriasACambiar:panelCategorias" oncomplete="PF('categoriasParaCambiar').show()" title="Cambiar Categoría">
+                        <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                        <f:setPropertyActionListener value="#{productoCompleto}" target="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado}" />
+                  </p:commandLink>
+                 
                 </p:column>
                 <p:column headerText="Denunciado por mal Clasificado" width="80" resizable="true" >
                     <h:graphicImage library="images" name="boton rojo.png" style=" vertical-align: middle; margin-left:  30px " rendered="#{productoCompleto.producto.marcadoMalClasificado}"/>
@@ -64,7 +70,8 @@
                 </p:column>
                  <p:column headerText="Denuncias">
                      <h:outputText value="Numero de denuncias: #{productoCompleto.denuncias.size()}" rendered="#{productoCompleto.denuncias.size()  gt 0}"/>
-                        <p:commandLink update=":formCentroProductos:listaProductos:formEdicionDenuncias:panelDenuncias" oncomplete="PF('detallesDenuncias').show()" title="Ver Detalles">
+                     
+                        <p:commandLink update=":formEdicionDenuncias:panelDenuncias" oncomplete="PF('detallesDenuncias').show()" title="Ver Detalles">
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                                     <f:setPropertyActionListener value="#{productoCompleto.denuncias}" target="#{gestionProductosAdministradorView.denunciasSeleccionadas}" />
                         </p:commandLink>
@@ -73,7 +80,7 @@
              
                  <p:column headerText="Pujas">
                      <h:outputText value="Numero de pujas: #{productoCompleto.pujas.size()}" rendered="#{productoCompleto.producto.enSubasta}"/>
-                        <p:commandLink update=":formCentroProductos:listaProductos:formEdicionPujas:panelPujas" oncomplete="PF('detallesPujas').show()" title="Ver Detalles">
+                        <p:commandLink update=":formEdicionPujas:panelPujas" oncomplete="PF('detallesPujas').show()" title="Ver Detalles">
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                                     <f:setPropertyActionListener value="#{productoCompleto.pujas}" target="#{gestionProductosAdministradorView.pujasSeleccionadas}" />
                         </p:commandLink>
@@ -116,17 +123,7 @@
 
             
             
-                        <h:panelGroup id="pujas" >
-                        
-                           <ui:include src="edicionPujas.xhtml" />
-                     
-                        </h:panelGroup>
-            
-                        <h:panelGroup id="denuncias" >
-                        
-                           <ui:include src="edicionDenuncias.xhtml" />
-                     
-                        </h:panelGroup>
+
             
         
 

@@ -169,7 +169,7 @@
                                 
                                 
                            </h:form>
-                            <p:commandButton value="Aplicar Filtros" update="formFiltro :formCentroProductos" />
+                            <p:commandButton value="Aplicar Filtros" update="formFiltro :formCentroProductos" action="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}"/>
                        
                      </h:panelGroup>
                 
@@ -206,8 +206,9 @@
                     </h:form>
                     
                      <h:form id="formCentroProductos" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Productos'}">
+                          <!--
                       <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update="formCentroProductos listaProductosPortal"/>   
-                         <!--
+                        
                         <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListadoProductos()}" update="formCentroProductos listaProductosPortal" />
                          
                         <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update="formCentroProductos listaProductosPortal"/>
@@ -215,6 +216,7 @@
                         <h:panelGroup id="listaProductosPortal" >
                         
                            <ui:include src="listadoProductos.xhtml" />
+                          
                            
 
 
@@ -226,6 +228,23 @@
                           <h:panelGroup id="producto" >
                         
                            <ui:include src="edicionProducto.xhtml" />
+                              <ui:include src="dialogoCambioCategoria.xhtml" />
+                             <ui:include src="edicionPujas.xhtml" />
+                     <ui:include src="edicionDenuncias.xhtml" />
+                        </h:panelGroup>
+                        <h:panelGroup id="categ" >
+                          
+                        </h:panelGroup>
+                    
+                        <h:panelGroup id="pujas" >
+                        
+                          
+                     
+                        </h:panelGroup>
+            
+                        <h:panelGroup id="denuncias" >
+                        
+                           
                      
                         </h:panelGroup>
                     
