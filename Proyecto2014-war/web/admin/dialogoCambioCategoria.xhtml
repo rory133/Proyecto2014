@@ -43,12 +43,15 @@
                     <p:commandButton value="Elegir categoria seleecionada" update="msgs" icon="ui-icon-newwin"
                                          actionListener="#{gestorCategorias.sumaCategoria()}">
                         </p:commandButton>
-                     <p:commandButton value="Asignar Categoria" update="msgs" icon="ui-icon-newwin"
+                 
+                     <p:commandButton value="Asignar Categoria" update="msgs :formCentroProductos:listaProductos:tablaListadoProductos" icon="ui-icon-newwin"
                                       actionListener="#{gestionProductosAdministradorView.cambiarCategoriaAProducto()}"
                                       oncomplete="PF('categoriasParaCambiar').hide();">
+                         
                          <f:param id="idProductoMalClasificado" name="productoACambiarCategoria" value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
-                       
+                      
                       <p:confirm header="Confirmación" message="¿Se Cambiará el producto de categoría" icon="ui-icon-alert" />
+                      
                   </p:commandButton>
 
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">

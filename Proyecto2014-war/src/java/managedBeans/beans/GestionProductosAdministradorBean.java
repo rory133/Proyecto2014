@@ -31,6 +31,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -45,6 +46,7 @@ import utilidades.DatosProductoCompleto;
 @ManagedBean(name = "gestionProductosAdministradorView")
 
 @SessionScoped
+//@ViewScoped
 public class GestionProductosAdministradorBean implements Serializable {
 
     @EJB
@@ -217,6 +219,7 @@ private boolean viendoCategorias;
     public void actualizaListadoProductos(){
 
         setListaProductos(productoFacade.todosProductosFiltrados(filtro, vendidos));
+//         actualizaListaProductosCompletos();
     }
     
     public String actualizaListaProductosCompletos(){
@@ -331,7 +334,7 @@ private boolean viendoCategorias;
          System.out.println("#######borrarProducto");
         facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-            String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoABorrar");
+            String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoABorrarPorImprocedente");
              System.out.println("#######id producto a borrar: "+idProducto);
           //producto a salvar
            Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
@@ -367,7 +370,7 @@ private boolean viendoCategorias;
         return "index.xhtml?faces-redirect=true";
         
     }
-    public String cambiarCategoriaAProducto(){
+    public void cambiarCategoriaAProducto(){
         
         facesContext = FacesContext.getCurrentInstance();
         session = (HttpSession) facesContext.getExternalContext().getSession(false);
@@ -381,7 +384,7 @@ private boolean viendoCategorias;
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);            
             System.out.println(" sin categoria Seleccionada ");
-            return "index.xhtml?faces-redirect=true";
+//            return "index.xhtml?faces-redirect=true";
         }else{
             System.out.println(" categoriaSeleccinoada "+categoriaNueva);
             Categoria categoria=categoriaFacade.find(categoriaNueva);
@@ -391,6 +394,7 @@ private boolean viendoCategorias;
            Producto productoACambiarCategoria=productoFacade.find((Integer)Integer.parseInt(idProducto));
            
            productoACambiarCategoria.setCategoriaIdcategoria(categoria);
+           productoACambiarCategoria.setMarcadoMalClasificado(false);
            productoFacade.salva(productoACambiarCategoria);
             
 
@@ -398,11 +402,12 @@ private boolean viendoCategorias;
             externalContext.getSessionMap().put("idCategoria", -1);
             setViendoCategorias(false);
             
+            actualizaListaProductosCompletos();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"salvado producto "," exitosamente");
             FacesContext.getCurrentInstance().addMessage(null, message);
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);
-                return "index.xhtml?faces-redirect=true";
+//                return "index.xhtml?faces-redirect=true";
             
             
         }

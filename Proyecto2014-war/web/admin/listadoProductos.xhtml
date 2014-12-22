@@ -10,13 +10,19 @@
    
      <h:form id="listaProductos"> 
             <p:growl id="msgsCenter2" showDetail="true" escape="false"/>
+            <p:remoteCommand name="onCellEdit" action="#{gestionProductosAdministradorView.listaProductosCompletos}" update=":formCentroProductos:listaProductos:tablaListadoProductos" />
          <p:dataTable id="tablaListadoProductos" var="productoCompleto" value="#{gestionProductosAdministradorView.listaProductosCompletos}"
                   paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
                  paginator="true" rows="10" style="margin-bottom:20px">
-               
-                 
+               <!--
+                  <p:ajax event="cellEdit" oncomplete="onCellEdit();" />
+                  <p:ajax event="page" oncomplete="onCellEdit();"></p:ajax>
+                  <p:ajax event="colReorder" oncomplete="onCellEdit();"></p:ajax>
+                  <p:ajax event="rowSelect" oncomplete="onCellEdit();"></p:ajax>
+                  <p:ajax event="rowSelect" oncomplete="onCellEdit();"></p:ajax>
+                  <p:ajax event="page" update=":formCentroProductos" listener="#{gestionProductosAdministradorView.listaProductosCompletos}" />
+                -->
                 
-               
                 <f:facet name="header">
                     Productos del portal
                 </f:facet>

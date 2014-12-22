@@ -8,7 +8,7 @@
   
    
 
-        
+      <h:form id="formEdicionProducto">   
     <p:dialog id="dlg" header="Informacion Producto" widgetVar="detallesProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
                                         width="500" height="550"
                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
@@ -19,7 +19,7 @@
         </h:form>
 -->
         
-       <h:form id="formEdicionProducto">
+      
       <p:outputPanel id="panelProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
 
       
@@ -69,11 +69,17 @@
         
         
         </p:outputPanel>
+           <!--
         </h:form>
         
-        <h:form id="formBotonEliminarComoMalClasificado" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado eq true}"> 
-                <p:commandButton action="#{gestionProductosAdministradorView.atenderDenunciaMalClasificado()}"  value="Atender denuncia como mál clasificado" icon="ui-icon-trash" 
-                                 id="botonEliminarComoMalClasificado" update=":formCentroProductos:listaProductos:msgsCenter2 :formCentroProductos" >
+        <h:form id="formBotonEliminarComoMalClasificado" rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado}"> 
+           -->
+          
+            <p:commandButton action="#{gestionProductosAdministradorView.atenderDenunciaMalClasificado()}"  value="Atender denuncia como mál clasificado" icon="ui-icon-trash" 
+                                 id="botonEliminarComoMalClasificado" 
+                                 update=":formCentroProductos:listaProductos:msgsCenter2 :formCentroProductos:listaProductos:tablaListadoProductos" 
+                                 oncomplete="PF('detallesProducto').hide();"
+                                 rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado}">
                  <p:tooltip id="toolTipFade04" for="botonEliminarComoMalClasificado" value="Elimnar marca como mal clasificado" />
                  <f:param id="idProductoMalClasificado" name="productoAEliminarMarca" value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
 
@@ -87,15 +93,20 @@
                     </h:form>
                 </p:confirmDialog>
 
-        
+        <!--
 
        </h:form>  
         
        <h:form id="formBotonBorrarProductoPorImprocedente" > 
+           -->
+        
            <p:commandButton action="#{gestionProductosAdministradorView.borrarProductoPorImprocedente()}"  value="Borrar producto por inapropiado" icon="ui-icon-trash" 
-                  id="botonEliminarPorImprocedente" update=":formCentroProductos:listaProductos:msgsCenter2">
+                  id="botonEliminarPorImprocedente" 
+                  update=":formCentroProductos:listaProductos:msgsCenter2 :formCentroProductos:listaProductos:tablaListadoProductos"
+                   oncomplete="PF('detallesProducto').hide();">
+               
                  <p:tooltip id="toolTipFade6" for="botonEliminarPorImprocedente" value="Eliminar el producto por improcedente" />
-                 <f:param id="idProductoABorrar" name="productoABorrar" value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
+                 <f:param id="idProductoABorrar" name="productoABorrarPorImprocedente" value="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.idproducto}" />
 
                              <p:confirm header="Confirmación" message="¿Se eliminará este producto?" icon="ui-icon-alert" />
               </p:commandButton>
@@ -109,10 +120,10 @@
 
         
 
-       </h:form>  
+        
 
     </p:dialog>
-        
+        </h:form> 
 
 
        

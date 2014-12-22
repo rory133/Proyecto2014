@@ -206,9 +206,9 @@
                     </h:form>
                     
                      <h:form id="formCentroProductos" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Productos'}">
-                          <!--
-                      <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update="formCentroProductos listaProductosPortal"/>   
-                        
+                       
+                      <p:poll interval="5" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update=":formCentroProductos:listaProductos:tablaListadoProductos"/>   
+                           <!--
                         <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListadoProductos()}" update="formCentroProductos listaProductosPortal" />
                          
                         <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update="formCentroProductos listaProductosPortal"/>
