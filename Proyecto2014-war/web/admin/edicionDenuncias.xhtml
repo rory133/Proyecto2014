@@ -8,13 +8,14 @@
     
     
         
-        
+   <h:form id="formEdicionDenuncias">   
+       <p:growl id="msgsDenuncias" showDetail="true" escape="false"/>
     <p:dialog id="dlg4" header="Informacion Denuncias" widgetVar="detallesDenuncias" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
-                                        width="500" height="550"
+                                        width="650" height="550"
                                         style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
-    <h:form id="formEdicionDenuncias">
+  <!--
      <p:outputPanel id="panelDenuncias" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">   
-     
+     -->
         <p:dataTable id="tablaListadoDenuncias" var="denuncia" value="#{gestionProductosAdministradorView.denunciasSeleccionadas}"
                   paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
                  paginator="true" rows="10" style="margin-bottom:20px">
@@ -52,13 +53,33 @@
                     <h:outputText value="#{denuncia.fechaAtencion}" >
                                   <f:convertDateTime pattern="d-M-yyyy" />
                      </h:outputText>
-                </p:column>            
+                </p:column>    
+                <p:column headerText="Atender:">
+                    <h:outputText value="#{denuncia.iddenuncia}" />
+                    <p:commandButton action="#{gestionProductosAdministradorView.atenderDenuncia()}"  value="Atender" icon="ui-icon-trash" 
+                                      id="botonAtenderDenuncia" update=":formEdicionDenuncias:msgsDenuncias :formEdicionDenuncias:tablaListadoDenuncias">
+                         <p:tooltip id="toolTipFade53" for="botonAtenderDenuncia" value="Atender la Denuncia" />
+                         <f:param id="denunciaAAtender" name="denunciaAAtender" value="#{denuncia.iddenuncia}" />
+                            
+                                     <p:confirm header="Confirmación" message="¿Quieres Atender esta Denuncia?" icon="ui-icon-alert" />
+                      </p:commandButton>
+                               
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                            <h:form>
+                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                    
+
+                </p:column>   
              
         </p:dataTable>
+         <!--
       </p:outputPanel>
-     </h:form>    
+       -->
     </p:dialog>
-        
+   </h:form>     
         
         
         

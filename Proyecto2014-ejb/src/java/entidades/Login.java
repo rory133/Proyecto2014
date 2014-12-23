@@ -20,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -61,7 +62,7 @@ public class Login implements Serializable {
     @Column(name = "role")
     private String role;
     @JoinColumn(name = "usuario_idusuario", referencedColumnName = "idusuario")
-    @ManyToOne(optional = false)
+    @OneToOne(optional = false)
     private Usuario usuarioIdusuario;
 
     public Login() {

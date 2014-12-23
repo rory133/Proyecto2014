@@ -21,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -86,8 +87,8 @@ public class Usuario implements Serializable {
     private List<Denuncia> denunciaList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioIdusuario")
     private List<Producto> productoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioIdusuario")
-    private List<Login> loginList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuarioIdusuario")
+    private Login login;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compradorIdusuario")
     private List<Venta> ventaList;
 
@@ -216,12 +217,12 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Login> getLoginList() {
-        return loginList;
+    public Login getLogin() {
+        return login;
     }
 
-    public void setLoginList(List<Login> loginList) {
-        this.loginList = loginList;
+    public void setLoginList(Login login) {
+        this.login = login;
     }
 
     @XmlTransient

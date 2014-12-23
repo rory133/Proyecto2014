@@ -10,9 +10,11 @@
 package facade;
 
 import entidades.Usuario;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,6 +32,27 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public UsuarioFacade() {
         super(Usuario.class);
+    }
+    
+    public List<Usuario> usuariosSocios(){
+        Query query=getEntityManager().createQuery(
+                             "SELECT usuario22 FROM Usuario usuario22 WHERE usuario22.login.role='ROLE_SOCIO'");
+        List<Usuario> lP =query.getResultList();
+        return lP;
+    }
+    
+    public List<Usuario> usuariosAdministradores(){
+        Query query=getEntityManager().createQuery(
+                             "SELECT usuario22 FROM Usuario usuario22 WHERE usuario22.login.role='ROLE_ADMIN'");
+        List<Usuario> lP =query.getResultList();
+        return lP;
+    }
+    
+    public List<Usuario> usuariosBloqueados(){
+        Query query=getEntityManager().createQuery(
+                             "SELECT usuario22 FROM Usuario usuario22 WHERE usuario22.votosNegativos>2");
+        List<Usuario> lP =query.getResultList();
+        return lP;
     }
     
 }

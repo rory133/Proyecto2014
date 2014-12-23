@@ -14,6 +14,7 @@ import entidades.Categoria;
 import entidades.Denuncia;
 import entidades.Producto;
 import entidades.Puja;
+import entidades.Usuario;
 import entidades.Venta;
 import facade.CategoriaFacade;
 import facade.DenunciaFacade;
@@ -415,20 +416,44 @@ private boolean viendoCategorias;
     }   
     
     
-//    public void cerrarDialogoDetallesProducto(){   
-//      RequestContext.getCurrentInstance().closeDialog("detallesProducto");
-//   }
-//    public void abreDialogoCategorias() {
-//        cerrarDialogoDetallesProducto();
-//      Map<String, Object> options = new HashMap<>();
-//      options.put("contentHeight", "'100%'");
-//      options.put("contentWidth", "'100%'");
-//      options.put("height", "170");
-//      options.put("width", "500");
-//      options.put("modal", true);
-//      
-//      RequestContext.getCurrentInstance().openDialog("categoriasParaCambiar", options,
-//            null);
-//
-//   }
+    public void atenderDenuncia(){
+        
+        
+                facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            
+        
+        
+      
+        Usuario usuario;    
+       
+        usuario=(Usuario) session.getAttribute("usuario");
+//        facesContext = FacesContext.getCurrentInstance();
+//        session = (HttpSession) facesContext.getExternalContext().getSession(false);
+        
+//        Integer denunciaPasada=(Integer)session.getAttribute("denunciaAAtender");
+        
+        String denunciaPasada = (String) facesContext.getExternalContext().getRequestParameterMap().get("denunciaAAtender");
+        
+       // Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
+        
+        System.out.println(" entro en cambiar atendiendo denuncia: "+ denunciaPasada);
+         System.out.println(" usuario: "+ usuario.getNombre());
+      if(denunciaPasada!=null){
+        Denuncia denunciaAGuardar=denunciaFacade.find((Integer)Integer.parseInt(denunciaPasada));
+        denunciaAGuardar.setAtiendeIdusuario1(usuario);
+        denunciaAGuardar.setFechaAtencion(new java.util.Date(System.currentTimeMillis()));
+        denunciaAGuardar.setAtendida(true);
+        denunciaFacade.salva(denunciaAGuardar);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"atendida denuncia "," exitosamente");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);
+      }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ninguna denuncia a atender","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);
+      }
+    }
 }

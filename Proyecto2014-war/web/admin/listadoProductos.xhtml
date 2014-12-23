@@ -77,7 +77,7 @@
                  <p:column headerText="Denuncias">
                      <h:outputText value="Numero de denuncias: #{productoCompleto.denuncias.size()}" rendered="#{productoCompleto.denuncias.size()  gt 0}"/>
                      
-                        <p:commandLink update=":formEdicionDenuncias:panelDenuncias" oncomplete="PF('detallesDenuncias').show()" title="Ver Detalles">
+                        <p:commandLink update=":formEdicionDenuncias:tablaListadoDenuncias" oncomplete="PF('detallesDenuncias').show()" title="Ver Detalles">
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                                     <f:setPropertyActionListener value="#{productoCompleto.denuncias}" target="#{gestionProductosAdministradorView.denunciasSeleccionadas}" />
                         </p:commandLink>
