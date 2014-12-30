@@ -42,7 +42,7 @@
                         
                             <p:selectOneRadio id="filtroAdministrador" value="#{administradorBean.filtroAdministrador}">
                                         <f:selectItem itemLabel="Administrar Taxonomias" itemValue="Taxonomias" />
-                                        <f:selectItem itemLabel="Administrar Usuarios" itemValue="Usarios" />
+                                        <f:selectItem itemLabel="Administrar Usuarios" itemValue="Usuarios" />
                                         <f:selectItem itemLabel="Administrar Productos" itemValue="Productos" />
                                         <f:ajax event="valueChange"  render=":formIzquierdo @all "/>
                                         <f:ajax event="valueChange"  render=":formIzquierdo @all "/>
@@ -169,11 +169,35 @@
                                 
                                 
                            </h:form>
+                            <!--
                             <p:commandButton value="Aplicar Filtros" update="formFiltro :formCentroProductos" action="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}"/>
-                       
+                            -->
+                             <p:commandButton value="Aplicar Filtros" update="formFiltro :formCentroProductos" />                      
                      </h:panelGroup>
                 
-                
+                    <h:panelGroup id="formIzquierdoUsuarios" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Usuarios'}">
+
+  
+                        
+                        <p:panel header="filtrar Usuarios:">
+                           <h:panelGrid id="panelGridUsuarios" columns="2" style="margin-bottom:10px" cellpadding="2">
+
+                               <p:selectOneRadio id="filtroUsuarios" value="#{gestionUsuariosAdministradorBean.filtro}">
+                                    <f:selectItem itemLabel="todos" itemValue="todos" />
+                                    <f:selectItem itemLabel="Administradores" itemValue="soloAdministradores" /> 
+                                    <f:selectItem itemLabel="Socios" itemValue="soloSocios" /> 
+                                    <f:selectItem itemLabel="Bloqueados" itemValue="soloBloqueados" /> 
+
+                                    <p:ajax listener="#{gestionUsuariosAdministradorBean.listadoUsuarios()}" update=":formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"/>
+                                </p:selectOneRadio>
+                                <p:tooltip id="toolTipFadeUsuarios" for="panelGridUsuarios" value="Filtrar usuarios a mostrar" />
+                            </h:panelGrid>
+
+                        </p:panel>
+                        
+                        
+                        
+                   </h:panelGroup>
                 
                 
                           </div>   
@@ -228,23 +252,44 @@
                           <h:panelGroup id="producto" >
                         
                            <ui:include src="edicionProducto.xhtml" />
-                              <ui:include src="dialogoCambioCategoria.xhtml" />
-                             <ui:include src="edicionPujas.xhtml" />
-                     <ui:include src="edicionDenuncias.xhtml" />
+                              
+                             
+                    
                         </h:panelGroup>
                         <h:panelGroup id="categ" >
-                          
+                          <ui:include src="dialogoCambioCategoria.xhtml" />
                         </h:panelGroup>
                     
                         <h:panelGroup id="pujas" >
                         
-                          
+                          <ui:include src="edicionPujas.xhtml" />
                      
                         </h:panelGroup>
             
                         <h:panelGroup id="denuncias" >
                         
-                           
+                            <ui:include src="edicionDenuncias.xhtml" />
+                     
+                        </h:panelGroup>
+                       
+                        <h:panelGroup id="panelGroupCrearUsuario" >
+                             
+                         <ui:include src="crearUsuarioPorAdministrador.xhtml" />
+                        </h:panelGroup>
+                    
+                    
+                    
+                    <h:form id="formCentroUsuarios" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Usuarios'}">
+                        <p:poll interval="3" listener="#{gestionUsuariosAdministradorBean.listadoUsuarios()}" update=":formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"/>
+                        <h:panelGroup id="listaUsuariosPortal" >
+                        
+                           <ui:include src="listadoUsuarios.xhtml" />
+                          
+                        </h:panelGroup>
+                    </h:form>
+                        <h:panelGroup id="editarUsuario" >
+                        
+                            <ui:include src="edicionUsuario.xhtml" />
                      
                         </h:panelGroup>
                     

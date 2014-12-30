@@ -65,7 +65,7 @@ private final FacesContext faceContext;
 
 private Login login;
 private Usuario usuario;
-
+private boolean crearComoAdministrador;
 
 //@Inject
 //@SumadoSocio   
@@ -188,6 +188,14 @@ private String role;
         this.role = role;
     }
 
+    public boolean isCrearComoAdministrador() {
+        return crearComoAdministrador;
+    }
+
+    public void setCrearComoAdministrador(boolean crearComoAdministrador) {
+        this.crearComoAdministrador = crearComoAdministrador;
+    }
+
 
 
   public String crearUsuario(){
@@ -280,4 +288,72 @@ private String role;
 //        }
        }
   }
+  
+ public void crearUsuarioPorAdministrador(){
+   
+      
+
+       login = loginFacade.ValidarLogin(getLoginUsuario(),  getPassword());
+
+      if (login==null){
+          
+           
+          usuario=new Usuario();
+          usuario.setApellidos(getApellidos());
+          usuario.setEmail(getEmail());
+          usuario.setLocalizacion(getLocalizacion());
+          usuario.setNombre(getNombre());
+          usuario.setWeb(getWeb());
+          usuario.setVotosNegativos(0);           
+          usuarioFacade.create(usuario);
+          
+          login=new Login();
+          login.setLogin(getLoginUsuario());
+          login.setUsuarioIdusuario(usuario);
+          login.setPassword(getPassword());
+          if(crearComoAdministrador){
+               System.out.println("@@@SE CREA COMO ADMINISTRADOR");
+              login.setRole("ROLE_ADMIN");
+          }
+          else{
+              System.out.println("@@@SE CREA COMO SOCIO");
+              login.setRole("ROLE_SOCIO");
+          }
+         loginFacade.create(login);
+         
+         
+          
+          facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario creado correctamente", null);
+          
+          faceContext.addMessage(null, facesMessage);
+               FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Bienvendio "  ));
+               
+              
+               gestionEventos.fireUsuarioSumadoEvent(login);
+               
+               
+            faceContext.getExternalContext().getFlash().setKeepMessages(true);
+//             return "index.xhtml?faces-redirect=true";
+          
+
+          
+           
+          
+      }else{
+ 
+          
+            facesMessage=new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario ya existe", null);    
+            faceContext.addMessage(null, facesMessage);
+               FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Vuelva a probar "  ));
+//            return "crearUsuarioPorAdministrador";
+          
+
+       }
+  }
+   public void addMessage() {
+        String summary = "Se creará un nuevo Administrador";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+    }
 }

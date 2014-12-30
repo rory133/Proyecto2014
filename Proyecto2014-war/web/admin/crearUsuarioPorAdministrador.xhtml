@@ -1,0 +1,107 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+          
+  
+   
+
+    <h:form id="formCrearUsuario"> 
+         <p:growl id="msgsCrearUsuarios" showDetail="true" escape="false"/>
+        <p:dialog id="dlgCrearUsuario" header="Usuario nuevo" widgetVar="dialogoCrearUsuario" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                                        width="500" height="550"
+                                       style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+        
+            
+       <div class="fondo-norte">
+        
+    <h:form>
+        
+      <p:panel id="panelCrearUsuarioPorAdministrador" header="CrearUsuario">
+          <div class="fondo-norte">
+        <p:growl id="msgsCrearUsuarioPorAdministrador" showDetail="true" escape="false"/>
+       
+ 
+        <h:panelGrid columns="3" cellpadding="7">
+            
+            <h:outputLabel for="nombre" value="Nombre: " />
+            <p:inputText id="nombre" value="#{userBean.nombre}" label="nombre">
+                <f:validateLength minimum="2" />
+                <p:message for="nombre" />
+            </p:inputText>
+            <h:outputText value="#{userBean.nombre}" />
+             
+           
+            
+            <h:outputLabel for="apellidos" value="Apellidos: " />
+            <p:inputText id="apellidos" value="#{userBean.apellidos}" label="apellidos">
+            <f:validateLength minimum="2" />
+            <p:message for="apellidos" />
+            </p:inputText>
+            <h:outputText value="#{userBean.apellidos}" /> 
+            
+            <h:outputLabel for="email" value="Email: " />
+            <p:inputText id="email" value="#{userBean.email}" label="email">
+            <p:message for="email" />
+            </p:inputText>
+            <h:outputText value="#{userBean.email}" /> 
+            
+            <h:outputLabel for="web" value="web: " />
+            <p:inputText id="web" value="#{userBean.web}" label="web">
+            <p:message for="web" />
+            </p:inputText>
+            <h:outputText value="#{userBean.web}" /> 
+            
+            
+            <h:outputLabel for="localizacion" value="localizacion: " />
+            <p:inputText id="localizacion" value="#{userBean.localizacion}" label="localizacion">
+                     <f:validateLength minimum="4" />
+            <p:message for="localizacion" />
+            </p:inputText>          
+            <h:outputText value="#{userBean.localizacion}" /> 
+            
+            
+            <h:outputLabel for="loginUsuario" value="loginUsuario: " />
+            <p:inputText id="loginUsuario" value="#{userBean.loginUsuario}" label="login">
+            <p:message for="loginUsuario" />
+            </p:inputText>
+            <h:outputText value="#{userBean.loginUsuario}" /> 
+            
+        </h:panelGrid>
+
+            <p:spacer height="10" />
+
+            <p:separator />
+
+           <!-- <p:messages id="messages" showDetail="true" autoUpdate="true" />-->
+
+            <h:panelGrid columns="3" id="matchGrid" cellpadding="5">                   
+                <h:outputLabel for="pwd1" value="Password 1: *" />
+                <p:password id="pwd1" value="#{userBean.password}" match="pwd2" label="Password 1" required="true" />
+                <p:message for="pwd1" />
+                <h:outputLabel for="pwd2" value="Password 2: *" />
+                <p:password id="pwd2" value="#{userBean.password}" label="Password 2" required="true" />
+                <p:message for="pwd2" />
+            </h:panelGrid>
+        <h:outputText value="Crear como Administrador: " />
+        <p:selectBooleanCheckbox value="#{userBean.crearComoAdministrador}">
+            <p:ajax update="msgsCrearUsuarioPorAdministrador" listener="#{userBean.addMessage()}" />
+        </p:selectBooleanCheckbox>
+ 
+        <p:commandButton value="Crear cuenta"  update="msgsCrearUsuarioPorAdministrador nombre apellidos email web localizacion loginUsuario pwd1 pwd2" 
+                         action="#{userBean.crearUsuarioPorAdministrador()}" icon="ui-icon-check"
+                         oncomplete="PF('dialogoCrearUsuario').hide();"/>
+    </div>
+      </p:panel>
+</h:form>
+        
+         <h:link outcome="/admin/index" value="volver" />
+        </div>            
+            
+
+            
+        </p:dialog>
+     </h:form> 
+   </ui:composition>

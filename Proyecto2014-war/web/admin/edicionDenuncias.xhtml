@@ -11,7 +11,7 @@
    <h:form id="formEdicionDenuncias">   
        <p:growl id="msgsDenuncias" showDetail="true" escape="false"/>
     <p:dialog id="dlg4" header="Informacion Denuncias" widgetVar="detallesDenuncias" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
-                                        width="650" height="550"
+                                        width="950" height="550"
                                         style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
   <!--
      <p:outputPanel id="panelDenuncias" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">   
@@ -26,8 +26,8 @@
                 </f:facet>
             
                 <p:column headerText="Realizada por:">
-                    <h:outputText value="#{denuncia.denunciaIdusuario.nombre} "/>
-                    <h:outputText value="#{denuncia.denunciaIdusuario.apellidos}"/>              
+                    <h:outputText value="#{denuncia.denunciaIdusuario.login.login} "/>
+              
                     
                 </p:column>
             
@@ -43,21 +43,27 @@
                 <p:column headerText="Motivo:">
                     <h:outputText value="#{denuncia.motivo}"/>
                 </p:column>  
+                <p:column headerText="Denunciado:">
+                    <h:outputText value="#{denuncia.ventaIdventa.compradorIdusuario.login.login}" rendered="#{denuncia.tipoDenuncia eq 'NO_ENVIADO'}" />
+                    <h:outputText value="#{denuncia.ventaIdventa.productoIdproducto.usuarioIdusuario.login.login}" rendered="#{denuncia.tipoDenuncia eq 'NO_PAGADO'}" />
+                </p:column>             
             
                 <p:column headerText="Atendida por:">
-                    <h:outputText value="#{denuncia.atiendeIdusuario1.nombre}"/>
-                    <h:outputText value="#{denuncia.atiendeIdusuario1.apellidos}"/>              
-                    
+             
+                    <h:outputText value="#{denuncia.atiendeIdusuario1.login.login}"/>
                 </p:column>      
                 <p:column headerText="Fecha Atención:">
                     <h:outputText value="#{denuncia.fechaAtencion}" >
                                   <f:convertDateTime pattern="d-M-yyyy" />
                      </h:outputText>
                 </p:column>    
-                <p:column headerText="Atender:">
-                    <h:outputText value="#{denuncia.iddenuncia}" />
+                <p:column headerText="Accion:">
+                    
                     <p:commandButton action="#{gestionProductosAdministradorView.atenderDenuncia()}"  value="Atender" icon="ui-icon-trash" 
-                                      id="botonAtenderDenuncia" update=":formEdicionDenuncias:msgsDenuncias :formEdicionDenuncias:tablaListadoDenuncias">
+                                      id="botonAtenderDenuncia" 
+                                      update=":formEdicionDenuncias:msgsDenuncias :formEdicionDenuncias:tablaListadoDenuncias"
+                                       oncomplete="PF('detallesDenuncias').hide();"
+                                      rendered="#{not denuncia.atendida}">
                          <p:tooltip id="toolTipFade53" for="botonAtenderDenuncia" value="Atender la Denuncia" />
                          <f:param id="denunciaAAtender" name="denunciaAAtender" value="#{denuncia.iddenuncia}" />
                             
@@ -71,9 +77,49 @@
                             </h:form>
                         </p:confirmDialog>
                     
-
+                 <!--
                 </p:column>   
-             
+                <p:column headerText="Borrar:">
+                 -->   
+                    <p:commandButton action="#{gestionProductosAdministradorView.borrarDenuncia()}"  value="Borrar" icon="ui-icon-trash" 
+                                      id="botonBorrarDenuncia" 
+                                      update=":formEdicionDenuncias:msgsDenuncias :formEdicionDenuncias:tablaListadoDenuncias"
+                                       oncomplete="PF('detallesDenuncias').hide();"
+                                      rendered="#{denuncia.atendida}">
+                         <p:tooltip id="toolTipFade54" for="botonBorrarDenuncia" value="Eliminar la Denuncia" />
+                         <f:param id="denunciaABorrar" name="denunciaABorrar" value="#{denuncia.iddenuncia}" />
+                            
+                                     <p:confirm header="Confirmación" message="¿Quieres Borrar esta Denuncia?" icon="ui-icon-alert" />
+                      </p:commandButton>
+                               
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                            <h:form>
+                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+                    
+
+                </p:column>  
+                <p:column headerText="voto negativo:">
+                    
+                    <p:commandButton action="#{gestionUsuariosAdministradorBean.sumarVotoNegativoUsuario()}"  value="sumar voto" icon="ui-icon-arrowthickstop-1-s" 
+                                      id="botonSumarVotoNegativo" 
+                                      update=":formEdicionDenuncias:msgsDenuncias :formEdicionDenuncias:tablaListadoDenuncias"
+                                       oncomplete="PF('detallesDenuncias').hide();">
+                         <p:tooltip id="toolTipFade55" for="botonSumarVotoNegativo" value="Sumar un voto negativo al usuario denunciado" />
+                         <f:param id="denunciaAVotar" name="denunciaAVotar" value="#{denuncia.iddenuncia}" />
+                            
+                                     <p:confirm header="Confirmación" message="¿Quieres sumar un voto negativo al usuario denunciado?" icon="ui-icon-alert" />
+                      </p:commandButton>
+                               
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                            <h:form>
+                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </h:form>
+                        </p:confirmDialog>
+               </p:column>
         </p:dataTable>
          <!--
       </p:outputPanel>

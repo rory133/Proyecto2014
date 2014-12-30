@@ -54,5 +54,9 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         List<Usuario> lP =query.getResultList();
         return lP;
     }
-    
+      public Usuario salva(Usuario usuario){
+
+        return em.merge(usuario);
+      
+    }
 }

@@ -10,6 +10,7 @@
 package managedBeans.beans;
 
 
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -21,7 +22,7 @@ import javax.faces.bean.SessionScoped;
 
 @ManagedBean(name = "administradorBean")
 @SessionScoped
-public class AdministradorBean {
+public class AdministradorBean implements Serializable {
 
     private String filtroAdministrador;
     private boolean creandoCategoria;

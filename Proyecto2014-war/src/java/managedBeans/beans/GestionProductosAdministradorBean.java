@@ -50,7 +50,7 @@ import utilidades.DatosProductoCompleto;
 //@ViewScoped
 public class GestionProductosAdministradorBean implements Serializable {
 
-    @EJB
+@EJB
 private ProductoFacade productoFacade;
 
 @EJB
@@ -279,7 +279,7 @@ private boolean viendoCategorias;
                 
             }else if(denunciados.equals("faltaEnvio")) {
                 if(datosProductoCompleto2.getVenta()!=null && compruebaDenuciaActiva(datosProductoCompleto2.getVenta().getDenunciaList(),"NO_ENVIADO")){
-                    
+                     System.out.println("%%%%%%%%%%%%%%%%%%falta de envio&&&&&&&&&&&&&&&&&&&");
                     listaProductosCompletos2.add(datosProductoCompleto2);
                 
             }
@@ -300,7 +300,7 @@ private boolean viendoCategorias;
     }
     public boolean compruebaDenuciaActiva(List<Denuncia> denuncias, String tipo){
         for(Denuncia denuncia:denuncias){
-            if (!denuncia.getAtendida()&& denuncia.getTipoDenuncia().equals(tipo)){
+            if (denuncia.getTipoDenuncia().equals(tipo)){
                 return true;
             }
         }
@@ -419,7 +419,7 @@ private boolean viendoCategorias;
     public void atenderDenuncia(){
         
         
-                facesContext = FacesContext.getCurrentInstance();
+         facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
             
         
@@ -451,6 +451,37 @@ private boolean viendoCategorias;
             context.getExternalContext().getFlash().setKeepMessages(true);
       }else{
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ninguna denuncia a atender","");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);
+      }
+    }
+ public void borrarDenuncia(){
+        
+        
+         facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            
+        
+        
+      
+        Usuario usuario;    
+       
+        usuario=(Usuario) session.getAttribute("usuario");
+
+        
+        String denunciaPasada = (String) facesContext.getExternalContext().getRequestParameterMap().get("denunciaABorrar");
+
+      if(denunciaPasada!=null){
+        Denuncia denunciaABorrar=denunciaFacade.find((Integer)Integer.parseInt(denunciaPasada));
+ 
+        denunciaFacade.remove(denunciaABorrar); 
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"borrada denuncia "," exitosamente");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().getFlash().setKeepMessages(true);
+      }else{
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ninguna denuncia a borrar","");
             FacesContext.getCurrentInstance().addMessage(null, message);
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);

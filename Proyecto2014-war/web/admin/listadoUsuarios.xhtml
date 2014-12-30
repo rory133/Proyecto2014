@@ -1,0 +1,66 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    
+    
+   
+     <h:form id="listaUsuarios"> 
+            <p:growl id="msgsCenterUsuarios" showDetail="true" escape="false"/>
+           
+            <p:dataTable id="tablaListadoUsuarios" var="usuario" value="#{gestionUsuariosAdministradorBean.listaUsuarios}"
+                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+                 paginator="true" rows="10" style="margin-bottom:20px">
+
+                <f:facet name="header">
+                    Usuarios del portal
+                </f:facet>
+                <p:column headerText="Nombre:">
+                    <h:outputText value="#{usuario.nombre}" />
+                    <p:commandLink update=":formEdicionUsuario:panelUsuario" oncomplete="PF('detallesUsuario').show()" title="Ver Detalles Usuario">
+                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                <f:setPropertyActionListener value="#{usuario}" target="#{gestionUsuariosAdministradorBean.usurarioSeleccionado}" />
+                    </p:commandLink>                    
+
+                </p:column>
+                <p:column headerText="Apellidos:">
+                    <h:outputText value="#{usuario.apellidos}" />
+
+                </p:column>
+                <p:column headerText="Login:">
+                    <h:outputText value="#{usuario.login.login}" />
+
+                </p:column>               
+                <p:column headerText="Dirección:">
+                    <h:outputText value="#{usuario.localizacion}" />
+
+                </p:column>
+                
+                <p:column headerText="Email:">
+                    <h:outputText value="#{usuario.email}" />
+
+                </p:column>
+                <p:column headerText="Votos negativos:" rendered="#{gestionUsuariosAdministradorBean.filtro ne 'soloAdministradores'}">
+                    <h:outputText value="#{usuario.votosNegativos}" />
+
+                </p:column>
+                <p:column headerText="Rol:">
+                    <h:outputText value="#{usuario.login.role}" />
+
+                </p:column>
+	
+
+    
+           
+
+
+         </p:dataTable>
+     </h:form> 
+                <p:commandLink update=":formCrearUsuario" oncomplete="PF('dialogoCrearUsuario').show()" title="Crear Usuario">
+                           <h:outputText value="crear nuevo usuario"  style="margin:0 auto;" />
+                               
+               </p:commandLink>  
+</ui:composition>

@@ -1,0 +1,84 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+          
+  
+   
+
+    <h:form id="formEdicionUsuario"> 
+         <p:growl id="msgsUsuarios" showDetail="true" escape="false"/>
+        <p:dialog id="dlgUsuario" header="Informacion Usuario" widgetVar="detallesUsuario" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                                        width="500" height="550"
+                                       style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+        
+            <p:outputPanel id="panelUsuario" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
+              <p:panelGrid  columns="2" columnClasses="label,value" id="panelDetalleUsuario"
+                  style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
+                <h:outputText value="IdUsuario:" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.idusuario}" />
+                <h:outputText value="Nombre:" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.nombre}" />   
+                <h:outputText value="Apellido:" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.apellidos}" />   
+                <h:outputText value="Login:" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.login.login}" />  
+                <h:outputText value="Email:" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.email}" />
+                <h:outputText value="Dirección:" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.localizacion}" />
+                <h:outputText value="Web:" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.web}" />    
+                <h:outputText value="Votos Negativos:" rendered="#{gestionUsuariosAdministradorBean.filtro ne 'soloAdministradores'}" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.votosNegativos}" rendered="#{gestionUsuariosAdministradorBean.filtro ne 'soloAdministradores'}" />                     
+             
+                
+                
+             
+           
+            
+            
+               <p:commandButton action="#{gestionUsuariosAdministradorBean.redimirUsuario()}"  value="redimir usuario" icon="ui-icon-arrowthickstop-1-s" 
+                              id="botonRedimirUsuario" 
+                               rendered="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.votosNegativos gt 0}"
+                               update="msgsUsuarios :formCentroUsuarios:listaUsuarios:msgsCenterUsuarios :formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"
+                               oncomplete="PF('detallesUsuario').hide();">
+                 <p:tooltip id="toolTipFadeRedimirUsuario" for="botonRedimirUsuario" value="Redimir a este usuario" />
+                 <f:param id="usuarioARedimir" name="usuarioARedimir" value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.idusuario}" />
+
+                             <p:confirm header="Confirmación" message="¿Quieres redimir a este usuario?" icon="ui-icon-alert" />
+              </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                    <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+                
+                <p:commandButton action="#{gestionUsuariosAdministradorBean.borrarUsuario()}"  value="eliminar usuario" icon="ui-icon-arrowthickstop-1-s" 
+                              id="botonBorrarUsuario" 
+                               
+                               update="msgsUsuarios :formCentroUsuarios:listaUsuarios:msgsCenterUsuarios :formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"
+                               oncomplete="PF('detallesUsuario').hide();">
+                 <p:tooltip id="toolTipFadeBorrarUsuario" for="botonBorrarUsuario" value="Eliminar este usuario" />
+                 <f:param id="usuarioABorrar" name="usuarioABorrar" value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.idusuario}" />
+
+                             <p:confirm header="Confirmación" message="¿Quieres eliminar este usuario?" icon="ui-icon-alert" />
+              </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                    <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
+            
+            
+             </p:panelGrid>    
+            </p:outputPanel>
+         </p:dialog>
+     </h:form> 
+   </ui:composition>
