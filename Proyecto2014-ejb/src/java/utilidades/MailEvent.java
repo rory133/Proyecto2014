@@ -202,5 +202,29 @@ private List<Puja> listaPujas;
   
               
     }    
+    public void usuarioBloqueado(@Observes @UsuarioBloqueado Usuario usuario ) {
+        
+         //correo al usuario
+          String mensajeAUsuario="información desde BuyUp \n";
+          mensajeAUsuario=mensajeAUsuario+"Acabas de ser bloqueado en nuestro portal \n";
+          mensajeAUsuario=mensajeAUsuario+"para volver a entrar deberas esperar a ser redimido por nuestros administradores \n";
+         emailService.envioIndividual(usuario.getEmail(),"bloqueado como usuario en BuyUp", mensajeAUsuario);
+    }   
     
+    public void usuarioRedimido(@Observes @UsuarioRedimido Usuario usuario ) {
+        
+         //correo al usuario
+          String mensajeAUsuario="información desde BuyUp \n";
+          mensajeAUsuario=mensajeAUsuario+"Acabas de ser redimido por nuestros administradores  \n";
+          mensajeAUsuario=mensajeAUsuario+"ya puedes volver a entrar en nuestro portal \n";
+         emailService.envioIndividual(usuario.getEmail(),"redimido como usuario en BuyUp", mensajeAUsuario);
+    }    
+    public void usuarioBorrado(@Observes @UsuarioBorrado Usuario usuario ) {
+        
+         //correo al usuario
+          String mensajeAUsuario="información desde BuyUp \n";
+          mensajeAUsuario=mensajeAUsuario+"Acabas de ser borrado por nuestros administradores  \n";
+          mensajeAUsuario=mensajeAUsuario+"has dejado de ser usuario de nuestro portal \n";
+         emailService.envioIndividual(usuario.getEmail(),"borrado como usuario en BuyUp", mensajeAUsuario);
+    }     
 }

@@ -15,6 +15,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -87,8 +88,13 @@ public class Usuario implements Serializable {
     private List<Denuncia> denunciaList1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioIdusuario")
     private List<Producto> productoList;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuarioIdusuario")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "usuarioIdusuario")
+//    @OneToOne(fetch = FetchType.EAGER, mappedBy = "usuarioIdusuario")
     private Login login;
+    
+//     @OneToOne 
+//    private Login login;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "compradorIdusuario")
     private List<Venta> ventaList;
 

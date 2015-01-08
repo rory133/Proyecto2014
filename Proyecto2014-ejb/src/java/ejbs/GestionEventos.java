@@ -13,6 +13,7 @@ import entidades.Denuncia;
 import entidades.Login;
 import entidades.Producto;
 import entidades.Puja;
+import entidades.Usuario;
 import entidades.Venta;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -25,6 +26,9 @@ import utilidades.RealizadaDenuncia;
 import utilidades.RealizadaPuja;
 import utilidades.SubastaExpirada;
 import utilidades.SumadoSocio;
+import utilidades.UsuarioBloqueado;
+import utilidades.UsuarioBorrado;
+import utilidades.UsuarioRedimido;
 
 
 /**
@@ -36,6 +40,18 @@ import utilidades.SumadoSocio;
 @LocalBean
 public class GestionEventos {
    
+@Inject
+@UsuarioBloqueado 
+Event <Usuario> usuarioBloqueadoEvent;
+
+@Inject
+@UsuarioRedimido 
+Event <Usuario> usuarioRedimidoEvent;
+
+@Inject
+@UsuarioBorrado 
+Event <Usuario> usuarioBorradoEvent;
+
     
 @Inject
 @SumadoSocio 
@@ -92,5 +108,18 @@ Event <Producto> borradoProductoPorImprocedenteEvent;
     
     public void fireRealizadaDenuncia(Denuncia denuncia){
         realizadaDenunciaEvent.fire(denuncia);
+    }
+       // generamos un evento al bloquear un socio
+    public void fireUsuarioBloqueadoEvent( Usuario usuario ) {
+        usuarioBloqueadoEvent.fire(usuario);
+    } 
+           // generamos un evento al redimir un socio
+    public void fireUsuarioRedimidoEvent( Usuario usuario ) {
+        usuarioRedimidoEvent.fire(usuario);
+    }
+    
+    // generamos un evento al borrar un socio
+    public void fireUsuarioBorradoEvent( Usuario usuario ) {
+        usuarioBorradoEvent.fire(usuario);
     }
 }

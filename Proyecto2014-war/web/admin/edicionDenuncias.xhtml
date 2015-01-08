@@ -44,8 +44,8 @@
                     <h:outputText value="#{denuncia.motivo}"/>
                 </p:column>  
                 <p:column headerText="Denunciado:">
-                    <h:outputText value="#{denuncia.ventaIdventa.compradorIdusuario.login.login}" rendered="#{denuncia.tipoDenuncia eq 'NO_ENVIADO'}" />
-                    <h:outputText value="#{denuncia.ventaIdventa.productoIdproducto.usuarioIdusuario.login.login}" rendered="#{denuncia.tipoDenuncia eq 'NO_PAGADO'}" />
+                    <h:outputText value="#{denuncia.ventaIdventa.compradorIdusuario.login.login}" rendered="#{denuncia.tipoDenuncia eq 'NO_PAGADO'}" />
+                    <h:outputText value="#{denuncia.ventaIdventa.productoIdproducto.usuarioIdusuario.login.login}" rendered="#{denuncia.tipoDenuncia eq 'NO_ENVIADO'}" />
                 </p:column>             
             
                 <p:column headerText="Atendida por:">

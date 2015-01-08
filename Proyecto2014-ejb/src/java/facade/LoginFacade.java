@@ -10,6 +10,7 @@
 package facade;
 
 import entidades.Login;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -44,7 +45,7 @@ public class LoginFacade extends AbstractFacade<Login> {
             query.setParameter ("passwordB" , passwordB);
             
             encontrado=(Login) query.getSingleResult();
-            System.out.println("@@@en validarLogin encontrado: "+encontrado.getLogin().toString());
+//            System.out.println("@@@en validarLogin encontrado: "+encontrado.getLogin().toString());
         }catch (Exception e){
             System.out.println("@@@error en ValidarLogin: "+e.toString());
         }
@@ -52,7 +53,23 @@ public class LoginFacade extends AbstractFacade<Login> {
         return encontrado;
             
     } 
-        
     
-    
+    public List<Login> usuariosSocios(){
+        Query query=getEntityManager().createQuery(
+                             "SELECT login2 FROM Login login2 WHERE login2.role='ROLE_SOCIO'");
+        List<Login> lP =query.getResultList();
+        return lP;
+    }
+    public List<Login> usuariosAdministradores(){
+        Query query=getEntityManager().createQuery(
+                             "SELECT login3 FROM Login login3 WHERE login3.role='ROLE_ADMIN'");
+        List<Login> lP =query.getResultList();
+        return lP;
+    }
+    public List<Login> usuariosBloqueados(){
+        Query query=getEntityManager().createQuery(
+                             "SELECT login2 FROM Login login2 WHERE login2.usuarioIdusuario.votosNegativos>2");
+        List<Login> lP =query.getResultList();
+        return lP;
+    }
 }

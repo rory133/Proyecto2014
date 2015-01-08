@@ -70,7 +70,7 @@ public class Producto implements Serializable {
     private String nombre;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 200)
+    @Size(min = 1, max = 400)
     @Column(name = "descripcion", nullable = false, length = 400)
     private String descripcion;
     @Basic(optional = false)

@@ -87,12 +87,23 @@
             </h:panelGrid>
         <h:outputText value="Crear como Administrador: " />
         <p:selectBooleanCheckbox value="#{userBean.crearComoAdministrador}">
-            <p:ajax update="msgsCrearUsuarioPorAdministrador" listener="#{userBean.addMessage()}" />
+            <p:ajax update="msgsCrearUsuarioPorAdministrador :formCrearUsuario:msgsCrearUsuarios" listener="#{userBean.addMessage()}" />
         </p:selectBooleanCheckbox>
  
-        <p:commandButton value="Crear cuenta"  update="msgsCrearUsuarioPorAdministrador nombre apellidos email web localizacion loginUsuario pwd1 pwd2" 
-                         action="#{userBean.crearUsuarioPorAdministrador()}" icon="ui-icon-check"
-                         oncomplete="PF('dialogoCrearUsuario').hide();"/>
+        <p:commandButton id="botonCrearUsuario" value="Crear cuenta"  update="msgsCrearUsuarioPorAdministrador :formCrearUsuario:msgsCrearUsuarios nombre apellidos email web localizacion loginUsuario pwd1 pwd2
+                         :formCentroUsuarios:listaUsuarios:msgsCenterUsuarios :formCentroUsuarios:listaUsuarios:tablaListadoUsuarios" 
+                         action="#{userBean.crearUsuarioPorAdministrador()}" icon="ui-icon-check">
+            
+             <p:tooltip id="toolTipFadeCrearUsuario" for="botonCrearUsuario" value="Dar de alta a este usuario" />
+             <p:confirm header="Confirmación" message="¿Quieres crear este usuario?" icon="ui-icon-alert" />
+              </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                    <h:form>
+                    <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </h:form>
+                </p:confirmDialog>
     </div>
       </p:panel>
 </h:form>

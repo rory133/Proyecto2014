@@ -33,6 +33,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 import utilidades.Loggable;
@@ -94,6 +96,7 @@ private final FacesContext faceContext;
  private String nombre;
  
  
+ @Size(min=4,max=400)
  private String descripcion;
  
  
@@ -341,8 +344,8 @@ private String idCategoria;
                     //imagen.setImagen(uploadedFile.getContents());
                     imagen.setProductoIdproducto(producto);
                     
-                    System.out.println(" por insertar uploadedFile : "+uploadedFile.getFileName());
-                    System.out.println(" por insertar imagen para producto: "+imagen.getProductoIdproducto().getNombre());
+//                    System.out.println(" por insertar uploadedFile : "+uploadedFile.getFileName());
+//                    System.out.println(" por insertar imagen para producto: "+imagen.getProductoIdproducto().getNombre());
                     try { 
                         
                         InputStream input = uploadedFile.getInputstream();

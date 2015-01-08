@@ -15,7 +15,7 @@
          <h:outputStylesheet library="css" name="default.css"  />
          <h:outputStylesheet library="css" name="cssLayout.css"  />
          
-
+       <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
          
          
         </h:head>
@@ -194,15 +194,18 @@
                                     </h:graphicImage>
                                     
                              
-                                    <h:outputText value="idproducto : #{producto.idproducto}" />
+                                   
                                     
                                     <h:outputText value="Categoria : #{producto.categoriaIdcategoria.nombre}" />
-                                    
-                                    <h:outputText value="#{producto.precio}" />
+                                    <!--
+                                     <h:outputText value="idproducto : #{producto.idproducto}" />
+                                    <h:outputText value="Precio: #{producto.precio}" />
                                     <h:outputText value="usuario ofertador: #{producto.usuarioIdusuario.nombre}" />
+                                    
+                                    
                                     <h:outputText  rendered="#{not (producto.enSubasta)}" value="en venta directa" ></h:outputText >
                                     <h:outputText  rendered="#{(producto.enSubasta)}" value="en modo subasta" ></h:outputText >
-                                    
+                                    -->
                           
                                 </h:panelGrid>
                                 

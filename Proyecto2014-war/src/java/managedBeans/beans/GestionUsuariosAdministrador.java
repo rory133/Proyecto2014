@@ -10,9 +10,12 @@
 package managedBeans.beans;
 
 
+import ejbs.GestionEventos;
 import entidades.Denuncia;
+import entidades.Login;
 import entidades.Usuario;
 import facade.DenunciaFacade;
+import facade.LoginFacade;
 import facade.UsuarioFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,8 +49,17 @@ private DenunciaFacade denunciaFacade;
 @EJB
 private UsuarioFacade usuarioFacade;
 
+@EJB
+private LoginFacade loginFacade;
+
+@EJB
+GestionEventos gestionEventos;
 
 private List<Usuario> listaUsuarios;
+
+private List<Login> listaLogins;
+
+private Login loginSeleccionado;
 
 private Usuario usurarioSeleccionado;
 
@@ -59,6 +71,23 @@ private FacesMessage facesMessage;
 private FacesContext facesContext;
 
 ///////////////////////////////////////////
+    public Login getLoginSeleccionado() {
+        return loginSeleccionado;
+    }
+
+    public void setLoginSeleccionado(Login loginSeleccionado) {
+        this.loginSeleccionado = loginSeleccionado;
+    }
+
+
+
+    public List<Login> getListaLogins() {
+        return listaLogins;
+    }
+
+    public void setListaLogins(List<Login> listaLogins) {
+        this.listaLogins = listaLogins;
+    }
 
 
     public List<Usuario> getListaUsuarios() {
@@ -92,12 +121,14 @@ private FacesContext facesContext;
     public void init() {
          facesContext=FacesContext.getCurrentInstance();
          setFiltro("todos");
-         listadoUsuarios();
+//         listadoUsuarios2();
+         listadoLogins();
     }
-    
+    /*
     public void listadoUsuarios(){
     setListaUsuarios(null);
     List<Usuario> listaUsuariosTemp =  usuarioFacade.findAll();
+    
     if(filtro.equals("todos")){
         setListaUsuarios(listaUsuariosTemp);
     }else{
@@ -106,42 +137,121 @@ private FacesContext facesContext;
           switch (filtro) {
             case "soloBloqueados":
                 if (usuario.getVotosNegativos()>2){
-//                     System.out.println("WWWWWWWWWWWWWWWWWsoloBloqueadosWWWWWWWWWWWWWWWWW");
+                     System.out.println("WWWWWWWWWWWWWWWWWsoloBloqueadosWWWWWWWWWWWWWWWWW");
                     listaUsuariosTemp2.add(usuario);
+                    
                 }
                 break;
             case "soloSocios":
                 if (usuario.getLogin()!=null && usuario.getLogin().getRole().equals("ROLE_SOCIO")){
                      System.out.println("WWWWWWWWWWWWWWWWWsoloSociosWWWWWWWWWWWWWWWWW_ "+ usuario.getIdusuario());
                     listaUsuariosTemp2.add(usuario);
+                    
                 }
                 break;
             case "soloAdministradores":
                 if (usuario.getLogin()!=null && usuario.getLogin().getRole().equals("ROLE_ADMIN")){
                      System.out.println("WWWWWWWWWWWWWWWWWsoloAdminsitradoresWWWWWWWWWWWWWWWWW_ "+ usuario.getIdusuario() );
                     listaUsuariosTemp2.add(usuario);
+                    
                 }
                 break;
             default:
+                    System.out.println("WWWWWWWWWWWWWWWWW DEFOULT sWWWWWWWWWWWWWWWWW_ "+ usuario.getIdusuario() );
+                    listaUsuariosTemp2.add(usuario);
               break;
           }
        } 
        setListaUsuarios(listaUsuariosTemp2);
      }   
-//        return "index.xhtml?faces-redirect=true";
+
     }
+    */
+    public void listadoLogins(){
+    setListaLogins(null);
+
     
+    if(filtro.equals("todos")){
+         
+        setListaLogins(loginFacade.findAll());
+    }else{
+       
+       
+          switch (filtro) {
+            case "soloBloqueados":
+                
+                   
+                    setListaLogins(loginFacade.usuariosBloqueados());
+                    
+                
+                break;
+            case "soloSocios":
+                
+                   
+                    setListaLogins(loginFacade.usuariosSocios());
+                   
+                   
+                break;
+            case "soloAdministradores":
+                
+                 
+                   setListaLogins(loginFacade.usuariosAdministradores());
+                break;
+            default:
+                     setListaLogins(loginFacade.findAll());
+              break;
+          }
+      
+      }   
+
+    }
+   
+    
+    /*
+    public void listadoUsuarios2(){
+    setListaUsuarios(null);
+
+    
+    if(filtro.equals("todos")){
+         
+        setListaUsuarios(usuarioFacade.findAll());
+    }else{
+       
+       
+          switch (filtro) {
+            case "soloBloqueados":
+                
+                   
+                    setListaUsuarios(usuarioFacade.usuariosBloqueados());
+                    
+                
+                break;
+            case "soloSocios":
+                
+                   
+                    setListaUsuarios(usuarioFacade.usuariosSocios());
+                   
+                   
+                break;
+            case "soloAdministradores":
+                
+                 
+                   setListaUsuarios(usuarioFacade.usuariosAdministradores()); 
+                break;
+            default:
+                     setListaUsuarios(usuarioFacade.findAll());
+              break;
+          }
+      
+      }   
+
+    }
+    */
      public void sumarVotoNegativoUsuario(){
         
         
              facesContext = FacesContext.getCurrentInstance();
              HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-
-
-
-
-
-
 
             String denunciaPasada = (String) facesContext.getExternalContext().getRequestParameterMap().get("denunciaAVotar");
 
@@ -156,6 +266,10 @@ private FacesContext facesContext;
                 }
                 Integer votos=usuario.getVotosNegativos();
                 votos+=1;
+                //enviamos un mensaje al usuario informandole que ha sido bloquedo
+                if (votos==3){
+                    gestionEventos.fireUsuarioBloqueadoEvent(usuario);
+                }
                 usuario.setVotosNegativos(votos);
                 usuarioFacade.salva(usuario);
 
@@ -178,6 +292,8 @@ private FacesContext facesContext;
              String usuarioPasado = (String) facesContext.getExternalContext().getRequestParameterMap().get("usuarioARedimir");
              Usuario usuario = usuarioFacade.find((Integer)Integer.parseInt(usuarioPasado));
              usuario.setVotosNegativos(0);
+             //enviamos un mensaje al usuario informandole que ha sido redimido
+             gestionEventos.fireUsuarioRedimidoEvent(usuario);
              usuarioFacade.salva(usuario);
              
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ha sido redimido el usuario "+usuario.getNombre()," ahora tiene: "+usuario.getVotosNegativos());
@@ -204,7 +320,8 @@ private FacesContext facesContext;
             context.getExternalContext().getFlash().setKeepMessages(true);
              
          }else{
-             
+             //enviamos un mensaje al usuario informandole que ha sido borrado como usuario en el portal
+            gestionEventos.fireUsuarioBorradoEvent(usuarioAborrar);
             usuarioFacade.remove(usuarioAborrar);
 
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"se ha borrado el usuario "+usuarioAborrar.getNombre(),"");

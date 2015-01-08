@@ -14,7 +14,7 @@
 
         <h:outputStylesheet library="css" name="default.css"  />
         <h:outputStylesheet library="css" name="cssLayout.css"  />
-        
+        <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
         
         </h:head>
 
@@ -187,8 +187,8 @@
                                     <f:selectItem itemLabel="Administradores" itemValue="soloAdministradores" /> 
                                     <f:selectItem itemLabel="Socios" itemValue="soloSocios" /> 
                                     <f:selectItem itemLabel="Bloqueados" itemValue="soloBloqueados" /> 
-
-                                    <p:ajax listener="#{gestionUsuariosAdministradorBean.listadoUsuarios()}" update=":formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"/>
+                                    <p:ajax listener="#{gestionUsuariosAdministradorBean.listadoLogins()}" update=":formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"/>
+                                    
                                 </p:selectOneRadio>
                                 <p:tooltip id="toolTipFadeUsuarios" for="panelGridUsuarios" value="Filtrar usuarios a mostrar" />
                             </h:panelGrid>
@@ -280,7 +280,8 @@
                     
                     
                     <h:form id="formCentroUsuarios" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Usuarios'}">
-                        <p:poll interval="3" listener="#{gestionUsuariosAdministradorBean.listadoUsuarios()}" update=":formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"/>
+
+                        <p:poll interval="3" listener="#{gestionUsuariosAdministradorBean.listadoLogins()}" update=":formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"/>
                         <h:panelGroup id="listaUsuariosPortal" >
                         
                            <ui:include src="listadoUsuarios.xhtml" />

@@ -222,20 +222,13 @@ private String role;
           login.setPassword(getPassword());
           login.setRole("ROLE_SOCIO");
           
-         loginFacade.create(login);
+          loginFacade.create(login);
+          //se llama a gestionEventos para genere el evento correspondiente a crear un usuario
+          gestionEventos.fireUsuarioSumadoEvent(login);
          
-         
           
           
-       //   Login login2=(Login)loginFacade.find(getLoginUsuario());
-          
-          
-          
-          
-//          String bienVenida="Bienvenido al portal BuyUp \n"+usuario.getNombre()+" "+usuario.getApellidos()+"\n";
-//          bienVenida=bienVenida+"has sido dado de alta como usuario \n con el login: "+ login.getLogin()+"\n";
-//          bienVenida=bienVenida+"y el password: "+login.getPassword();          
-//          emailService.envioIndividual(usuario.getEmail(),"BuyUp", bienVenida);
+
           
           facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario creado correctamente", null);
           
@@ -243,8 +236,8 @@ private String role;
                FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Bienvendio "  ));
                
-               //se llama a gestionEventos para genere el evento correspondiente
-               gestionEventos.fireUsuarioSumadoEvent(login);
+               
+             
                
                //mantenemos los menasajes en la redireccion
             faceContext.getExternalContext().getFlash().setKeepMessages(true);
@@ -289,7 +282,7 @@ private String role;
        }
   }
   
- public void crearUsuarioPorAdministrador(){
+ public String crearUsuarioPorAdministrador(){
    
       
 
@@ -325,16 +318,16 @@ private String role;
           
           facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario creado correctamente", null);
           
-          faceContext.addMessage(null, facesMessage);
-               FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Bienvendio "  ));
+//          faceContext.addMessage(null, facesMessage);
+//               FacesContext.getCurrentInstance().addMessage(null,
+//                new FacesMessage(" "  ));
                
               
                gestionEventos.fireUsuarioSumadoEvent(login);
                
                
             faceContext.getExternalContext().getFlash().setKeepMessages(true);
-//             return "index.xhtml?faces-redirect=true";
+             return "index.xhtml?faces-redirect=true";
           
 
           
@@ -347,7 +340,7 @@ private String role;
             faceContext.addMessage(null, facesMessage);
                FacesContext.getCurrentInstance().addMessage(null,
                 new FacesMessage("Vuelva a probar "  ));
-//            return "crearUsuarioPorAdministrador";
+            return "crearUsuarioPorAdministrador";
           
 
        }

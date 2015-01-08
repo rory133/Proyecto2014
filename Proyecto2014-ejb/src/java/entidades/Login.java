@@ -13,6 +13,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -62,8 +63,12 @@ public class Login implements Serializable {
     @Column(name = "role")
     private String role;
     @JoinColumn(name = "usuario_idusuario", referencedColumnName = "idusuario")
-    @OneToOne(optional = false)
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
     private Usuario usuarioIdusuario;
+     
+//    @JoinColumn(name = "usuario_idusuario", referencedColumnName = "idusuario")
+//     @OneToOne(mappedBy = "login") 
+//    private Usuario usuarioIdusuario;
 
     public Login() {
     }

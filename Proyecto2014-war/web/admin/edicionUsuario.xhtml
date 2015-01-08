@@ -30,7 +30,9 @@
                 <h:outputText value="Dirección:" />
                 <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.localizacion}" />
                 <h:outputText value="Web:" />
-                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.web}" />    
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.web}" /> 
+                <h:outputText value="Rol:" />
+                <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.login.role}" />  
                 <h:outputText value="Votos Negativos:" rendered="#{gestionUsuariosAdministradorBean.filtro ne 'soloAdministradores'}" />
                 <h:outputText value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.votosNegativos}" rendered="#{gestionUsuariosAdministradorBean.filtro ne 'soloAdministradores'}" />                     
              
