@@ -90,8 +90,9 @@
                     
      
             
-            <h:outputLabel for="nombre" value="Nombre: " />
-            <p:inputText id="nombre" value="#{crearProductoBean.nombre}" label="nombre">
+            <h:outputLabel for="nombre" value="Nombre:*" />
+            <p:inputText id="nombre" value="#{crearProductoBean.nombre}" label="nombre"
+                         required="true">
                 <f:validateLength minimum="4" />
             </p:inputText>
             <p:message for="nombre" />
@@ -100,8 +101,9 @@
           
                
             
-            <h:outputLabel for="precio" value="precio: " />
-            <p:inputText id="precio" value="#{crearProductoBean.precio}" label="precio">
+            <h:outputLabel for="precio" value="precio:*" />
+            <p:inputText id="precio" value="#{crearProductoBean.precio}" label="precio"
+                         required="true">
                <f:validateDoubleRange minimum="1.00" maximum="12000.00" />
             </p:inputText>
             <p:message for="precio" />
@@ -111,9 +113,10 @@
             
         <h:panelGrid columns="3" cellpadding="2">         
             
-            <h:outputLabel for="descripcion" value="descripcion: " />
+            <h:outputLabel for="descripcion" value="descripcion:*" />
             <p:inputTextarea rows="5" cols="30" counter="display" maxlength="400"  counterTemplate="{0} caracteres restantes." autoResize="false" 
-             id="descripcion" value="#{crearProductoBean.descripcion}" label="descripcion">   
+             id="descripcion" value="#{crearProductoBean.descripcion}" label="descripcion"
+                    required="true">   
               <f:validateLength minimum="10" />
             </p:inputTextarea>
             <h:outputText id="display" />

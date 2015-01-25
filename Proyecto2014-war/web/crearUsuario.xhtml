@@ -27,8 +27,9 @@
  
         <h:panelGrid columns="3" cellpadding="7">
             
-            <h:outputLabel for="nombre" value="Nombre: " />
-            <p:inputText id="nombre" value="#{userBean.nombre}" label="nombre">
+            <h:outputLabel for="nombre" value="Nombre:*" />
+            <p:inputText id="nombre" value="#{userBean.nombre}" label="nombre"
+                         required="true" >
                 <f:validateLength minimum="2" />
                 <p:message for="nombre" />
             </p:inputText>
@@ -36,15 +37,17 @@
              
            
             
-            <h:outputLabel for="apellidos" value="Apellidos: " />
-            <p:inputText id="apellidos" value="#{userBean.apellidos}" label="apellidos">
+            <h:outputLabel for="apellidos" value="Apellidos:*" />
+            <p:inputText id="apellidos" value="#{userBean.apellidos}" label="apellidos"
+                         required="true" >
             <f:validateLength minimum="2" />
             <p:message for="apellidos" />
             </p:inputText>
             <h:outputText value="#{userBean.apellidos}" /> 
             
-            <h:outputLabel for="email" value="Email: " />
-            <p:inputText id="email" value="#{userBean.email}" label="email">
+            <h:outputLabel for="email" value="Email:*" />
+            <p:inputText id="email" value="#{userBean.email}" label="email"
+                         required="true" >
             <p:message for="email" />
             </p:inputText>
             <h:outputText value="#{userBean.email}" /> 
@@ -56,16 +59,17 @@
             <h:outputText value="#{userBean.web}" /> 
             
             
-            <h:outputLabel for="localizacion" value="localizacion: " />
-            <p:inputText id="localizacion" value="#{userBean.localizacion}" label="localizacion">
+            <h:outputLabel for="localizacion" value="localizacion:*" />
+            <p:inputText id="localizacion" value="#{userBean.localizacion}" label="localizacion"
+                         required="true" >
                      <f:validateLength minimum="4" />
             <p:message for="localizacion" />
             </p:inputText>          
             <h:outputText value="#{userBean.localizacion}" /> 
             
             
-            <h:outputLabel for="loginUsuario" value="loginUsuario: " />
-            <p:inputText id="loginUsuario" value="#{userBean.loginUsuario}" label="login">
+            <h:outputLabel for="loginUsuario" value="loginUsuario:*" />
+            <p:inputText required="true" id="loginUsuario" value="#{userBean.loginUsuario}" label="login">
             <p:message for="loginUsuario" />
             </p:inputText>
             <h:outputText value="#{userBean.loginUsuario}" /> 

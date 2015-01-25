@@ -973,7 +973,12 @@ private String titulo;
         denuncia=new Denuncia();
         denuncia.setDenunciaIdusuario(usuarioLogado());
         denuncia.setFechaDenuncia(new java.util.Date(System.currentTimeMillis()));
-        denuncia.setTipoDenuncia(getTipoDenuncia());
+        if (filtroMisProductos.equals("comprados")){
+            denuncia.setTipoDenuncia("NO_ENVIADO");
+        }else {
+            denuncia.setTipoDenuncia("NO_PAGADO");
+        }
+        
         denuncia.setMotivo(getMotivoDenuncia());
         denuncia.setVentaIdventa(ventaSeleccionada);
         denuncia.setAtendida(false);

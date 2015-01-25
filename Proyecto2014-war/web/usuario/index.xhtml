@@ -32,13 +32,14 @@
                 <div class="texto-norte">
                     <h:form>  
                      <h:outputText value="Socio: #{sessionScope.login.login}  " /> 
-                            
+                     <h:outputText value=" Votos negativos: #{sessionScope.usuario.votosNegativos}  " />         
                                             
                      <p:commandLink id="salir"  actionListener="#{loginBean.logout()}">
                              <h:outputText value="Logout " />
                              <p:tooltip id="toolTipFade00" for="salir" value="Salir como usuario" />
                         </p:commandLink>
-                       
+                   
+                      
                         </h:form>
                 </div>
 
@@ -467,7 +468,8 @@
                                           <p:separator />
                                 <p:commandLink update=":form333:detalleVenta" oncomplete="PF('editarVenta').show()" title="Editar Venta">
                                     <f:setPropertyActionListener value="#{venta}" target="#{productoView.ventaSeleccionada2}" />
-                                    <h:outputText value ="editar venta"  />
+                                    <h:outputText value ="editar compra" rendered="#{productoView.filtroMisProductos eq 'comprados'}" />
+                                    <h:outputText value ="editar venta" rendered="#{productoView.filtroMisProductos ne 'comprados'}" />
                                     
                                 </p:commandLink>
                                           <p:separator />
@@ -736,12 +738,18 @@
 
                                     <p:separator />
                                     
-                                    <h:outputLabel for="tipoDenuncia" value="Tipo Denuncia: " />
-                                    <h:selectOneMenu id="questionStatus" value="#{productoView.tipoDenuncia}" >
-                                        <f:selectItem itemLabel="NO_PAGADO" itemValue="NO_PAGADO" />
-                                        <f:selectItem itemLabel="NO_ENVIADO" itemValue="NO_ENVIADO" />
+                                    <h:outputLabel for="tipoDenuncia" value="denunciar por falta de envio " rendered="#{productoView.filtroMisProductos eq 'comprados'}" />
+                                    <h:outputLabel for="tipoDenuncia2" value="denunciar por falta de pago " rendered="#{productoView.filtroMisProductos ne 'comprados'}"/>
+                                    
+                                    <!--
+                                    <h:selectOneMenu id="questionStatus" value="#{productoView.tipoDenuncia}"  >
+                                        <f:selectItem itemLabel="NO_PAGADO" itemValue="NO_PAGADO" rendered="#{productoView.filtroMisProductos ne 'comprados'}" />
+                                        <f:selectItem itemLabel="NO_ENVIADO" itemValue="NO_ENVIADO" rendered="#{productoView.filtroMisProductos eq 'comprados'}"/>
 
                                     </h:selectOneMenu>
+                                    -->
+                                    
+                                    
                                     <p:separator />
                                         <p:growl id="msgs33" showDetail="true" escape="false"/>
                                         
