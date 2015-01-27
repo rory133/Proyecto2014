@@ -5,13 +5,15 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <f:view contentType="text/html">
+    <f:view locale="#{productoView.locale}">
         <h:head>
+          <f:loadBundle basename="resources.mensajes.mensajes" var="msg"/>
+            
             <f:facet name="Principal">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Pagina Principal Usuario</title>
+              <!--  <title>Pagina Principal Usuario</title>-->
             </f:facet>
-
+         <title><h:outputText value="#{msg.app_title_inicio}"/> </title>
          <h:outputStylesheet library="css" name="default.css"  />
          <h:outputStylesheet library="css" name="cssLayout.css"  />
          
@@ -31,12 +33,12 @@
             <div class="fondo-norte">
                 <div class="texto-norte">
                     <h:form>  
-                     <h:outputText value="Socio: #{sessionScope.login.login}  " /> 
-                     <h:outputText value=" Votos negativos: #{sessionScope.usuario.votosNegativos}  " />         
+                     <h:outputText value="#{msg['app.Socio']}: #{sessionScope.login.login}  " /> 
+                     <h:outputText value="#{msg['app.VotosNegativos']}: #{sessionScope.usuario.votosNegativos}  " />         
                                             
                      <p:commandLink id="salir"  actionListener="#{loginBean.logout()}">
-                             <h:outputText value="Logout " />
-                             <p:tooltip id="toolTipFade00" for="salir" value="Salir como usuario" />
+                             <h:outputText value="#{msg['app.Salir']}" />
+                             <p:tooltip id="toolTipFade00" for="salir" value="#{msg['app.toolTipSalirComoUsuario']}" />
                         </p:commandLink>
                    
                       
@@ -55,12 +57,12 @@
                         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="filtraMisProductos">
                                    
                             <p:selectOneRadio id="filtroMisProductos" value="#{productoView.filtroMisProductos}">
-                                        <f:selectItem itemLabel="Ofertados" itemValue="ofertados" />
-                                        <f:selectItem itemLabel="Comprados" itemValue="comprados" />
-                                        <f:selectItem itemLabel="Vendidos" itemValue="vendidos" />
+                                        <f:selectItem itemLabel="#{msg['app.Ofertados']}" itemValue="ofertados" />
+                                        <f:selectItem itemLabel="#{msg['app.Comprados']}" itemValue="comprados" />
+                                        <f:selectItem itemLabel="#{msg['app.Vendidos']}" itemValue="vendidos" />
                                         <f:ajax event="valueChange"  render=":form6:form5 @all"/>
                              </p:selectOneRadio>
-                         <p:tooltip id="toolTipFade11" for="filtraMisProductos" value="Filtra tu productos mostrados" />                           
+                         <p:tooltip id="toolTipFade11" for="filtraMisProductos" value="#{msg['app.toolTipFiltraTusProductos']}" />                           
                      </h:panelGrid>
                 </td>
                 <td>
@@ -68,7 +70,7 @@
                 
                 <h:link outcome="crearProducto" id="crearNuevo" >
                         <h:graphicImage library="images" name="nuevo.gif" />
-                        <p:tooltip id="toolTipFade02" for="crearNuevo" value="Crear un nuevo Producto" />
+                        <p:tooltip id="toolTipFade02" for="crearNuevo" value="#{msg['app.toolTipCrearUnNuevoProducto']}" />
                 </h:link>
                 
                 </td>
@@ -77,11 +79,11 @@
                     
                <h:form>
                    <h:panelGrid id="aGestionarMisProductos3" columns="2" style="margin-bottom:10px" cellpadding="5">
-                      <h:outputText value="Gestionar Mis Productos:" id="botoncillo"/>
+                      <h:outputText value="#{msg['app.GestionarMisProductos']}:" id="botoncillo"/>
                       <p:selectBooleanCheckbox value="#{productoView.soloMios}">
 
                          <f:ajax event="change" render=":form6 @all"/>
-                        <p:tooltip id="toolTipFade2" for="aGestionarMisProductos3" value="salir de gestionar tus productos" />
+                        <p:tooltip id="toolTipFade2" for="aGestionarMisProductos3" value="#{msg['app.SalirDeGestionarTusProductos']}" />
                       </p:selectBooleanCheckbox>
                   </h:panelGrid>
                </h:form>
@@ -119,23 +121,23 @@
                                 <h:panelGrid id="panelGrid1" columns="2" style="margin-bottom:10px" cellpadding="5">
                                    
                                     <p:selectOneRadio id="filtro" value="#{productoView.filtro}">
-                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
-                                        <f:selectItem itemLabel="Venta directa" itemValue="ventaDirecta" />
-                                        <f:selectItem itemLabel="Subasta" itemValue="subasta" />
+                                        <f:selectItem itemLabel="#{msg['app.itemTodos']}" itemValue="todos" />
+                                        <f:selectItem itemLabel="#{msg['app.itemVentaDirecta']}" itemValue="ventaDirecta" />
+                                        <f:selectItem itemLabel="#{msg['app.itemSubasta']}" itemValue="subasta" />
                                            <f:ajax event="valueChange"  render=":form2 @all"/>
                                             <f:ajax event="valueChange" render=":form2:productos" />
                                             <f:ajax event="valueChange" render=":form2:productos:cantidad" />
                                            
                                             
                                     </p:selectOneRadio>
-                                    <p:tooltip id="toolTipFade11" for="panelGrid1" value="Filtra los productos a mostrar" />
+                                    <p:tooltip id="toolTipFade11" for="panelGrid1" value="#{msg['app.tooltipFiltrarProductos']}" />
                                 </h:panelGrid>
                    
                     </td> 
                     <td class='alnright'>
                         
                                     <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
-                                   <p:tooltip id="toolTipFade1" for="nombre" value="introduce el texto a buscar" />
+                                   <p:tooltip id="toolTipFade1" for="nombre" value="#{msg['app.tooltipBuscarPorNombre']}" />
                                     </p:inputText>
                         
 
@@ -148,7 +150,7 @@
                             
                           
                             <h:graphicImage library="images" name="buscar2.gif" />
-                            <p:tooltip id="toolTipFade2" for="buscaXNombre" value="Buscar texto introducido" />
+                            <p:tooltip id="toolTipFade2" for="buscaXNombre" value="#{msg['app.tooltipBotonBuscarPorNombre']}" />
                         </p:commandLink>
                     
                     </td>
@@ -156,9 +158,9 @@
                     
                         <h:form>
                             <h:panelGrid id="aGestionarMisProductos" columns="2" style="margin-bottom:10px" cellpadding="5">
-                          <h:outputText value="Gestionar Mis Productos:" id="aGestionarMisProductos2"/>
+                          <h:outputText value="#{msg['app.GestionarMisProductos']}:" id="aGestionarMisProductos2"/>
                           <p:selectBooleanCheckbox value="#{productoView.soloMios}">
-                               <p:tooltip id="toolTipFade2" for="aGestionarMisProductos" value="Gestionar tus productos" />
+                               <p:tooltip id="toolTipFade2" for="aGestionarMisProductos" value="#{msg['app.GestionarTusProductos']}" />
                              <f:ajax event="change" render=":form6 @all"/>
 
                           </p:selectBooleanCheckbox>
@@ -204,12 +206,12 @@
                             </p:treeNode>
                         </p:tree>
                         
-                        <p:commandButton value="Información Categoría" update="msgs" icon="ui-icon-newwin"
+                        <p:commandButton value="#{msg['app.BotonInformaciónCategoría']}" update="msgs" icon="ui-icon-newwin"
                                             actionListener="#{treeSelectionView.displaySelectedSingle}"/>
                         
                         
                         
-                          <p:commandButton id="boton2" value="Ver Productos de la categoria selecionada"  update="msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
+                          <p:commandButton id="boton2" value="#{msg['app.BotonFiltrarCategoria']}"  update="msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
                                  
                                   
                                   
@@ -229,12 +231,12 @@
                             <p:separator />
                             <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misOfertadosSubasta}">
                              <f:ajax event="click" render=":form2" />
-                            <h:outputText value="Subasta" />
+                            <h:outputText value="#{msg['app.itemSubasta']}" />
                         </p:commandLink>
                                <p:separator />
                         <p:commandLink id="ventaDirecta" actionListener="#{productoView.misOfertadosVentaDirecta}" >
                             <f:ajax event="click" render=":form2" />
-                            <h:outputText value="Venta Directa" />
+                            <h:outputText value="#{msg['app.itemVentaDirecta']}" />
                       
                         </p:commandLink>
                     </h:form>
@@ -243,12 +245,12 @@
                             <p:separator />
                             <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosCompradosRecibidos()}">
                              <f:ajax event="click" render=":form22" />
-                            <h:outputText value="Recibidos" />
+                            <h:outputText value="#{msg['app.Recibidos']}" />
                         </p:commandLink>
                                <p:separator />
                                <p:commandLink id="ventaDirecta" update="growl" actionListener="#{productoView.misProductosCompradosNORecibidos()}" >
                             <f:ajax event="click" render=":form22" />
-                            <h:outputText value="No Recibidos" />
+                            <h:outputText value="#{msg['app.NoRecibidos']}" />
                       
                         </p:commandLink>
                     </h:form>
@@ -257,12 +259,12 @@
                             <p:separator />
                             <p:commandLink id="subasta" update="growl" actionListener="#{productoView.misProductosVendidosEnviados()}">
                              <f:ajax event="click" render=":form22" />
-                            <h:outputText value="Enviados" />
+                            <h:outputText value="#{msg['app.Enviados']}" />
                         </p:commandLink>
                                <p:separator />
                                <p:commandLink id="ventaDirecta" actionListener="#{productoView.misProductosVendidosNoEnviados()}" >
                             <f:ajax event="click" render=":form22" />
-                            <h:outputText value="No Enviados" />
+                            <h:outputText value="#{msg['app.NoEnviados']}" />
                       
                         </p:commandLink>
                     </h:form>                        
@@ -348,7 +350,7 @@
                             style=" border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%; ; background-color: #c8bfe7; background: #c8bfe7 ">
                             
                             <f:facet name="header">
-                                <h:outputText value=" Numero de productos: #{productoView.listaProductos.size()}" id="cantidad"/>
+                                <h:outputText value="#{msg['app.NumeroDeProductos']}: #{productoView.listaProductos.size()}" id="cantidad"/>
                             </f:facet>
                              
                             <p:panel header="#{producto.nombre}" style="text-align:center; border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%; background-color: #c8bfe7; background: #c8bfe7 ">
@@ -368,20 +370,20 @@
                              
                                     <h:outputText value="idproducto : #{producto.idproducto}" />
                                      <h:outputText rendered="#{not (producto.enSubasta)}" value="___________________" />
-                                    <h:outputText value="Categoria : #{producto.categoriaIdcategoria.nombre}" />
+                                    <h:outputText value="#{msg['app.Categoria']}: #{producto.categoriaIdcategoria.nombre}" />
                                     
-                                    <h:outputText rendered="#{not (producto.enSubasta)}" value="Precio : #{producto.precio}" />
-                                    <h:outputText rendered="#{producto.enSubasta}" value="Precio de salida: #{producto.precio}" />
-                                    <h:outputText rendered="#{producto.enSubasta}" value="Puja a superar: #{producto.ultimaPuja}" />
-                                    <h:outputText value="usuario ofertador: #{producto.usuarioIdusuario.nombre}" />
-                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="En venta directa" ></h:outputText >
-                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="En modo subasta" ></h:outputText >
+                                    <h:outputText rendered="#{not (producto.enSubasta)}" value="#{msg['app.Precio']} : #{producto.precio}" />
+                                    <h:outputText rendered="#{producto.enSubasta}" value="#{msg['app.PrecioDeSalida']}: #{producto.precio}" />
+                                    <h:outputText rendered="#{producto.enSubasta}" value="#{msg['app.PujaASuperar']}: #{producto.ultimaPuja}" />
+                                    <h:outputText value="#{msg['app.UsuarioOfertador']}: #{producto.usuarioIdusuario.nombre}" />
+                                    <h:outputText  rendered="#{not (producto.enSubasta)}" value="#{msg['app.EnVentaDirecta']}" ></h:outputText >
+                                    <h:outputText  rendered="#{(producto.enSubasta)}" value="#{msg['app.EnModoSubasta']}" ></h:outputText >
                                     
                           
                                 </h:panelGrid>
                                 
                                 
-                                 <p:commandLink update=":form3:detalleProducto" oncomplete="PF('dialogoProducto').show()" title="Ver Detalles">
+                                 <p:commandLink update=":form3:detalleProducto" oncomplete="PF('dialogoProducto').show()" title="#{msg['app.VerDetalles']}">
                                     <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
                                    <f:setPropertyActionListener value="#{producto}" target="#{productoView.productoSeleccionado}" />
                                 </p:commandLink>
@@ -407,14 +409,14 @@
                             style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
 
                             <f:facet name="header">
-                                <h:outputText value=" Numero de productos : #{productoView.listaVentas.size()}" id="cantidadVentas"/>
+                                <h:outputText value=" #{msg['app.NumeroDeProductos']} : #{productoView.listaVentas.size()}" id="cantidadVentas"/>
                             </f:facet>
                             
-                        <p:panel  header="producto: #{venta.productoIdproducto.nombre}" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important">
+                        <p:panel  header="#{msg['app.Producto']}: #{venta.productoIdproducto.nombre}" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important">
                                 <p:growl id="grow22"  />
-                                     <h:outputText value="Fecha de venta: " />
+                                     <h:outputText value="#{msg['app.FechaDeVenta']}: " />
                                      <h:outputText value="#{venta.fecha}" >
-                                       <f:convertDateTime pattern="d-M-yyyy" />
+                                       <f:convertDateTime  locale="#{productoView.locale}"/>
                                     </h:outputText>
                                 <h:panelGrid columns="1" style="width:100%">
                    
@@ -427,49 +429,49 @@
                                     </h:graphicImage>
                                     
                              
-                                    <h:outputText value="Usuario Comprador : #{venta.compradorIdusuario.nombre}    #{venta.compradorIdusuario.apellidos}" />
-                                    <h:outputText value="Usuario Vendedor : #{venta.productoIdproducto.usuarioIdusuario.nombre}    #{venta.productoIdproducto.usuarioIdusuario.apellidos}" />
+                                    <h:outputText value="#{msg['app.UsuarioComprador']} : #{venta.compradorIdusuario.nombre}    #{venta.compradorIdusuario.apellidos}" />
+                                    <h:outputText value="#{msg['app.UsuarioVendedor']} : #{venta.productoIdproducto.usuarioIdusuario.nombre}    #{venta.productoIdproducto.usuarioIdusuario.apellidos}" />
                                  
       
-                                    <h:outputText value="Precio : #{venta.precioFinal}" />
+                                    <h:outputText value="#{msg['app.Precio']}: #{venta.precioFinal}" />
 
                                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos ne 'comprados'}">
-                                    <h:outputText value="¿Esta Enviado?: " />
+                                    <h:outputText value="#{msg['app.EstaEnviado']}: " />
                                     <h:outputText value="#{venta.enviado}" />
                                   
-                                    <h:outputText value="¿Esta Cobrado?: " />
+                                    <h:outputText value="#{msg['app.EstaCobrado']}: " />
                                     <h:outputText value="#{venta.cobrado}" />
-                                     <h:outputText value="¿El Comprador lo ha marcado como recibido?: " />
+                                     <h:outputText value="#{msg['app.CompradorMarcadoRecibido']}: " />
                                      <h:outputText value="#{venta.recibido}" />
-                                    <h:outputText value="¿El comprador lo ha marcado como pagado?: " />
+                                    <h:outputText value="#{msg['app.CompradorMarcadoPagado']}: " />
                                     <h:outputText value="#{venta.pagado}" />                                 
                                     
                                     </h:panelGrid>
                                     
                                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos eq 'comprados'}">
-                                    <h:outputText value="¿Esta Recibido?: " />
+                                    <h:outputText value="#{msg['app.EstaRecibido']}: " />
                                      <h:outputText value="#{venta.recibido}" />
-                                    <h:outputText value="¿Esta Pagado?: " />
+                                    <h:outputText value="#{msg['app.EstaPagado']}: " />
                                     <h:outputText value="#{venta.pagado}" />
-                                    <h:outputText value="¿El Vendedor lo ha marcado como Enviado?: " />
+                                    <h:outputText value="#{msg['app.VendedorMarcoEnviado']}: " />
                                     <h:outputText value="#{venta.enviado}" />
-                                    <h:outputText value="¿El vendedor lo ha marcado como cobrado?: " />
+                                    <h:outputText value="#{msg['app.VendedorMarcoCobrado']}: " />
                                     <h:outputText value="#{venta.cobrado}" />
                                     </h:panelGrid>
                         
                                 </h:panelGrid>
 
                                        <p:separator />
-                                <p:commandLink update=":form33:detalleDenuncia" oncomplete="PF('creacionDenuncia').show()" title="crear Denuncia">
+                                <p:commandLink update=":form33:detalleDenuncia" oncomplete="PF('creacionDenuncia').show()" title="#{msg['app.CrearDenuncia']}">
                                     <h:outputText styleClass="ui-icon ui-icon-pin-s" style="margin:0 auto;" />
-                                    <h:outputText value ="denunciar"  />
+                                    <h:outputText value ="#{msg['app.Denunciar']}"  />
                                     <f:setPropertyActionListener value="#{venta}" target="#{productoView.ventaSeleccionada}" />
                                 </p:commandLink>
                                           <p:separator />
-                                <p:commandLink update=":form333:detalleVenta" oncomplete="PF('editarVenta').show()" title="Editar Venta">
+                                <p:commandLink update=":form333:detalleVenta" oncomplete="PF('editarVenta').show()" title="#{msg['app.EditarVenta']}">
                                     <f:setPropertyActionListener value="#{venta}" target="#{productoView.ventaSeleccionada2}" />
-                                    <h:outputText value ="editar compra" rendered="#{productoView.filtroMisProductos eq 'comprados'}" />
-                                    <h:outputText value ="editar venta" rendered="#{productoView.filtroMisProductos ne 'comprados'}" />
+                                    <h:outputText value ="#{msg['app.EditarCompra']}" rendered="#{productoView.filtroMisProductos eq 'comprados'}" />
+                                    <h:outputText value ="#{msg['app.EditarVenta']}" rendered="#{productoView.filtroMisProductos ne 'comprados'}" />
                                     
                                 </p:commandLink>
                                           <p:separator />
@@ -492,7 +494,7 @@
                       <h:form id="form3" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                           <p:growl id="msgs3" showDetail="true" escape="false"/>
                           <p:messages id="msgsDenduncia" /> 
-                             <p:dialog id="dlg" header="Informacion Producto" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                             <p:dialog id="dlg" header="#{msg['app.InformacionProducto']}" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
                                         width="500" height="550"
                                         style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
                                  
@@ -522,21 +524,24 @@
                                     
                                     <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado and not productoView.soloMios}"  columnClasses="label,value" id="panelDetalle"
                                       style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
-                                    <h:outputText value="Nombre:" />
+                                    <h:outputText value="#{msg['app.Nombre']}:" />
                                     <h:outputText value="#{productoView.productoSeleccionado.nombre}" />
-                                    <h:outputText value="Descripcion:" />
+                                    <h:outputText value="#{msg['app.Descripcion']}:" />
                                     <h:outputText value="#{productoView.productoSeleccionado.descripcion}" />                                    
-                                    <h:outputText value="Usuario Ofertante" />
+                                    <h:outputText value="#{msg['app.UsuarioOfertador']}" />
                                     <h:outputText value="#{productoView.productoSeleccionado.usuarioIdusuario.nombre}" />
-                                    <h:outputText value="Email Usuario" />
+                                    <h:outputText value="#{msg['app.EmailUsuario']}" />
                                     <h:outputText value="#{productoView.productoSeleccionado.usuarioIdusuario.email}" />                                    
-                                    <h:outputText value="Fecha puesta en venta:" />                                   
+                                    <h:outputText value="#{msg['app.FechaDePuestaEnVenta']}:" />                                   
                                     <h:outputText value="#{productoView.productoSeleccionado.fechaProducto}" >
-                                     <f:convertDateTime pattern="d-M-yyyy" />
+                                        <f:convertDateTime locale="#{productoView.locale}" />
+                                        <!--
+                                     <f:convertDateTime pattern="d-M-yyyy" locale="#{productoView.locale}" />
+                                     -->
                                     </h:outputText>
-                                    <h:outputText  rendered="#{not (productoView.productoSeleccionado.enSubasta)}" value="Precio:" ></h:outputText >
+                                    <h:outputText  rendered="#{not (productoView.productoSeleccionado.enSubasta)}" value="#{msg['app.Precio']}:" ></h:outputText >
                                     <h:outputText  rendered="#{not (productoView.productoSeleccionado.enSubasta)}" value="#{productoView.productoSeleccionado.precio}" ></h:outputText >
-                                    <h:outputText  rendered="#{(productoView.productoSeleccionado.enSubasta)}" value="puja a superar:" ></h:outputText >
+                                    <h:outputText  rendered="#{(productoView.productoSeleccionado.enSubasta)}" value="#{msg['app.PujaASuperar']}:" ></h:outputText >
                                     <h:outputText  rendered="#{(productoView.productoSeleccionado.enSubasta)}" value="#{(productoView.productoSeleccionado.ultimaPuja)}" ></h:outputText >
                                  
                                   
@@ -548,13 +553,13 @@
                                     style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                                                                       
 
-                                    <h:outputText value="Nombre:" />
+                                    <h:outputText value="#{msg['app.Nombre']}:" />
                                     <h:inputText value="#{productoView.productoSeleccionado.nombre}" />
-                                    <h:outputText value="Descripcion: " />
+                                    <h:outputText value="#{msg['app.Descripcion']}: " />
                                     <h:inputText value="#{productoView.productoSeleccionado.descripcion}" />
-                                    <h:outputText value="Precio de Salida: " />
+                                    <h:outputText value="#{msg['app.PrecioDeSalida']}: " />
                                     <h:inputText value="#{productoView.productoSeleccionado.precio}"/>
-                                    <h:outputText   value="últimaPuja:" ></h:outputText >
+                                    <h:outputText   value="#{msg['app.UltimaPuja']}:" ></h:outputText >
                                     <h:outputText  value="#{(productoView.productoSeleccionado.ultimaPuja)}"/>                                   
                                     
                                     
@@ -566,12 +571,12 @@
                                                
                                                  <f:param id="parametro112" name="idProductoASalvar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                                                                <p:confirm header="Confirmación" message="¿Quieres Variar los datos del producto?" icon="ui-icon-alert" />
+                                                                                <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionCambiarProducto']}" icon="ui-icon-alert" />
                                         </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog>                                    
                                     
                                     
@@ -581,42 +586,42 @@
                                     <p:panelGrid  columns="2" rendered="#{not empty productoView.productoSeleccionado and  productoView.soloMios and not productoView.productoSeleccionado.enSubasta}"  columnClasses="label,value" id="panelDetalle21"
                                     style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
                                          
-                                    <h:outputText value="Nombre producto:" />
+                                    <h:outputText value="#{msg['app.Nombre']}:" />
                                     <h:inputText value="#{productoView.productoSeleccionado.nombre}" />
-                                    <h:outputText value="Descripcion:" />
+                                    <h:outputText value="#{msg['app.Descripcion']}:" />
                                     <h:inputText value="#{productoView.productoSeleccionado.descripcion}" />
-                                    <h:outputText   value="Precio:" ></h:outputText >
+                                    <h:outputText   value="#{msg['app.Precio']}:" ></h:outputText >
                                     <h:inputText  value="#{productoView.productoSeleccionado.precio}" ></h:inputText >
                                                                        
                                   </p:panelGrid>  
                                     
 
-                                    <p:commandButton rendered="#{not(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.vendido and productoView.soloMios}" id="botonSalvarVentaDirecta" value="Salvar Producto" update=":form2:grow21 :form2"    actionListener="#{productoView.salvarProducto()}" 
+                                    <p:commandButton rendered="#{not(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.vendido and productoView.soloMios}" id="botonSalvarVentaDirecta" value="#{msg['app.SalvarProducto']}" update=":form2:grow21 :form2"    actionListener="#{productoView.salvarProducto()}" 
                                                      icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
   
                                                
                                                  <f:param id="parametro111" name="idProductoASalvar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                     <p:confirm header="Confirmación" message="¿Quieres Variar los datos del producto?" icon="ui-icon-alert" />
+                                     <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionCambiarProducto']}" icon="ui-icon-alert" />
                                     </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog>  
                                
-                                    <p:commandButton rendered="#{not (productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.vendido )and not productoView.soloMios}" id="boton" value="Comprar Producto" update="msgs3 :form2:grow21 :form2"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check"
+                                    <p:commandButton rendered="#{not (productoView.productoSeleccionado.enSubasta)and (not productoView.productoSeleccionado.vendido )and not productoView.soloMios}" id="boton" value="#{msg['app.BotonComprarProducto']}" update="msgs3 :form2:grow21 :form2"    actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check"
                                                      oncomplete="PF('dialogoProducto').hide();">
   
                                                  <f:param id="parametro1" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
                                                  <f:param id="parametro2" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                                <p:confirm header="Confirmación" message="¿Quieres comprar el producto?" icon="ui-icon-alert" />
+                                                <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionCompra']}" icon="ui-icon-alert" />
                                     </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog> 
                                     
                                     
@@ -624,27 +629,27 @@
                                     
                                     
                                     
-                                    <p:commandButton rendered="#{productoView.soloMios}" id="botonBorrar" value="Borrar Producto" update=":form2:grow21 :form2"    actionListener="#{productoView.borrarProductoNoVendido()}" 
+                                    <p:commandButton rendered="#{productoView.soloMios}" id="botonBorrar" value="#{msg['app.BotonBorrarProducto']}" update=":form2:grow21 :form2"    actionListener="#{productoView.borrarProductoNoVendido()}" 
                                                      icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
   
                                                
                                                  <f:param id="parametroBorrar111" name="idProductoABorrar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                     <p:confirm header="Confirmación" message="¿Quieres Variar los datos del producto?" icon="ui-icon-alert" />
+                                     <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionBorrarProducto']}" icon="ui-icon-alert" />
                                     </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog>                                      
                                     
-                                    <h:outputText rendered="#{not (productoView.productoSeleccionado.enSubasta)and (productoView.productoSeleccionado.vendido )}" value="Producto Vendido"  style="color: red" />
+                                    <h:outputText rendered="#{not (productoView.productoSeleccionado.enSubasta)and (productoView.productoSeleccionado.vendido )}" value="#{msg['app.ProductoVendido']}"  style="color: red" />
                                     
                                     <p:inputText rendered="#{(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.expirado and not productoView.soloMios}" id="puja" value="#{gestionProductoBean.pujaPropuesta}" label="puja">
                                         <f:validateLength minimum="1" />
                                     </p:inputText>
                                     
-                                    <p:commandButton rendered="#{(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.expirado and not productoView.soloMios}" id="boton2" value="Realizar puja"  actionListener="#{gestionProductoBean.pujaXProducto()}" icon="ui-icon-check" update=":form2 msgs3 " 
+                                    <p:commandButton rendered="#{(productoView.productoSeleccionado.enSubasta)and not productoView.productoSeleccionado.expirado and not productoView.soloMios}" id="boton2" value="#{msg['app.RealizarPuja']}"  actionListener="#{gestionProductoBean.pujaXProducto()}" icon="ui-icon-check" update=":form2 msgs3 " 
                                                          >
   
                                                  <f:param id="parametro3" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
@@ -659,19 +664,19 @@
                                                   value="podrá pujar por el durante: " />
                                     <h:outputText value="&lt;br/&gt;" escape="false" />
                                      <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and not productoView.productoSeleccionado.expirado and not productoView.soloMios}" 
-                                                  value="#{productoView.elapsedDays} dias  #{productoView.elapsedHours} horas #{productoView.elapsedMinutes} minutos y #{productoView.elapsedSeconds} segundos " />
+                                                  value="#{productoView.elapsedDays} #{msg['app.Dias']}  #{productoView.elapsedHours} #{msg['app.Horas']} #{productoView.elapsedMinutes} #{msg['app.MinutosY']} #{productoView.elapsedSeconds} #{msg['app.Segundos']} " />
                                                                     
-                                      <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (productoView.productoSeleccionado.expirado)}" value="expirado tiempo de puja"  style="color: red" />
+                                      <h:outputText rendered="#{(productoView.productoSeleccionado.enSubasta) and (productoView.productoSeleccionado.expirado)}" value="#{msg['app.ExpiradoTiempoDePuja']}"  style="color: red" />
                                        <BR/>
-                                      <p:commandButton id="botonDenunciaMalClasificado" value="Marcar como mal clasificado"    actionListener="#{productoView.creaDenunciaMalClasificado()}" 
+                                      <p:commandButton id="botonDenunciaMalClasificado" value="#{msg['app.BotonMalClasificado']}"   actionListener="#{productoView.creaDenunciaMalClasificado()}" 
                                                          icon="ui-icon-check" update=":form2 msgs3" >
-                                            <p:confirm header="Confirmación" message="¿Marcará el producto como mal clasificado?" icon="ui-icon-alert" />
+                                            <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionMalClasificado']}"  icon="ui-icon-alert" />
                                             <f:param id="parametroProductoMalClasificado" name="idProductoMalClasificado" value="#{productoView.productoSeleccionado.idproducto}" />
                                         </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog>    
                                        
                                        
@@ -708,7 +713,7 @@
                        </h:form>
                        <h:form id="form33" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
                           
-                             <p:dialog id="dlg" header="Crear Denuncia" widgetVar="creacionDenuncia" 
+                             <p:dialog id="dlg" header="#{msg['app.CrearDenuncia']}" widgetVar="creacionDenuncia" 
                                         width="500" height="350"
                                         style="background-color: #c8bfe7; background: #c8bfe7;">
                                  
@@ -721,14 +726,14 @@
                                    
                                     <p:separator />
                                     
-                                    <h:outputText value="crear denuncia por la venta del producto: #{productoView.ventaSeleccionada.productoIdproducto.nombre}  " />
+                                    <h:outputText value="#{msg['app.InfoCrearDenuncia']}: #{productoView.ventaSeleccionada.productoIdproducto.nombre}  " />
                                     <p:separator />
                                     
                                    
                                 <h:panelGrid columns="4" cellpadding="2">         
             
-                                    <h:outputLabel for="motivoDenuncia" value="Motivo de la Denuncia: " />
-                                    <p:inputTextarea rows="5" cols="30" counter="display" maxlength="300"  counterTemplate="{0} caracteres restantes." autoResize="false" 
+                                    <h:outputLabel for="motivoDenuncia" value="#{msg['app.MotivoDenuncia']}: " />
+                                    <p:inputTextarea rows="5" cols="30" counter="display" maxlength="300"  counterTemplate="{0} #{msg['app.CaracteresRestantes']}." autoResize="false" 
                                                      id="motivoDenuncia" value="#{productoView.motivoDenuncia}" label="motivoDenuncia">   
                                       <f:validateLength minimum="5" />
                                     </p:inputTextarea>
@@ -759,8 +764,8 @@
                                         </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                                            <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                                         </p:confirmDialog>
                                         
                                         
@@ -862,12 +867,12 @@
                 
 
             </p:layout>
-            <h:outputText value="no estas reginstrado como socio y no pudes acceder a esta pagina"    rendered="#{ROLE_ADMIN}" />
+            <h:outputText value="#{msg['app.NoEstasRegistradoComoSocioParaPoderAccederAEstaPagina']}"    rendered="#{ROLE_ADMIN}" />
             <BR/>
-             <h:link outcome="/admin/index" value="volver"   rendered="#{ROLE_ADMIN}" />
-            <h:outputText value="no estas logado para poder acceder a esta pagina"    rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
+             <h:link outcome="/admin/index" value="#{msg['app.Volver']}"   rendered="#{ROLE_ADMIN}" />
+            <h:outputText value="#{msg['app.NoEstasLogadoParaPoderAccederAEstaPagina']}"    rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
             <BR/>
-            <h:link outcome="/faces/index" value="volver" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
+            <h:link outcome="/faces/index" value="#{msg['app.Volver']}" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
 
         </h:body>
 

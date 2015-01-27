@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -37,7 +38,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import managedBeans.utilidades.ResourcesUtil;
 
 
 /**
@@ -82,6 +85,7 @@ private List<Producto> listaProductos;
 private List<Venta> listaVentas;
 
 
+
 private String nombreBuscado;
 private String filtro;
 private String vendidos;
@@ -109,8 +113,11 @@ long elapsedDays;
 long elapsedHours;
 long elapsedMinutes;
 long elapsedSeconds;
+//private String contexto;
+//private String contextoCliente;
+private Locale locale;
 //el título del menu izquierdo variará segun veamos categorias y gestionemos nuestros pruductos.
-private String titulo;
+    private String titulo;
 
     public List<Imagen> getImagenesProductoSeleccionado() {
         return imagenesProductoSeleccionado;
@@ -175,10 +182,14 @@ private String titulo;
     }
 
     public void setSoloMios(boolean soloMios) {
-        if (soloMios==true)
-              setTitulo("Gestiona Tus Productos");
-        else {
-            setTitulo("Categorias");
+        if (soloMios==true){
+            
+//              setTitulo("Gestiona Tus Productos");
+              setTitulo(ResourcesUtil.getString("app.GestionaTusProductos"));
+              
+        }else {
+//            setTitulo("Categorias");
+            setTitulo(ResourcesUtil.getString("app.Categorias"));
             setFiltroMisProductos("ofertados");
         }        
         this.soloMios = soloMios;
@@ -376,6 +387,43 @@ private String titulo;
         this.tipoDenuncia = tipoDenuncia;
     }
 
+//    public String getContexto() {
+//        return contexto;
+//    }
+//
+//    public void setContexto() {
+//             //Locale de la palicacion
+//       this.contexto =  FacesContext.getCurrentInstance().getViewRoot().getLocale().toString();
+//        
+//       //obtenemos el HttpServletRequest  de la peticion para poder saber
+//       // el locale del cliente
+//       HttpServletRequest requestObj = (HttpServletRequest)      
+//         FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//       
+//       //Locale del cliente
+//       this.contextoCliente = requestObj.getLocale().toString();
+//       
+//       
+//       //Asignamos al locale de la aplicacion el locale del cliente
+//       FacesContext.getCurrentInstance().getViewRoot().setLocale(requestObj.getLocale());
+//    }
+//
+//    public String getContextoCliente() {
+//        return contextoCliente;
+//    }
+//
+//    public void setContextoCliente(String contextoCliente) {
+//        this.contextoCliente = contextoCliente;
+//    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
     
     
 
@@ -384,23 +432,34 @@ private String titulo;
     @PostConstruct
     public void init() {
        faceContext=FacesContext.getCurrentInstance();
+       iniciarLocate();
        setSoloMios(false);
        imagenesProducto= new  ArrayList<>();
        listaProductos=new  ArrayList<>(); 
        setVendidos("todos");
        setFiltro("todos");
-       setTitulo("Categorias");
        setFiltroMisProductos("ofertados");
        //setBuscandoPorNombre(false);
        todosProductos();
-       setTitulo("Categorias");
+       setTitulo(ResourcesUtil.getString("app.Categorias"));
        setVentasAMostrar("NoEnviados");
        
        
     }
     
     
-    
+        public void iniciarLocate() {
+        //obtenemos el HttpServletRequest  de la peticion para poder saber
+       // el locale del cliente
+        
+        
+         HttpServletRequest requestObj = (HttpServletRequest)      
+         FacesContext.getCurrentInstance().getExternalContext().getRequest();
+         
+       //Asignamos al locale de la aplicacion el locale del cliente
+       FacesContext.getCurrentInstance().getViewRoot().setLocale(requestObj.getLocale());
+       locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+    }   
     
     
     
@@ -806,11 +865,11 @@ private String titulo;
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
         setVentasAMostrar("NoRecibidos");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado que no hayas recibido","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeCompradoNoRecibido"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
              
          }else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has comprados y no has recibido","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMostrandoCompradoNoRecibido"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
             setListaVentas(listaVentasTempo);
          }
@@ -825,11 +884,11 @@ private String titulo;
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
         setVentasAMostrar("Recibidos");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado y que hayas recibido","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeCompradoRecibido"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
              
          }else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has comprados y ya has recibido","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMostrandoCompradoRecibido"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
             setListaVentas(listaVentasTempo);
          }
@@ -843,11 +902,11 @@ private String titulo;
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorEnviados(usuario);
         setVentasAMostrar("Enviados");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que hayas enviado","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeVendidoEnviado"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
              
          }else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has vendido y ya has enviado","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMostrandoVendidoEnviado"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
             setListaVentas(listaVentasTempo);
          }
@@ -859,11 +918,11 @@ private String titulo;
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorNoEnviados(usuario);
         setVentasAMostrar("NoEnviados");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que no hayas enviado","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeVendidoNoEnviado"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
              
          }else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has vendido y aun no has enviado","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMostrandoVendidoNoEnviado"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
             setListaVentas(listaVentasTempo);
          }
@@ -874,11 +933,11 @@ private String titulo;
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
         setVentasAMostrar("NoRecibidos");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado que no hayas recibido","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeCompradoNoRecibido"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
              
          }else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has comprados y no has recibido","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMostrandoCompradoNoRecibido"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
             setListaVentas(listaVentasTempo);
          }
@@ -892,11 +951,11 @@ private String titulo;
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
         setVentasAMostrar("Recibidos");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto comprado y que hayas recibido","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeMostrandoCompradoNoRecibido")+"No existe ningun producto comprado y que hayas recibido","");
             FacesContext.getCurrentInstance().addMessage(null, message);
              
          }else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has comprados y ya has recibido","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMostrandoCompradoNoRecibido")+"Se muestran los productos que has comprados y ya has recibido","");
             FacesContext.getCurrentInstance().addMessage(null, message);
             setListaVentas(listaVentasTempo);
          }
@@ -910,11 +969,11 @@ private String titulo;
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorEnviados(usuario);
         setVentasAMostrar("Enviados");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"No existe ningun producto vendido y que hayas enviado","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeMostrandoCompradoNoRecibido")+"No existe ningun producto vendido y que hayas enviado","");
             FacesContext.getCurrentInstance().addMessage(null, message);
              
          }else{
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se muestran los productos que has vendido y ya has enviado","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMostrandoCompradoNoRecibido")+"Se muestran los productos que has vendido y ya has enviado","");
             FacesContext.getCurrentInstance().addMessage(null, message);
             setListaVentas(listaVentasTempo);
          }

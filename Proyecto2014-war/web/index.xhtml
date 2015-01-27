@@ -5,13 +5,16 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <f:view contentType="text/html">
+    <f:view locale="#{productoView.locale}">
         <h:head>
+            <f:loadBundle basename="resources.mensajes.mensajes" var="msg"/>
             <f:facet name="Principal">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Pagina Principal Usuario</title>
+               <!-- <title>Pagina Principal Usuario</title>
+                <title><h:outputText value="#{msg.app_title_inicio}"/> </title>
+               -->
             </f:facet>
-
+                      <title><h:outputText value="#{msg.app_title_inicio}"/> </title>
          <h:outputStylesheet library="css" name="default.css"  />
          <h:outputStylesheet library="css" name="cssLayout.css"  />
          
@@ -32,11 +35,15 @@
                     <h:form>  
                                                        
                     
-                    <h:link id="logarse" outcome="login" value="logarse" />
-                         <p:tooltip id="toolTipFade01" for="logarse" value="logarse como usuario" />
+                    <h:link id="logarse" outcome="login" value="#{msg['app.logarse']}" />
+                         <p:tooltip id="toolTipFade01" for="logarse" value="#{msg['app.tooltipLogarse']}" />
+                    <!--
                     <br/>
-                    <h:link id="crearCuenta" outcome="crearUsuario" value="Crear cuenta" />
-                        <p:tooltip id="toolTipFade11" for="crearCuenta" value="Crear cuenta en el portal" />
+                    <h:outputText value="locate: #{productoView.locale}"/>
+                    -->
+                     <br/>
+                    <h:link id="crearCuenta" outcome="crearUsuario" value="#{msg['app.crearCuenta']}" />
+                        <p:tooltip id="toolTipFade11" for="crearCuenta" value="#{msg['app.tooltipCrearCuenta']}" />
                                             
 
                        
@@ -55,23 +62,23 @@
                                 <h:panelGrid id="panelGrid1" columns="2" style="margin-bottom:10px" cellpadding="5">
                                    
                                     <p:selectOneRadio id="filtro" value="#{productoView.filtro}">
-                                        <f:selectItem itemLabel="Todos" itemValue="todos" />
-                                        <f:selectItem itemLabel="Venta directa" itemValue="ventaDirecta" />
-                                        <f:selectItem itemLabel="Subasta" itemValue="subasta" />
+                                        <f:selectItem itemLabel="#{msg['app.itemTodos']}" itemValue="todos" />
+                                        <f:selectItem itemLabel="#{msg['app.itemVentaDirecta']}" itemValue="ventaDirecta" />
+                                        <f:selectItem itemLabel="#{msg['app.itemSubasta']}" itemValue="subasta" />
                                            <f:ajax event="valueChange"  render=":form2 @all"/>
                                             <f:ajax event="valueChange" render=":form2:productos" />
                                             <f:ajax event="valueChange" render=":form2:productos:cantidad" />
                                            
                                             
                                     </p:selectOneRadio>
-                                    <p:tooltip id="toolTipFade11" for="panelGrid1" value="Filtra los productos a mostrar" />
+                                    <p:tooltip id="toolTipFade11" for="panelGrid1" value="#{msg['app.tooltipFiltrarProductos']}" />
                                 </h:panelGrid>
                    
                     </td> 
                     <td class='alnright'>
                         
                                     <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
-                                   <p:tooltip id="toolTipFade1" for="nombre" value="introduce el texto a buscar" />
+                                   <p:tooltip id="toolTipFade1" for="nombre" value="#{msg['app.tooltipBuscarPorNombre']}" />
                                     </p:inputText>
                         
 
@@ -84,7 +91,7 @@
                             
                           
                             <h:graphicImage library="images" name="buscar2.gif" />
-                            <p:tooltip id="toolTipFade2" for="buscaXNombre" value="Buscar texto introducido" />
+                            <p:tooltip id="toolTipFade2" for="buscaXNombre" value="#{msg['app.tooltipBotonBuscarPorNombre']}" />
                         </p:commandLink>
                     
                     </td>
@@ -128,14 +135,15 @@
                             <p:treeNode type="mp3" icon="ui-icon-video">
                                 <h:outputText value="#{doc.nombre}" />
                             </p:treeNode>
+                           
                         </p:tree>
                         
-                        <p:commandButton value="Información Categoría" update="msgs" icon="ui-icon-newwin"
+                        <p:commandButton value="#{msg['app.BotonInformaciónCategoría']}" update="msgs" icon="ui-icon-newwin"
                                             actionListener="#{treeSelectionView.displaySelectedSingle}"/>
                         
                         
                         
-                          <p:commandButton id="boton2" value="Ver Productos de la categoria selecionada"  update="msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
+                          <p:commandButton id="boton2" value="#{msg['app.BotonFiltrarCategoria']}"  update="msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
                                  
                                   
                                   
@@ -176,7 +184,7 @@
                             style=" border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%;">
                                                         
                             <f:facet name="header">
-                                <h:outputText value=" Numero de productos: #{productoView.listaProductos.size()}" id="cantidad"/>
+                                <h:outputText value="#{msg['app.NumeroDeProductos']} #{productoView.listaProductos.size()}" id="cantidad"/>
                             </f:facet>
                              
                             <p:panel header="#{producto.nombre}" style="text-align:center; border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%; background-color: #c8bfe7;">
@@ -196,7 +204,7 @@
                              
                                    
                                     
-                                    <h:outputText value="Categoria : #{producto.categoriaIdcategoria.nombre}" />
+                                    <h:outputText value="#{msg['app.Categoria']} : #{producto.categoriaIdcategoria.nombre}" />
                                     <!--
                                      <h:outputText value="idproducto : #{producto.idproducto}" />
                                     <h:outputText value="Precio: #{producto.precio}" />
