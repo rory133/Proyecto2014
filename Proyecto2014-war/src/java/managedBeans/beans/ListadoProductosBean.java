@@ -54,6 +54,8 @@ import managedBeans.utilidades.ResourcesUtil;
 //@RequestScoped
 public class ListadoProductosBean implements Serializable {
 
+
+    
 @EJB
 private ProductoFacade productoFacade;
 
@@ -599,10 +601,10 @@ private Locale locale;
 //               
 //               
             todosProductos();
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"DEBES INTRODUCIR UNA PALABRA A BUSCAR","AL MENOS DE TRES LETRAS");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeDebesItroducirUnaPalabra"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
             
-             FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,"INTRODUCE AL MENOS TRES CARACTERES A BUSCAR","");
+             FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeAlMenosTresLetras"),"");
             FacesContext.getCurrentInstance().addMessage(null, message1);
             System.out.println(" nombreBuscado vacio");
          //   getListaProductos().clear();
@@ -640,7 +642,7 @@ private Locale locale;
        if ((listaProductos2.isEmpty())){
            setNombreBuscado("");
            todosProductos();
-            FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,"no se han encontrado productos que cumplan la condicion: "+buscar,buscar);
+            FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajesNoEncontradoPorNombre")+buscar,buscar);
             FacesContext.getCurrentInstance().addMessage(null, message1);
             System.out.println(" No se han encontrado productos");
             
@@ -714,7 +716,7 @@ private Locale locale;
        if ((null==listaProductos2)|| (listaProductos2.isEmpty())){//no hay productos de la categoria seleccionada
            setNombreBuscado("");
            todosProductos();
-            FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,"no se han encontrado productos de la categoria seleccionada: "+categoria.getNombre(),categoria.getNombre());
+            FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeNoProductosCategoria")+categoria.getNombre(),categoria.getNombre());
             FacesContext.getCurrentInstance().addMessage(null, message1);
             System.out.println(" No se han encontrado productos de "+categoria.getNombre());
             
@@ -752,14 +754,14 @@ private Locale locale;
              System.out.println("CATEGORIA PASADA en else::::::::::"+ categoriaSeleccionada);
              
             FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "No ha seleccionado ninguna categoría",
-                                    "Selecciona una categoria"));
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeNoCategoriaSeleccionada"),
+                                    ResourcesUtil.getString("app.MensajeSeleccionaCategoria")));
             
                FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Debe seleccionar una Categoria"  ));
+                new FacesMessage(ResourcesUtil.getString("app.MensajeSeleccionaCategoria")  ));
                
                
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"DEBES SELECCIONAR UNA CATEGORIA","SELECCIONA UNA");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeSeleccionaCategoria"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
                
                
@@ -1046,7 +1048,7 @@ private Locale locale;
         //denunciaFacade.create(denuncia);
         denunciaFacade.salva(denuncia);
         gestionEventos.fireRealizadaDenuncia(denuncia);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha creado correctamente la denuncia por "+denuncia.getTipoDenuncia(),"");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeDenunciaCreada")+denuncia.getTipoDenuncia(),"");
         FacesContext.getCurrentInstance().addMessage(null, message);
         
         
@@ -1064,7 +1066,7 @@ private Locale locale;
          
 
 //        gestionEventos.fireRealizadaDenuncia(denuncia);
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Se ha marcado el producto "+productoMalClasificado.getNombre()+" como mal clasificado" ,"");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMarcadoProducto")+productoMalClasificado.getNombre()+ResourcesUtil.getString("app.MensajeComoMalClasificado"),"");
         FacesContext.getCurrentInstance().addMessage(null, message);
         
         
@@ -1073,13 +1075,13 @@ private Locale locale;
     public void salvaVenta(Venta venta){
 
         ventaFacade.salva(venta);
-           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"actualizados valores de la venta "+ venta.getFecha(),"");
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeActualizadaVenta")+ venta.getFecha(),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
     }
     public void salvaVenta(){
 
         ventaFacade.salva(ventaSeleccionada2);
-           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"actualizados valores de la venta del producto "+ ventaSeleccionada.getProductoIdproducto().getNombre(),"");
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeAcutalizadaVentaProducto")+ ventaSeleccionada.getProductoIdproducto().getNombre(),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
@@ -1113,7 +1115,7 @@ private Locale locale;
                   
                   
                   productoFacade.salva(productoASalvar);
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS ACTUALIZAR NUEVOS VALORES EN EL PRODUCTO "+productoASalvar.getNombre(),"");
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeActualizadoValoresproducto")+productoASalvar.getNombre(),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);
                 
 
@@ -1125,7 +1127,7 @@ private Locale locale;
                   
                   
                   productoFacade.salva(productoASalvar);
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS ACTUALIZAR NUEVOS VALORES EN EL PRODUCTO "+productoASalvar.getNombre()+" PERO EL PRECIO DE SALIDA NO PUEDE SER ACTUALIZADO AL TENER PUJAS","");
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeActualizadoValoresproducto")+productoASalvar.getNombre()+ResourcesUtil.getString("app.MensajeAcutalizaValoresProductoPuja"),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);
                   
                   
@@ -1138,7 +1140,7 @@ private Locale locale;
                   
                   
                   productoFacade.salva(productoASalvar);
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS ACTUALIZAR NUEVOS VALORES EN EL PRODUCTO "+productoASalvar.getNombre(),"");
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeActualizadoValoresproducto")+productoASalvar.getNombre(),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);
                
            }
@@ -1159,7 +1161,7 @@ private Locale locale;
                  
                   
                   productoFacade.remove(productoABorrar);
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeProductoBorrado")+productoABorrar.getNombre(),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);                
               }else{
                   
@@ -1169,12 +1171,12 @@ private Locale locale;
                   
                   
                   productoFacade.remove(productoABorrar);
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeProductoBorrado")+productoABorrar.getNombre(),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);    
               }
         }else{
                    productoFacade.remove(productoABorrar);
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE BORRAR EL PRODUCTO "+productoABorrar.getNombre(),"");
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeProductoBorrado")+productoABorrar.getNombre(),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);
            }
 
@@ -1186,8 +1188,7 @@ private Locale locale;
             String idVenta = (String) facesContext.getExternalContext().getRequestParameterMap().get("idVentaABorrar");
              Venta venta=ventaFacade.find((Integer)Integer.parseInt(idVenta));
              if (!venta.isCobrado()||!venta.isEnviado()||!venta.isPagado()||!venta.isRecibido()){
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Para Borrar una venta tiene que estar, enviada, recibida,"
-                           + "pagada y cobrada ","");
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeNoBorradaVenta"),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);
                    return "index.xhtml?faces-redirect=true";  
              }else{

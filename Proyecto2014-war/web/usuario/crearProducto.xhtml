@@ -5,13 +5,14 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <f:view contentType="text/html">
+    <f:view locale="#{productoView.locale}">
         <h:head>
+            <f:loadBundle basename="resources.mensajes.mensajes" var="msg"/>
             <f:facet name="Principal">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>Pagina Principal Usuario</title>
             </f:facet>
-
+            <title><h:outputText value="#{msg.app_title_inicio}"/> </title>
          <h:outputStylesheet library="css" name="default.css"  />
          <h:outputStylesheet library="css" name="cssLayout.css"  />
          <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
@@ -26,17 +27,17 @@
                 <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
               <div class="fondo-norte">
        
-                 <h:link outcome="/usuario/index" value="volver" />
+                 <h:link outcome="/usuario/index" value="#{msg['app.Volver']}" />
       
             </div>
                 </p:layoutUnit>
 
 
-                <p:layoutUnit position="west" size="25%" header="Categorias" collapsible="false" >
+                <p:layoutUnit position="west" size="25%" header="#{msg['app.Categorias']}" collapsible="false" >
                     <h:form class="izquierda">
                         <p:growl id="msgs" showDetail="true" escape="false"/>
 
-                        <h3 style="margin-top:0">Selecciona la categoría que tendrá</h3>
+                        <h3 style="margin-top:0">#{msg['app.SeleccionaLaCategoriaQueTendra']}</h3>
                         <p:tree value="#{treeSelectionView.root1}" var="doc"
                                     selectionMode="single"
                                     selection="#{treeSelectionView.selectedNode}"
@@ -56,7 +57,7 @@
                            
                         </p:tree>
 
-                        <p:commandButton value="Seleccionar esta categoria" update="msgs" icon="ui-icon-newwin"
+                        <p:commandButton value="#{msg['app.BotonSeleccionarCategoria']}" update="msgs" icon="ui-icon-newwin"
                                          actionListener="#{treeSelectionView.sumaCategoria()}">
  
        
@@ -78,10 +79,10 @@
            
    
           
-         <p:panel id="panel" header="Crear Producto Nuevo">
+         <p:panel id="panel" header="#{msg['app.PanelCrearProducto']}">
              <div class="fondo-centro">  
               <p:messages id="msgs" /> 
-           <h:outputText value="Selecciona en el panel de la izquierda en que categoría lo quieres incluir" /> 
+           <h:outputText value="#{msg['app.AvisoSeleccionaCategoria']}"  style="color:#D20005"  /> 
              
             <br/>   
          <h:panelGrid columns="4" cellpadding="5">
@@ -90,7 +91,7 @@
                     
      
             
-            <h:outputLabel for="nombre" value="Nombre:*" />
+            <h:outputLabel for="nombre" value="#{msg['app.Nombre']}*" />
             <p:inputText id="nombre" value="#{crearProductoBean.nombre}" label="nombre"
                          required="true">
                 <f:validateLength minimum="4" />
@@ -101,7 +102,7 @@
           
                
             
-            <h:outputLabel for="precio" value="precio:*" />
+            <h:outputLabel for="precio" value="#{msg['app.Precio']}*" />
             <p:inputText id="precio" value="#{crearProductoBean.precio}" label="precio"
                          required="true">
                <f:validateDoubleRange minimum="1.00" maximum="12000.00" />
@@ -113,8 +114,8 @@
             
         <h:panelGrid columns="3" cellpadding="2">         
             
-            <h:outputLabel for="descripcion" value="descripcion:*" />
-            <p:inputTextarea rows="5" cols="30" counter="display" maxlength="400"  counterTemplate="{0} caracteres restantes." autoResize="false" 
+            <h:outputLabel for="descripcion" value="#{msg['app.Descripcion']}*" />
+            <p:inputTextarea rows="5" cols="30" counter="display" maxlength="400"  counterTemplate="{0} #{msg['app.CaracteresRestantes']}" autoResize="false" 
              id="descripcion" value="#{crearProductoBean.descripcion}" label="descripcion"
                     required="true">   
               <f:validateLength minimum="10" />
@@ -127,12 +128,12 @@
         </h:panelGrid>           
             
         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-            <h:outputText value="¿Ponerlo en modo subasta?: " />
+            <h:outputText value="#{msg['app.EnModoSubasta']}: " />
             <p:selectBooleanCheckbox value="#{crearProductoBean.enSubasta}" />
         </h:panelGrid>
             
             
-     <p:commandButton id="boton" value="Crear Producto"   update="panel" action="#{crearProductoBean.guardarProducto()}" icon="ui-icon-check" >
+     <p:commandButton id="boton" value="#{msg['app.BotonCrearProducto']}"   update="panel" action="#{crearProductoBean.guardarProducto()}" icon="ui-icon-check" >
            <f:ajax event="click" render=":form3:imagenes" />
 
          <f:param id="parametro" name="idCategoriaJSF" value="#{idCategoriaJSF}" />
@@ -164,7 +165,7 @@
             <p:column>
                 <div class="fondo-centro">  
                <f:facet name="header">
-                  <h:outputText value="Imagenes" />
+                  <h:outputText value="#{msg['app.Imagenes']}" />
                </f:facet>
                     
                 <h:outputLink value="../VisualizaImagen?tipo=crearProducto&amp;Image_id==#{row}" target="_blank"
@@ -214,12 +215,12 @@
      
 
  </p:layout>
-            <h:outputText value="no estas reginstrado como socio y no pudes acceder a esta pagina"    rendered="#{ROLE_ADMIN}" />
+            <h:outputText value="#{msg['app.NoEstasRegistradoComoSocioParaPoderAccederAEstaPagina']}"    rendered="#{ROLE_ADMIN}" />
             <BR/>
-             <h:link outcome="/admin/index" value="volver"   rendered="#{ROLE_ADMIN}" />
-            <h:outputText value="no estas logado para poder acceder a esta pagina"    rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
+             <h:link outcome="/admin/index" value="#{msg['app.Volver']}"   rendered="#{ROLE_ADMIN}" />
+            <h:outputText value="#{msg['app.NoEstasLogadoParaPoderAccederAEstaPagina']}"    rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
             <BR/>
-            <h:link outcome="/faces/index" value="volver" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
+            <h:link outcome="/faces/index" value="#{msg['app.Volver']}" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
             
             <BR/>
 

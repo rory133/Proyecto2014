@@ -11,6 +11,8 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.ResourceBundle;
+import javax.faces.context.FacesContext;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -96,7 +98,17 @@ public class Categoria implements Serializable {
     public String getDescripcion() {
         if ((this.descripcion!="")&&(this.descripcion!=null))
            return descripcion;
-        else return "sin descripcion";
+         else {
+        FacesContext context = FacesContext.getCurrentInstance();
+        
+//       generamos texto segun locale
+         ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());
+         
+         return text.getString("app.SinDescripcion");
+            
+       
+        }
+       
     }
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;

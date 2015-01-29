@@ -28,6 +28,7 @@ import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import managedBeans.utilidades.ResourcesUtil;
 import utilidades.Loggable;
 
 /**
@@ -101,7 +102,7 @@ private String password;
     }
 public String validarUsuario(){
    // String outcome="login";
-        System.out.println("@@@ValidarUsuario: login "+ getLogin()+" password: "+ getPassword());
+      //  System.out.println("@@@ValidarUsuario: login "+ getLogin()+" password: "+ getPassword());
       if (!(getLogin()==null) && !(getPassword()==null)){
         usuarioLogado= loginFacade.ValidarLogin(login,  password);
        // logger.info("@@@@@@@despues de encontrar usuario : "+usuarioLogado.getLogin());
@@ -114,7 +115,7 @@ public String validarUsuario(){
             datosUsuarioLogado=(Usuario)usuarioFacade.find(usuarioLogado.getUsuarioIdusuario().getIdusuario());
             session.setAttribute("usuario", datosUsuarioLogado);
             
-            facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "Acceso Correcto", null);
+            facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.AccesoCorrecto"), null);
             session.setMaxInactiveInterval(2000*60*60);
             /*
             FacesContext.getCurrentInstance().addMessage(null,
@@ -124,16 +125,16 @@ public String validarUsuario(){
             if (usuarioLogado.getRole().toString().matches("ROLE_ADMIN")){
                 session.setAttribute("ROLE_ADMIN", true);
                 session.setAttribute("ROLE_SOCIO", false);
-                System.out.println("es adminstrador" );
+//                System.out.println("es adminstrador" );
                 return "/admin/index?faces-redirect=true";
             }else if (usuarioLogado.getRole().toString().matches("ROLE_SOCIO")){
                 if (usuarioLogado.getUsuarioIdusuario().getVotosNegativos()>2){
-                      System.out.println("<<<<<<<Bloqueadoooo>>>>>>>>");
+//                      System.out.println("<<<<<<<Bloqueadoooo>>>>>>>>");
                     return "usuarioBloqueado?faces-redirect=true";
                 }
                 session.setAttribute("ROLE_ADMIN", false);
                 session.setAttribute("ROLE_SOCIO", true);
-                  System.out.println("es socio");
+//                  System.out.println("es socio");
                  return "/usuario/index?faces-redirect=true";
             }else
                 System.out.println("na de na: "+usuarioLogado.getRole());
@@ -141,10 +142,10 @@ public String validarUsuario(){
            // return "acceso";
         } else {
 
-            facesMessage=new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario o contraseña incorrectos", null);
+            facesMessage=new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourcesUtil.getString("app.MensajeUsuarioContraErroneo"), null);
             faceContext.addMessage(null, facesMessage);
                FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Vuelva a probar "  ));
+                new FacesMessage(ResourcesUtil.getString("app.MensajeVuelvaAProbar") ));
             return "login";
      
         
@@ -155,22 +156,10 @@ public String validarUsuario(){
       return "login";
    }
 public void logout(){  
-    System.out.println("entro en logout()");
+//    System.out.println("entro en logout()");
     String retorno;
     retorno = "../index?faces-redirect=true";
-//    FacesContext context = FacesContext.getCurrentInstance();
-//    HttpServletRequest request =
-//            (HttpServletRequest) context.getExternalContext().getRequest();
-//    try{
-//        
-//        request.logout();
-//        System.out.println(" saliendo de logout" );
-//    } catch (ServletException e){
-//        System.out.println("en el catch" );
-//    }
-    
-//        System.out.println("antes del retorno" );
-//    return retorno;
+
         FacesContext context = FacesContext.getCurrentInstance();
 
         ExternalContext externalContext = context.getExternalContext();
@@ -182,7 +171,7 @@ public void logout(){
         httpSession.invalidate();
     
         try {
-        System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
+//        System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
         FacesContext.getCurrentInstance().getExternalContext()
         .redirect("../index.xhtml");
         } catch (IOException e) {

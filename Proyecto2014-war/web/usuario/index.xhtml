@@ -743,8 +743,8 @@
 
                                     <p:separator />
                                     
-                                    <h:outputLabel for="tipoDenuncia" value="denunciar por falta de envio " rendered="#{productoView.filtroMisProductos eq 'comprados'}" />
-                                    <h:outputLabel for="tipoDenuncia2" value="denunciar por falta de pago " rendered="#{productoView.filtroMisProductos ne 'comprados'}"/>
+                                    <h:outputLabel for="tipoDenuncia" value="#{msg['app.DenunciarFaltaEnvio']} " rendered="#{productoView.filtroMisProductos eq 'comprados'}" />
+                                    <h:outputLabel for="tipoDenuncia2" value="#{msg['app.DenunciarFaltaPago']} " rendered="#{productoView.filtroMisProductos ne 'comprados'}"/>
                                     
                                     <!--
                                     <h:selectOneMenu id="questionStatus" value="#{productoView.tipoDenuncia}"  >
@@ -758,9 +758,9 @@
                                     <p:separator />
                                         <p:growl id="msgs33" showDetail="true" escape="false"/>
                                         
-                                        <p:commandButton id="botonDenuncia" value="Denunciar Venta" update=":form22:grow221"    actionListener="#{productoView.creaDenuncia()}" 
+                                        <p:commandButton id="botonDenuncia" value="#{msg['app.BotonDenunciarVenta']}" update=":form22:grow221"    actionListener="#{productoView.creaDenuncia()}" 
                                                          icon="ui-icon-check" oncomplete="PF('creacionDenuncia').hide();" >
-                                            <p:confirm header="Confirmación" message="¿Se creará una denuncia?" icon="ui-icon-alert" />
+                                            <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionDenunciarVenta']}" icon="ui-icon-alert" />
                                         </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
@@ -785,7 +785,7 @@
     
                           <h:form id="form333" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"> 
                            
-                             <p:dialog id="dialogoEditarVenta" header="Detalles Venta" widgetVar="editarVenta" 
+                             <p:dialog id="dialogoEditarVenta" header="#{msg['app.DetallesVenta']}" widgetVar="editarVenta" 
                                         width="500" height="350"
                                         style="background-color: #c8bfe7; background: #c8bfe7;">
                                 
@@ -799,26 +799,26 @@
                                     
                                     
                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos ne 'comprados'}">
-                                    <h:outputText value="¿Esta Enviado?: " />
-                                    <p:selectBooleanButton id="value1" value="#{productoView.ventaSeleccionada2.enviado}" onLabel="Sí" offLabel="No" style="width:60px" />
+                                    <h:outputText value="#{msg['app.EstaEnviado']}: " />
+                                    <p:selectBooleanButton id="value1" value="#{productoView.ventaSeleccionada2.enviado}" onLabel="#{msg['app.Si']}" offLabel="#{msg['app.No']}" style="width:60px" />
                                   
-                                    <h:outputText value="¿Esta Cobrado?: " />
-                                    <p:selectBooleanButton id="value4" value="#{productoView.ventaSeleccionada2.cobrado}" onLabel="Sí" offLabel="No" style="width:60px" />
-                                     <h:outputText value="¿El Comprador lo ha marcado como recibido?: " />
+                                    <h:outputText value="#{msg['app.EstaCobrado']}: " />
+                                    <p:selectBooleanButton id="value4" value="#{productoView.ventaSeleccionada2.cobrado}" onLabel="#{msg['app.Si']}" offLabel="#{msg['app.No']}" style="width:60px" />
+                                     <h:outputText value="#{msg['app.CompradorMarcadoRecibido']}: " />
                                      <h:outputText value="#{productoView.ventaSeleccionada2.recibido}" />
-                                    <h:outputText value="¿El comprador lo ha marcado como pagado?: " />
+                                    <h:outputText value="#{msg['app.CompradorMarcadoPagado']}: " />
                                     <h:outputText value="#{productoView.ventaSeleccionada2.pagado}" />                                 
                                     
                                     </h:panelGrid>
                                     
                                     <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{productoView.filtroMisProductos eq 'comprados'}">
-                                    <h:outputText value="¿Esta Recibido?: " />
-                                    <p:selectBooleanButton id="value2" value="#{productoView.ventaSeleccionada2.recibido}" onLabel="Sí" offLabel="No" style="width:60px" />
-                                    <h:outputText value="¿Esta Pagado?: " />
-                                    <p:selectBooleanButton id="value3" value="#{productoView.ventaSeleccionada2.pagado}" onLabel="Sí" offLabel="No" style="width:60px" />
-                                    <h:outputText value="¿El Vendedor lo ha marcado como Enviado?: " />
+                                    <h:outputText value="#{msg['app.EstaRecibido']}: " />
+                                    <p:selectBooleanButton id="value2" value="#{productoView.ventaSeleccionada2.recibido}" onLabel="#{msg['app.Si']}" offLabel="#{msg['app.No']}" style="width:60px" />
+                                    <h:outputText value="#{msg['app.EstaPagado']}: " />
+                                    <p:selectBooleanButton id="value3" value="#{productoView.ventaSeleccionada2.pagado}" onLabel="#{msg['app.Si']}" offLabel="#{msg['app.No']}" style="width:60px" />
+                                    <h:outputText value="#{msg['app.VendedorMarcoEnviado']}: " />
                                     <h:outputText value="#{productoView.ventaSeleccionada2.enviado}" />
-                                    <h:outputText value="¿El vendedor lo ha marcado como cobrado?: " />
+                                    <h:outputText value="#{msg['app.VendedorMarcoCobrado']}: " />
                                     <h:outputText value="#{productoView.ventaSeleccionada2.cobrado}" />
                                     </h:panelGrid>
                                     
@@ -835,14 +835,14 @@
                                         
 
                                         
-                                        <p:commandButton id="botonActualizaVenta" value="Guardar Venta" update=":form22:grow221"    actionListener="#{productoView.salvaVenta()}" 
+                                        <p:commandButton id="botonActualizaVenta" value="#{msg['app.BotonGuardarVenta']}" update=":form22:grow221"    actionListener="#{productoView.salvaVenta()}" 
                                                          icon="ui-icon-check" oncomplete="PF('editarVenta').hide();" >
                                              <f:ajax event="dialogReturn" render=":form22 @all" />
                                         
                                          
                                         </p:commandButton>
                                         <p:separator />
-                                        <p:commandButton  rendered="#{productoView.filtroMisProductos eq 'vendidos'}" id="botonBorrarVenta2" value="Borrar Venta" update=":form22:grow221"    actionListener="#{productoView.borrarVenta()}" 
+                                        <p:commandButton  rendered="#{productoView.filtroMisProductos eq 'vendidos'}" id="botonBorrarVenta2" value="#{msg['app.BotonBorrarVenta']}" update=":form22:grow221"    actionListener="#{productoView.borrarVenta()}" 
                                                      icon="ui-icon-check"  oncomplete="PF('editarVenta').hide();" >
   
                                                

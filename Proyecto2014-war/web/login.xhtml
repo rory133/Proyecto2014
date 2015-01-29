@@ -28,14 +28,14 @@
  
         <h:panelGrid columns="3" cellpadding="5">
             <p:outputLabel for="usuario" value="#{msg['app.Usuario']}:" />
-            <p:inputText id="usuario" value="#{loginBean.login}"  label="Usuario"
+            <p:inputText id="usuario" value="#{loginBean.login}"  label="#{msg['app.Usuario']}"
                          required="true" >
                 <f:validateLength minimum="2" />
             </p:inputText>
             <p:message for="usuario" display="icon" />
  
             <p:outputLabel for="password" value="#{msg['app.Password']}:" />
-            <p:password id="password" value="#{loginBean.password}" label="Password" 
+            <p:password id="password" value="#{loginBean.password}" label="#{msg['app.Password']}" 
                         required="true" >
                 <f:validateLength minimum="2" />
                 <!--<p:ajax update="msgLastname" event="keyup" />-->

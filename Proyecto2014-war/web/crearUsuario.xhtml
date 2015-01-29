@@ -5,12 +5,14 @@
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view locale="#{productoView.locale}">
     <h:head>
+        <f:loadBundle basename="resources.mensajes.mensajes" var="msg"/>
             <f:facet name="Principal">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Alta Usuario</title>
+            
             </f:facet>
-
+            <title><h:outputText value="#{msg.app_title_inicio}"/> </title>
          <h:outputStylesheet library="css" name="default.css"  />
          <h:outputStylesheet library="css" name="cssLayout.css"  />
          <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
@@ -20,15 +22,15 @@
         
     <h:form>
         
-      <p:panel id="panel" header="CrearUsuario">
+      <p:panel id="panel" header="#{msg['app.CrearUsuario']}">
           <div class="fondo-norte">
         <p:growl id="msgs1" showDetail="true" escape="false"/>
        
  
         <h:panelGrid columns="3" cellpadding="7">
             
-            <h:outputLabel for="nombre" value="Nombre:*" />
-            <p:inputText id="nombre" value="#{userBean.nombre}" label="nombre"
+            <h:outputLabel for="nombre" value="#{msg['app.Nombre']}:*" />
+            <p:inputText id="nombre" value="#{userBean.nombre}" label="#{msg['app.Nombre']}"
                          required="true" >
                 <f:validateLength minimum="2" />
                 <p:message for="nombre" />
@@ -37,30 +39,30 @@
              
            
             
-            <h:outputLabel for="apellidos" value="Apellidos:*" />
-            <p:inputText id="apellidos" value="#{userBean.apellidos}" label="apellidos"
+            <h:outputLabel for="apellidos" value="#{msg['app.Apellidos']}:*" />
+            <p:inputText id="apellidos" value="#{userBean.apellidos}" label="#{msg['app.Apellidos']}"
                          required="true" >
             <f:validateLength minimum="2" />
             <p:message for="apellidos" />
             </p:inputText>
             <h:outputText value="#{userBean.apellidos}" /> 
             
-            <h:outputLabel for="email" value="Email:*" />
-            <p:inputText id="email" value="#{userBean.email}" label="email"
+            <h:outputLabel for="email" value="#{msg['app.Email']}:*" />
+            <p:inputText id="email" value="#{userBean.email}" label="#{msg['app.Email']}"
                          required="true" >
             <p:message for="email" />
             </p:inputText>
             <h:outputText value="#{userBean.email}" /> 
             
-            <h:outputLabel for="web" value="web: " />
-            <p:inputText id="web" value="#{userBean.web}" label="web">
+            <h:outputLabel for="web" value="#{msg['app.Web']}: " />
+            <p:inputText id="web" value="#{userBean.web}" label="#{msg['app.Web']}">
             <p:message for="web" />
             </p:inputText>
             <h:outputText value="#{userBean.web}" /> 
             
             
-            <h:outputLabel for="localizacion" value="localizacion:*" />
-            <p:inputText id="localizacion" value="#{userBean.localizacion}" label="localizacion"
+            <h:outputLabel for="localizacion" value="#{msg['app.Localizacion']}:*" />
+            <p:inputText id="localizacion" value="#{userBean.localizacion}" label="#{msg['app.Localizacion']}"
                          required="true" >
                      <f:validateLength minimum="4" />
             <p:message for="localizacion" />
@@ -68,8 +70,8 @@
             <h:outputText value="#{userBean.localizacion}" /> 
             
             
-            <h:outputLabel for="loginUsuario" value="loginUsuario:*" />
-            <p:inputText required="true" id="loginUsuario" value="#{userBean.loginUsuario}" label="login">
+            <h:outputLabel for="loginUsuario" value="#{msg['app.Usuario']}*" />
+            <p:inputText required="true" id="loginUsuario" value="#{userBean.loginUsuario}" label="#{msg['app.Usuario']}">
             <p:message for="loginUsuario" />
             </p:inputText>
             <h:outputText value="#{userBean.loginUsuario}" /> 
@@ -83,21 +85,22 @@
            <!-- <p:messages id="messages" showDetail="true" autoUpdate="true" />-->
 
             <h:panelGrid columns="3" id="matchGrid" cellpadding="5">                   
-                <h:outputLabel for="pwd1" value="Password 1: *" />
+                <h:outputLabel for="pwd1" value="#{msg['app.Password']} 1: *" />
                 <p:password id="pwd1" value="#{userBean.password}" match="pwd2" label="Password 1" required="true" />
                 <p:message for="pwd1" />
-                <h:outputLabel for="pwd2" value="Password 2: *" />
+                <h:outputLabel for="pwd2" value="#{msg['app.Password']} 2: *" />
                 <p:password id="pwd2" value="#{userBean.password}" label="Password 2" required="true" />
                 <p:message for="pwd2" />
             </h:panelGrid>
  
-        <p:commandButton value="Crear cuenta"  update="msgs1 nombre apellidos email web localizacion loginUsuario pwd1 pwd2" action="#{userBean.crearUsuario()}" icon="ui-icon-check" />
+        <p:commandButton value="#{msg['app.CrearCuenta']}"  update="msgs1 nombre apellidos email web localizacion loginUsuario pwd1 pwd2" action="#{userBean.crearUsuario()}" icon="ui-icon-check" />
     </div>
       </p:panel>
 </h:form>
         
-         <h:link outcome="/index" value="volver" />
+         <h:link outcome="/index" value="#{msg['app.Volver']}" />
         </div>
     </h:body>
+  </f:view>
 </html>
 

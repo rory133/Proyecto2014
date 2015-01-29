@@ -9,7 +9,6 @@
 
 package managedBeans.beans;
 
-import static com.sun.faces.context.flash.ELFlash.getFlash;
 import ejbs.EmailService;
 import ejbs.GestionEventos;
 import entidades.Login;
@@ -17,23 +16,14 @@ import entidades.Usuario;
 import facade.LoginFacade;
 import facade.UsuarioFacade;
 //import java.awt.Event;
-import java.io.IOException;
-import java.util.Observable;
 import javax.ejb.EJB;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.event.Event;
-import javax.enterprise.util.AnnotationLiteral;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import managedBeans.utilidades.ResourcesUtil;
 import utilidades.Loggable;
 
 
@@ -67,9 +57,7 @@ private Login login;
 private Usuario usuario;
 private boolean crearComoAdministrador;
 
-//@Inject
-//@SumadoSocio   
-//Event <Login> usuarioSumadoEvent;
+
   
 
 
@@ -200,13 +188,13 @@ private String role;
 
   public String crearUsuario(){
    
-      System.out.println("@@@crear Usuario: login "+ getLogin()+" password: "+ getPassword());
-//      if (!(getLoginUsuario()==null) && !(getPassword()==null)){
+//      System.out.println("@@@crear Usuario: login "+ getLogin()+" password: "+ getPassword());
+
        login = loginFacade.ValidarLogin(getLoginUsuario(),  getPassword());
-//      }
+
       if (login==null){
           
-           System.out.println("@@@crear Usuario no existe");
+//           System.out.println("@@@crear Usuario no existe");
           usuario=new Usuario();
           usuario.setApellidos(getApellidos());
           usuario.setEmail(getEmail());
@@ -230,11 +218,11 @@ private String role;
           
 
           
-          facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario creado correctamente", null);
+          facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, ResourcesUtil.getString("app.MensajeUsuarioCreado"), null);
           
           faceContext.addMessage(null, facesMessage);
                FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Bienvendio "  ));
+                new FacesMessage(ResourcesUtil.getString("app.MensajeBienvenido") ));
                
                
              
@@ -244,41 +232,22 @@ private String role;
              return "index.xhtml?faces-redirect=true";
           
           
-//        FacesContext.getCurrentInstance().addMessage(null,
-//        new FacesMessage("Usuario creado correctamente "  ));
-          
-          
-//        try {
-//        System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
-//        facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuario creado correctamente", null);
-//        FacesContext.getCurrentInstance().getExternalContext()
-//        .redirect("index.xhtml");
-//        } catch (IOException e) {
-//        e.printStackTrace();
-//        }
+
           
           
            
           
       }else{
-          System.out.println("@@@crear Usuario SI QUE existe");
-//          FacesContext.getCurrentInstance().addMessage(null,
-//                new FacesMessage("Usuario existente "  ));
+//          System.out.println("@@@crear Usuario SI QUE existe");
+
           
-            facesMessage=new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuario ya existe", null);    
+            facesMessage=new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourcesUtil.getString("app.MensajeUsuarioExiste"), null);    
             faceContext.addMessage(null, facesMessage);
                FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Vuelva a probar "  ));
+                new FacesMessage(ResourcesUtil.getString("app.MensajeVuelvaAProbar") ));
             return "crearUsuario";
           
-//           facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO, "usuario existente", null);
-//            try {
-//        System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
-//        FacesContext.getCurrentInstance().getExternalContext()
-//        .redirect("crearUsuario.xhtml");
-//        } catch (IOException e) {
-//        e.printStackTrace();
-//        }
+
        }
   }
   
