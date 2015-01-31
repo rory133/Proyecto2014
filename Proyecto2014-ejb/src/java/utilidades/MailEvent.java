@@ -16,17 +16,17 @@ import entidades.Producto;
 import entidades.Puja;
 import entidades.Usuario;
 import entidades.Venta;
-import facade.LoginFacade;
 import facade.PujaFacade;
 import facade.UsuarioFacade;
 import facade.VentaFacade;
 import java.io.Serializable;
 import java.util.List;
-import javax.ejb.Asynchronous;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import utilidades.Loggable;
 import utilidades.SumadoSocio;
 
@@ -38,7 +38,7 @@ import utilidades.SumadoSocio;
 
 
 
-@Loggable
+//@Loggable
 @RequestScoped
 //captura los eventos en los que se envian emails 
 public class MailEvent implements Serializable{
@@ -54,78 +54,193 @@ private VentaFacade ventaFacade;
 
 private List<Puja> listaPujas;
 
+   
+
+         
+
   //captura el evento que se ha producido al crear un nuevo socio
     public void sumadoUsuario(@Observes @SumadoSocio Login login ) {
+        //internacionalizar los mensajes de correo enviados por el portal
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());     
         
          Usuario usuario= usuarioFacade.find(login.getUsuarioIdusuario().getIdusuario());
         
-          String bienVenida="Bienvenido al portal BuyUp \n"+usuario.getNombre()+" "+usuario.getApellidos()+"\n";
-          bienVenida=bienVenida+"has sido dado de alta como usuario \n con el login:"+ login.getLogin()+"\n";
-          bienVenida=bienVenida+"y el password: "+login.getPassword();
+//          String bienVenida="Bienvenido al portal BuyUp \n"+usuario.getNombre()+" "+usuario.getApellidos()+"\n";
+          String bienVenida=text.getString("app.BienvendioAlPortal")+usuario.getNombre()+" "+usuario.getApellidos()+"\n";
+          
+          bienVenida=bienVenida+text.getString("app.HasSidoDadoDeAlta")+ login.getLogin()+"\n";
+          bienVenida=bienVenida+text.getString("app.YElPassword")+login.getPassword();
           
           
-          emailService.envioIndividual(usuario.getEmail(),"Bienvenid@ a BuyUp", bienVenida);
+          emailService.envioIndividual(usuario.getEmail(),text.getString("app.AsuntoBienvenida"), bienVenida);
 
               
     }
     public void borradoProductoConPujaUsuario(@Observes @BorradoProductoConPujas Puja puja){
+        //internacionalizar los mensajes de correo enviados por el portal
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());     
         Usuario usuarioPujador=puja.getUsuarioIdusuario();
         Producto productoPujado=puja.getProductoIdproducto();
-          String mensajeAVendedor="información desde BuyUp \n";
-          mensajeAVendedor=mensajeAVendedor+"El producto "+productoPujado.getNombre()  +" por el que habias pujado en nuestro portal \n";
-          mensajeAVendedor=mensajeAVendedor+"acaba de ser borrado por el Usuario que lo había puesto a la venta "+"\n";
+          String mensajeAVendedor=text.getString("app.AsuntoMensaje");
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.ElProducto")+productoPujado.getNombre()  +text.getString("app.PorElQueHasPujado");
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.ProductoPujaBorrado")+"\n";
           
 
-          emailService.envioIndividual(usuarioPujador.getEmail(),"Borrado producto por el que habias pujado en BuyUp", mensajeAVendedor);
+          emailService.envioIndividual(usuarioPujador.getEmail(),text.getString("app.AsuntoProductoPujaBorrado"), mensajeAVendedor);
         
     }
     public void compradoPruductoVentaDirecta(@Observes @CompraVentaDirecta Venta venta ) {
-        
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());            
          
          Usuario usuarioComprador=venta.getCompradorIdusuario();
          Usuario usuarioVendedor= venta.getProductoIdproducto().getUsuarioIdusuario();
          Producto productoComprado=venta.getProductoIdproducto();
         
          //correo al vendedor
-          String mensajeAVendedor="información desde BuyUp \n";
-          mensajeAVendedor=mensajeAVendedor+"El producto "+productoComprado.getNombre()  +" que tenias en la modalidad de venta directa en nuestro portal \n";
-          mensajeAVendedor=mensajeAVendedor+"acaba de ser adquirido por el usuario "+usuarioComprador.getNombre()+"\n";
-          mensajeAVendedor=mensajeAVendedor+"Ponte en contacto con él para gestionar pago y envio en el correo  "+usuarioComprador.getEmail()+"\n";
-          emailService.envioIndividual(usuarioVendedor.getEmail(),"Compra de un producto tuyo en BuyUp", mensajeAVendedor);
+          String mensajeAVendedor=text.getString("app.AsuntoMensaje");
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.ElProducto")+productoComprado.getNombre()  +text.getString("app.QueTeniasEnVentaDirecta");
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.HasidoAdquirido")+usuarioComprador.getNombre()+"\n";
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.PonteEnContacto")+usuarioComprador.getEmail()+"\n";
+          emailService.envioIndividual(usuarioVendedor.getEmail(),text.getString("app.AsuntoCompraProductoVentaDirecta"), mensajeAVendedor);
           
           //correo al comprador
-          String mensajeAComprador="información desde BuyUp \n";
-          mensajeAComprador=mensajeAComprador+"Acabas de adquirir el producto "+productoComprado.getNombre()  +"\n";
-          mensajeAComprador=mensajeAComprador+"Que tenía a la venta el usuario  "+usuarioVendedor.getNombre()+" "+ usuarioVendedor.getApellidos() +" en nuestro portal \n";
-          mensajeAComprador=mensajeAComprador+"Ponte en contacto con él para gestionar pago y envio en el correo  "+usuarioVendedor.getEmail()+"\n";
-          emailService.envioIndividual(usuarioComprador.getEmail(),"Has comprado un producto en BuyUp", mensajeAComprador);
+          String mensajeAComprador=text.getString("app.AsuntoMensaje");
+          mensajeAComprador=mensajeAComprador+text.getString("app.AcabasDeAdquirirProducto")+productoComprado.getNombre()  +"\n";
+          mensajeAComprador=mensajeAComprador+text.getString("app.QueTeniaUsuario")+usuarioVendedor.getNombre()+" "+ usuarioVendedor.getApellidos() +text.getString("app.EnNuestroPortal");
+          mensajeAComprador=mensajeAComprador+text.getString("app.PonteEnContacto")+usuarioVendedor.getEmail()+"\n";
+          emailService.envioIndividual(usuarioComprador.getEmail(),text.getString("app.AsuntoHasCompradoProducto"), mensajeAComprador);
 
               
     }
     public void realizadaPuja(@Observes @RealizadaPuja Puja puja ) {
+
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale()); 
+        
+       
         
           Usuario usuarioPujador=puja.getUsuarioIdusuario();
           Usuario usuarioVendedor= puja.getProductoIdproducto().getUsuarioIdusuario();
           Producto productoComprado=puja.getProductoIdproducto();
                  //correo al ofertador
-          String mensajeAVendedor="información desde BuyUp \n";
-          mensajeAVendedor=mensajeAVendedor+"El producto "+productoComprado.getNombre()  +" que tenias en la modalidad de subasta en nuestro portal \n";
-          mensajeAVendedor=mensajeAVendedor+"con un valor inicial de: "+productoComprado.getPrecio()+ "\n";
-          mensajeAVendedor=mensajeAVendedor+"acaba de recibir una puja del usuario "+usuarioPujador.getNombre()+"\n";
-          mensajeAVendedor=mensajeAVendedor+"por un valor de "+puja.getOferta()+"\n";
+          String mensajeAVendedor=text.getString("app.AsuntoMensaje");
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.ElProducto")+productoComprado.getNombre()  +text.getString("app.QueTeniasEnSubasta");
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.ConValorInicial")+productoComprado.getPrecio()+ "\n";
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.AcabaDeRecibirPuja")+usuarioPujador.getNombre()+"\n";
+          mensajeAVendedor=mensajeAVendedor+text.getString("app.PorUnValor")+puja.getOferta()+"\n";
 
-          emailService.envioIndividual(usuarioVendedor.getEmail(),"Puja recibida por uno producto tuyo en BuyUp", mensajeAVendedor);
+          emailService.envioIndividual(usuarioVendedor.getEmail(),text.getString("app.AsuntoPujaRecibida"), mensajeAVendedor);
           
           //correo al pujador
-          String mensajeAComprador="información desde BuyUp \n";
-          mensajeAComprador=mensajeAComprador+"Acabas de pujar por el producto "+productoComprado.getNombre()  +"\n";
-          mensajeAComprador=mensajeAComprador+"Por la cantidad de "+puja.getOferta()  +"\n";
-          mensajeAComprador=mensajeAComprador+"Que tiene a la venta el usuario  "+usuarioVendedor.getNombre()+" "+ usuarioVendedor.getApellidos() +" en nuestro portal \n";
-          emailService.envioIndividual(usuarioPujador.getEmail(),"Has pujado por un producto en BuyUp", mensajeAComprador);
+          String mensajeAComprador=text.getString("app.AsuntoMensaje");
+          mensajeAComprador=mensajeAComprador+text.getString("app.AcabasDePujar")+productoComprado.getNombre()  +"\n";
+          mensajeAComprador=mensajeAComprador+text.getString("app.PorLaCantidadDe")+puja.getOferta()  +"\n";
+          mensajeAComprador=mensajeAComprador+text.getString("app.QueTieneUsuario")+usuarioVendedor.getNombre()+" "+ usuarioVendedor.getApellidos() +" en nuestro portal \n";
+          emailService.envioIndividual(usuarioPujador.getEmail(),text.getString("app.AsuntoHasPujado"), mensajeAComprador);
         
     }
     public void expiradoTiempoPuja(@Observes @SubastaExpirada Producto producto ) {
-        listaPujas=pujaFacade.pujaXProducto(producto);
+          System.out.println(" en MAILEVENT -expirado tiempo");
+          
+          
+        Locale localeTemp= new Locale("es", "ES");
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", localeTemp);   
+        
+        
+                listaPujas=pujaFacade.pujaXProducto(producto);
+        if((listaPujas==null)||(listaPujas.isEmpty())){
+         //no ha tenido ninguna puja, se informa a vendedor
+         String mensajeAVendedor=text.getString("app.AsuntoMensaje");
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.ExpiradoTiempoSubasta")+producto.getNombre()+"\n";
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.SinPujas");
+         
+         String asunto;
+         asunto= text.getString("app.AsuntoExpiradoTiempoPuja");
+         
+         localeTemp = new Locale("en", "US");
+         text = ResourceBundle.getBundle("utilidades/Bundle", localeTemp); 
+         
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.AsuntoMensaje");
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.ExpiradoTiempoSubasta")+producto.getNombre()+"\n";
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.SinPujas");
+         
+         asunto= asunto+text.getString("app.AsuntoExpiradoTiempoPuja");
+         emailService.envioIndividual(producto.getUsuarioIdusuario().getEmail(),asunto, mensajeAVendedor);    
+        }else{
+            //han habido pujas se informa a vendedor y a último pujador
+            
+            //correo al vendedor
+         String mensajeAVendedor=text.getString("app.AsuntoMensaje");
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.ExpiradoTiempoSubasta")+producto.getNombre()+"\n";
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.HaRecibidoEstasPujas");
+         for (Puja puja:listaPujas){
+              mensajeAVendedor=mensajeAVendedor+text.getString("app.OfertaDia")+puja.getFecha()+text.getString("app.DelUsuario")+puja.getUsuarioIdusuario().getNombre()+" "
+                      +puja.getUsuarioIdusuario().getApellidos()+text.getString("app.PorCantidad")+ puja.getOferta()+"\n";
+         }
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.ComoMaximoPujadorUsuario")+listaPujas.get(0).getUsuarioIdusuario().getNombre()+" \n";
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.PorLaCantidadDe")+listaPujas.get(0).getOferta()+" \n";
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.PonteEnContacto")+ listaPujas.get(0).getUsuarioIdusuario().getEmail()+"\n";
+         
+         String asunto= text.getString("app.AsuntoExpiradoTiempoPuja");
+         
+         //Cambiamos el locale
+          localeTemp = new Locale("en", "US");
+          text = ResourceBundle.getBundle("utilidades/Bundle", localeTemp); 
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.AsuntoMensaje");
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.ExpiradoTiempoSubasta")+producto.getNombre()+"\n";
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.HaRecibidoEstasPujas");
+         for (Puja puja:listaPujas){
+              mensajeAVendedor=mensajeAVendedor+text.getString("app.OfertaDia")+puja.getFecha()+text.getString("app.DelUsuario")+puja.getUsuarioIdusuario().getNombre()+" "
+                      +puja.getUsuarioIdusuario().getApellidos()+text.getString("app.PorCantidad")+ puja.getOferta()+"\n";
+         }
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.ComoMaximoPujadorUsuario")+listaPujas.get(0).getUsuarioIdusuario().getNombre()+" \n";
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.PorLaCantidadDe")+listaPujas.get(0).getOferta()+" \n";
+         mensajeAVendedor=mensajeAVendedor+text.getString("app.PonteEnContacto")+ listaPujas.get(0).getUsuarioIdusuario().getEmail()+"\n";
+         
+         asunto= asunto+text.getString("app.AsuntoExpiradoTiempoPuja");
+         
+         emailService.envioIndividual(producto.getUsuarioIdusuario().getEmail(),asunto, mensajeAVendedor); 
+            //correo el comprador
+         
+         localeTemp= new Locale("es", "ES");
+         text = ResourceBundle.getBundle("utilidades/Bundle", localeTemp); 
+          String mensajeAComprador=text.getString("app.AsuntoMensaje");
+          mensajeAComprador=mensajeAComprador+text.getString("app.AcabasDeAdquirirProducto")+producto.getNombre()  +"\n";
+          mensajeAComprador=mensajeAComprador+text.getString("app.QueTenidaModoSubasta")+producto.getUsuarioIdusuario().getNombre()+" "+producto.getUsuarioIdusuario().getApellidos()+text.getString("app.EnNuestroPortal");
+          mensajeAComprador=mensajeAComprador+text.getString("app.PorLaCantidadDe") +  listaPujas.get(0).getOferta()+" \n";
+          mensajeAComprador=mensajeAComprador+text.getString("app.PonteEnContacto")+producto.getUsuarioIdusuario().getEmail()+"\n";
+          
+          asunto =text.getString("app.AsuntoHasCompradoProducto");
+          localeTemp = new Locale("en", "US");
+          text = ResourceBundle.getBundle("utilidades/Bundle", localeTemp); 
+          mensajeAComprador=mensajeAComprador+text.getString("app.AsuntoMensaje");
+          mensajeAComprador=mensajeAComprador+text.getString("app.AcabasDeAdquirirProducto")+producto.getNombre()  +"\n";
+          mensajeAComprador=mensajeAComprador+text.getString("app.QueTenidaModoSubasta")+producto.getUsuarioIdusuario().getNombre()+" "+producto.getUsuarioIdusuario().getApellidos()+text.getString("app.EnNuestroPortal");
+          mensajeAComprador=mensajeAComprador+text.getString("app.PorLaCantidadDe") +  listaPujas.get(0).getOferta()+" \n";
+          mensajeAComprador=mensajeAComprador+text.getString("app.PonteEnContacto")+producto.getUsuarioIdusuario().getEmail()+"\n";
+          
+          asunto =asunto+text.getString("app.AsuntoHasCompradoProducto");
+          emailService.envioIndividual(listaPujas.get(0).getUsuarioIdusuario().getEmail(),asunto, mensajeAComprador);
+         
+            
+        }
+    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        /*
+           listaPujas=pujaFacade.pujaXProducto(producto);
         if((listaPujas==null)||(listaPujas.isEmpty())){
          //no ha tenido ninguna puja, se informa a vendedor
          String mensajeAVendedor="información desde BuyUp \n";
@@ -160,71 +275,83 @@ private List<Puja> listaPujas;
             
         }
     
+          */
         
+
         
     }
     public void realiadaDenuncia(@Observes @RealizadaDenuncia Denuncia denuncia ) {
         
-         
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());             
          Usuario usuarioDenunciado=denuncia.getVentaIdventa().getProductoIdproducto().getUsuarioIdusuario();
          Usuario usuarioDenunciante= denuncia.getDenunciaIdusuario();
          Producto productoDenunciado=denuncia.getVentaIdventa().getProductoIdproducto();
         
          //correo al denunciado
-          String mensajeADenunciado="información desde BuyUp \n";
-          mensajeADenunciado=mensajeADenunciado+"has recibido una denuncia por la venta del producto "+productoDenunciado.getNombre()  +" realizada el dia "+denuncia.getVentaIdventa().getFecha()+"\n";
-          mensajeADenunciado=mensajeADenunciado+"por la causa "+denuncia.getTipoDenuncia()+"\n";
-          mensajeADenunciado=mensajeADenunciado+"y el motivo siguiente \n"+denuncia.getMotivo()+"\n";
-          mensajeADenunciado=mensajeADenunciado+"Ponte en contacto con el usuario denunciante para aclarar el problema en el correo  "+usuarioDenunciante.getEmail()+"\n";
-          emailService.envioIndividual(usuarioDenunciado.getEmail(),"recibida denuncia en la venta de uno de tus productos en BuyUp", mensajeADenunciado);
+          String mensajeADenunciado=text.getString("app.AsuntoMensaje");
+          mensajeADenunciado=mensajeADenunciado+text.getString("app.DenunciaRecibida")+productoDenunciado.getNombre()  +text.getString("app.RealizadaDia")+denuncia.getVentaIdventa().getFecha()+"\n";
+          mensajeADenunciado=mensajeADenunciado+text.getString("app.TipoDenuncia")+denuncia.getTipoDenuncia()+"\n";
+          mensajeADenunciado=mensajeADenunciado+text.getString("app.MotivoDenuncia")+denuncia.getMotivo()+"\n";
+          mensajeADenunciado=mensajeADenunciado+text.getString("app.PeticionContactoDenunciante")+usuarioDenunciante.getEmail()+"\n";
+          emailService.envioIndividual(usuarioDenunciado.getEmail(),text.getString("app.AsuntoDenunciaDenunciado"), mensajeADenunciado);
           
           //correo al denunciante
-          String mensajeADenunciante="información desde BuyUp \n";
-          mensajeADenunciante=mensajeADenunciante+"Acabas de realizar una denuncia por la venta del producto "+productoDenunciado.getNombre()  +"\n";
-          mensajeADenunciante=mensajeADenunciante+"por la causa "+denuncia.getTipoDenuncia()+"\n";
-          mensajeADenunciante=mensajeADenunciante+"y el motivo siguiente \n"+denuncia.getMotivo()+"\n";
-          mensajeADenunciante=mensajeADenunciante+"Puedes ponerte en contacto con el usuario denunciado para aclarar el problema en el correo  "+usuarioDenunciado.getEmail()+"\n";
-          emailService.envioIndividual(usuarioDenunciante.getEmail(),"has realizado una denuncia por problemas en la venta de un producto en BuyUp", mensajeADenunciante);
+          String mensajeADenunciante=text.getString("app.AsuntoMensaje");
+          mensajeADenunciante=mensajeADenunciante+text.getString("app.AcabasDeDenunciar")+productoDenunciado.getNombre()  +"\n";
+          mensajeADenunciante=mensajeADenunciante+text.getString("app.TipoDenuncia")+denuncia.getTipoDenuncia()+"\n";
+          mensajeADenunciante=mensajeADenunciante+text.getString("app.MotivoDenuncia")+denuncia.getMotivo()+"\n";
+          mensajeADenunciante=mensajeADenunciante+text.getString("app.PeticionContactoDenunciado")+usuarioDenunciado.getEmail()+"\n";
+          emailService.envioIndividual(usuarioDenunciante.getEmail(),text.getString("app.AsuntoDenunciaDenunciante"), mensajeADenunciante);
     }    
     public void borradoPruductoPorImprocedente(@Observes @BorradoProductoPorImprocedente Producto producto ) {
         
          
          Usuario usuario=producto.getUsuarioIdusuario();
          
-        
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());            
         
          //correo al vendedor
-          String mensajeAUsuario="información desde BuyUp \n";
-          mensajeAUsuario=mensajeAUsuario+"El producto "+producto.getNombre()  +" que tenias a la venta en nuestro portal \n";
-          mensajeAUsuario=mensajeAUsuario+"acaba de ser borrado por resultar inapropiado para el portal \n";
-         emailService.envioIndividual(usuario.getEmail(),"borrado por inapropiado uno de tus productos en BuyUp", mensajeAUsuario);
+          String mensajeAUsuario=text.getString("app.AsuntoMensaje");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.ElProducto")+producto.getNombre()  +text.getString("app.ALaVenta");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.BorradoPorInanpropiado");
+         emailService.envioIndividual(usuario.getEmail(),text.getString("app.AsuntoBorradoPorInapropiado"), mensajeAUsuario);
           
   
               
     }    
     public void usuarioBloqueado(@Observes @UsuarioBloqueado Usuario usuario ) {
         
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());            
          //correo al usuario
-          String mensajeAUsuario="información desde BuyUp \n";
-          mensajeAUsuario=mensajeAUsuario+"Acabas de ser bloqueado en nuestro portal \n";
-          mensajeAUsuario=mensajeAUsuario+"para volver a entrar deberas esperar a ser redimido por nuestros administradores \n";
-         emailService.envioIndividual(usuario.getEmail(),"bloqueado como usuario en BuyUp", mensajeAUsuario);
+          String mensajeAUsuario=text.getString("app.AsuntoMensaje");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.HasSidoBloqueado");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.ParaVolverAEntrar");
+         emailService.envioIndividual(usuario.getEmail(),text.getString("app.AsuntoBloqueado"), mensajeAUsuario);
     }   
     
     public void usuarioRedimido(@Observes @UsuarioRedimido Usuario usuario ) {
         
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());            
          //correo al usuario
-          String mensajeAUsuario="información desde BuyUp \n";
-          mensajeAUsuario=mensajeAUsuario+"Acabas de ser redimido por nuestros administradores  \n";
-          mensajeAUsuario=mensajeAUsuario+"ya puedes volver a entrar en nuestro portal \n";
-         emailService.envioIndividual(usuario.getEmail(),"redimido como usuario en BuyUp", mensajeAUsuario);
+          String mensajeAUsuario=text.getString("app.AsuntoMensaje");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.Redimido");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.YaPuedesEntra");
+         emailService.envioIndividual(usuario.getEmail(),text.getString("app.AsuntoRedimido"), mensajeAUsuario);
     }    
     public void usuarioBorrado(@Observes @UsuarioBorrado Usuario usuario ) {
         
+        FacesContext context = FacesContext.getCurrentInstance();
+        ResourceBundle text = ResourceBundle.getBundle("utilidades/Bundle", context.getViewRoot().getLocale());            
          //correo al usuario
-          String mensajeAUsuario="información desde BuyUp \n";
-          mensajeAUsuario=mensajeAUsuario+"Acabas de ser borrado por nuestros administradores  \n";
-          mensajeAUsuario=mensajeAUsuario+"has dejado de ser usuario de nuestro portal \n";
-         emailService.envioIndividual(usuario.getEmail(),"borrado como usuario en BuyUp", mensajeAUsuario);
+          String mensajeAUsuario=text.getString("app.AsuntoMensaje");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.BorradoUsuarioPorAdmin");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.DejasDeSerUsuario");
+         emailService.envioIndividual(usuario.getEmail(),text.getString("app.AsuntoBorradoComoUsuario"), mensajeAUsuario);
     }     
 }

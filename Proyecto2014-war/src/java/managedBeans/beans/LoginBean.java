@@ -14,19 +14,12 @@ import entidades.Usuario;
 import facade.LoginFacade;
 import facade.UsuarioFacade;
 import java.io.IOException;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import managedBeans.utilidades.ResourcesUtil;
 import utilidades.Loggable;
@@ -115,13 +108,9 @@ public String validarUsuario(){
             datosUsuarioLogado=(Usuario)usuarioFacade.find(usuarioLogado.getUsuarioIdusuario().getIdusuario());
             session.setAttribute("usuario", datosUsuarioLogado);
             
-            facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.AccesoCorrecto"), null);
+            facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeAccesoCorrecto"), null);
             session.setMaxInactiveInterval(2000*60*60);
-            /*
-            FacesContext.getCurrentInstance().addMessage(null,
-                new FacesMessage("Welcome " + usuarioLogado.getLogin() ));
-            faceContext.addMessage(null, facesMessage);
-                    */
+
             if (usuarioLogado.getRole().toString().matches("ROLE_ADMIN")){
                 session.setAttribute("ROLE_ADMIN", true);
                 session.setAttribute("ROLE_SOCIO", false);
@@ -139,7 +128,7 @@ public String validarUsuario(){
             }else
                 System.out.println("na de na: "+usuarioLogado.getRole());
             
-           // return "acceso";
+          
         } else {
 
             facesMessage=new FacesMessage(FacesMessage.SEVERITY_ERROR, ResourcesUtil.getString("app.MensajeUsuarioContraErroneo"), null);

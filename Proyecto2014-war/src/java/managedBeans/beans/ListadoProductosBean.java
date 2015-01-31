@@ -32,9 +32,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -49,9 +47,7 @@ import managedBeans.utilidades.ResourcesUtil;
  */
 
 @ManagedBean(name = "productoView")
-//@ViewScoped
 @SessionScoped
-//@RequestScoped
 public class ListadoProductosBean implements Serializable {
 
 
@@ -115,8 +111,7 @@ long elapsedDays;
 long elapsedHours;
 long elapsedMinutes;
 long elapsedSeconds;
-//private String contexto;
-//private String contextoCliente;
+
 private Locale locale;
 //el título del menu izquierdo variará segun veamos categorias y gestionemos nuestros pruductos.
     private String titulo;
@@ -147,9 +142,9 @@ private Locale locale;
 		//milliseconds
 		long different = (endDate.getTime()+604800000) - startDate.getTime();
  
-		System.out.println("startDate : " + startDate);
-		System.out.println("endDate : "+ endDate);
-		System.out.println("different : " + different);
+//		System.out.println("startDate : " + startDate);
+//		System.out.println("endDate : "+ endDate);
+//		System.out.println("different : " + different);
  
 		long secondsInMilli = 1000;
 		long minutesInMilli = secondsInMilli * 60;
@@ -186,11 +181,11 @@ private Locale locale;
     public void setSoloMios(boolean soloMios) {
         if (soloMios==true){
             
-//              setTitulo("Gestiona Tus Productos");
+
               setTitulo(ResourcesUtil.getString("app.GestionaTusProductos"));
               
         }else {
-//            setTitulo("Categorias");
+
             setTitulo(ResourcesUtil.getString("app.Categorias"));
             setFiltroMisProductos("ofertados");
         }        
@@ -389,34 +384,7 @@ private Locale locale;
         this.tipoDenuncia = tipoDenuncia;
     }
 
-//    public String getContexto() {
-//        return contexto;
-//    }
-//
-//    public void setContexto() {
-//             //Locale de la palicacion
-//       this.contexto =  FacesContext.getCurrentInstance().getViewRoot().getLocale().toString();
-//        
-//       //obtenemos el HttpServletRequest  de la peticion para poder saber
-//       // el locale del cliente
-//       HttpServletRequest requestObj = (HttpServletRequest)      
-//         FacesContext.getCurrentInstance().getExternalContext().getRequest();
-//       
-//       //Locale del cliente
-//       this.contextoCliente = requestObj.getLocale().toString();
-//       
-//       
-//       //Asignamos al locale de la aplicacion el locale del cliente
-//       FacesContext.getCurrentInstance().getViewRoot().setLocale(requestObj.getLocale());
-//    }
-//
-//    public String getContextoCliente() {
-//        return contextoCliente;
-//    }
-//
-//    public void setContextoCliente(String contextoCliente) {
-//        this.contextoCliente = contextoCliente;
-//    }
+
 
     public Locale getLocale() {
         return locale;
@@ -441,7 +409,7 @@ private Locale locale;
        setVendidos("todos");
        setFiltro("todos");
        setFiltroMisProductos("ofertados");
-       //setBuscandoPorNombre(false);
+
        todosProductos();
        setTitulo(ResourcesUtil.getString("app.Categorias"));
        setVentasAMostrar("NoEnviados");
@@ -467,30 +435,30 @@ private Locale locale;
     
     
     
-    //public List<Producto> todosProductos(){
+
     public void todosProductosSinFiltro(){
-      // setListaProductos(productoFacade.findAll());
+
         setBuscandoPorNombre(false);
        List<Producto> listaProductos2 =productoFacade.findAll();
-       System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
+//       System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
        //añadimos a la lista de imagenes la primera imagen de cada producto.
         imagenesProducto= new  ArrayList<>();
         listaProductos=new  ArrayList<>();
         setNombreBuscado("");
-       //setListaProductos(listaProductos2);
+
        for(Producto productoEncontrado :listaProductos2){
-           System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
+//           System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
            List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
-           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
-           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
-           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
+//           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
+//           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
+//           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
            imagenesProducto.add(imagenesXProcducto.get(0));
            listaProductos.add(productoEncontrado);
        }
     }  
        
     public void todosProductos(){
-      // setListaProductos(productoFacade.findAll());
+
         setBuscandoPorCategoria(false);
         setBuscandoPorNombre(false);
         List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
@@ -508,28 +476,28 @@ private Locale locale;
          listaProductos2=listaProductos3;
         }
        
-       System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
+//       System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
        //añadimos a la lista de imagenes la primera imagen de cada producto.
         imagenesProducto= new  ArrayList<>();
         listaProductos=new  ArrayList<>();
         setNombreBuscado("");
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.getSessionMap().put("idCategoria", 0);
-       //setListaProductos(listaProductos2);
+
        for(Producto productoEncontrado :listaProductos2){
            
            
-           System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
+//           System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
            List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
-           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
-           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
-           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
+//           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
+//           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
+//           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
            imagenesProducto.add(imagenesXProcducto.get(0));
            listaProductos.add(productoEncontrado);
        }
 
      
-      // return getListaProductos();
+
     }
     public void actualizaVistaTodosProductos(){
       // si estamos buscando por nombre se redirige
@@ -557,18 +525,18 @@ private Locale locale;
          listaProductos2=listaProductos3;
         }
        
-       System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
+//       System.out.println(" cantidad de productos encontrados: "+ listaProductos2.size());
        //añadimos a la lista de imagenes la primera imagen de cada producto.
         imagenesProducto= new  ArrayList<>();
         listaProductos=new  ArrayList<>();
         setNombreBuscado("");
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.getSessionMap().put("idCategoria", 0);
-       //setListaProductos(listaProductos2);
+
        for(Producto productoEncontrado :listaProductos2){
            
            
-           System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
+//           System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
            List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
 //           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
@@ -584,22 +552,15 @@ private Locale locale;
     public void buscaXNombre(){
         setBuscandoPorNombre(true);
      
-        System.out.println(" entro en buscaXNombre con texto introducido: "+ getNombreBuscado().toString()+"--");
-      // setListaProductos(productoFacade.findAll());
-        //if(((getNombreBuscado()==null)||(getNombreBuscado().isEmpty()))){
-        //if((getNombreBuscado()==null)||(getNombreBuscado().isEmpty())||(getNombreBuscado()=="")){
+//        System.out.println(" entro en buscaXNombre con texto introducido: "+ getNombreBuscado().toString()+"--");
+
         String buscar=getNombreBuscado();
          if((buscar==null)||(buscar.isEmpty())||(buscar.length()<3)){
              System.out.println(" true");
             imagenesProducto= new  ArrayList<>();
             listaProductos=new  ArrayList<>();
             setNombreBuscado("");
-      //      todosProductos();
-            
-//            FacesContext.getCurrentInstance().addMessage(null,
-//            new FacesMessage("Debe introducir texto a "  ));
-//               
-//               
+               
             todosProductos();
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeDebesItroducirUnaPalabra"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -607,18 +568,7 @@ private Locale locale;
              FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeAlMenosTresLetras"),"");
             FacesContext.getCurrentInstance().addMessage(null, message1);
             System.out.println(" nombreBuscado vacio");
-         //   getListaProductos().clear();
-            
-            
-//                FacesContext.getCurrentInstance().addMessage(null,
-//                new FacesMessage("Debe seleccionar una imagen"  ));
-//               
-//             
-//            
-//           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Agregado correctamente producto: ", "sñdf");
-//           FacesContext.getCurrentInstance().addMessage(null, message);
-            
-//            return    "index";
+
             
         }else{
        List<Producto> listaProductos2 =productoFacade.productosXNombreParcial(buscar,filtro,vendidos);
@@ -644,23 +594,21 @@ private Locale locale;
            todosProductos();
             FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajesNoEncontradoPorNombre")+buscar,buscar);
             FacesContext.getCurrentInstance().addMessage(null, message1);
-            System.out.println(" No se han encontrado productos");
+//            System.out.println(" No se han encontrado productos");
             
-//           return    "index";
        }else{
-       System.out.println(" cantidad de productos encontrados -----: "+ listaProductos2.size());
+//       System.out.println(" cantidad de productos encontrados -----: "+ listaProductos2.size());
        //añadimos a la lista de imagenes la primera imagen de cada producto.
        getListaProductos().clear();
        getImagenesProducto().clear();
        
-       //setListaProductos(listaProductos2);
+
        imagenesProducto= new  ArrayList<>();
        listaProductos=new  ArrayList<>();
        setNombreBuscado("");
         setListaProductos(listaProductos2);
        for(Producto productoEncontrado :listaProductos2){
-           //getListaProductos().add(productoEncontrado);
-         //  System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
+
            List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
 //           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
@@ -669,13 +617,11 @@ private Locale locale;
            
         }
        
-//        return    "index";
+
        }
       setNombreBuscado(buscar);
      }  
 
-      // return getListaProductos();
-        //return    "index";
     }
     
     
@@ -688,15 +634,13 @@ private Locale locale;
              FacesContext facesContext = FacesContext.getCurrentInstance();
              HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
              Integer categoriaSeleccionada=(Integer)session.getAttribute("idCategoria");
-         System.out.println(" ###categoria seleccionada -----: " +categoriaSeleccionada +"*****"); 
+//         System.out.println(" ###categoria seleccionada -----: " +categoriaSeleccionada +"*****"); 
         if ((categoriaSeleccionada != null) && (categoriaSeleccionada>0)) {
-  
-            //List<Producto> listaProductos2 =productoFacade.productosXCategoria(Integer.toString(categoriaSeleccionada));
+
             List<Producto> listaProductos2 =productoFacade.productosXCategoria(categoriaSeleccionada,filtro,vendidos);
                     if (soloMios){
                          List<Producto> listaProductos3= new  ArrayList<>();
-                         //FacesContext facesContext = FacesContext.getCurrentInstance();
-                         //HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+
                          Usuario usuario=(Usuario)session.getAttribute("usuario");
                          for(Producto productoEncontrado :listaProductos2){
                              if (productoEncontrado.getUsuarioIdusuario().getIdusuario().equals(usuario.getIdusuario())){
@@ -718,22 +662,22 @@ private Locale locale;
            todosProductos();
             FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeNoProductosCategoria")+categoria.getNombre(),categoria.getNombre());
             FacesContext.getCurrentInstance().addMessage(null, message1);
-            System.out.println(" No se han encontrado productos de "+categoria.getNombre());
+//            System.out.println(" No se han encontrado productos de "+categoria.getNombre());
             
 
        }else{
-       System.out.println(" cantidad de productos de la categoria -----: "+ listaProductos2.size());
+//       System.out.println(" cantidad de productos de la categoria -----: "+ listaProductos2.size());
        //añadimos a la lista de imagenes la primera imagen de cada producto.
        getListaProductos().clear();
        getImagenesProducto().clear();
        
-       //setListaProductos(listaProductos2);
+
        imagenesProducto= new  ArrayList<>();
        listaProductos=new  ArrayList<>();
        setNombreBuscado("");
         setListaProductos(listaProductos2);
        for(Producto productoEncontrado :listaProductos2){
-           //getListaProductos().add(productoEncontrado);
+
          //  System.out.println("en el for, producto encontrado: "+productoEncontrado.getNombre());
            List<Imagen> imagenesXProcducto=imagenFacade.imagenesXProcducto(productoEncontrado);
 //           System.out.println("cantidad de imagenes del producoto : "+ imagenesXProcducto.size());
@@ -751,7 +695,7 @@ private Locale locale;
         }else {
               
            // se informa al usuario cuando no ha añadido ninguna categoria
-             System.out.println("CATEGORIA PASADA en else::::::::::"+ categoriaSeleccionada);
+//             System.out.println("CATEGORIA PASADA en else::::::::::"+ categoriaSeleccionada);
              
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeNoCategoriaSeleccionada"),
@@ -782,24 +726,24 @@ private Locale locale;
         System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()");
         setFiltro("ventaDirecta");
         setVendidos("noVendidos");
-//        todosProductos();
+
         actualizaVistaTodosProductos();
     }
 
     public void misOfertadosSubasta(){
-        System.out.println("misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()");
+//        System.out.println("misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()");
         setFiltro("subasta");
         setVendidos("noVendidos");
-//       todosProductos();
+
         actualizaVistaTodosProductos();
         
     }
     public void misOfertadosSubasta(ActionEvent event){
-        System.out.println("misOfertadosSubasta()mmisOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()");
+//        System.out.println("misOfertadosSubasta()mmisOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta()");
         String nickname;
         nickname = (String)event.getComponent().getAttributes().get("username");
         
-        System.out.println("misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta():"+nickname );
+//        System.out.println("misOfertadosSubasta()misOfertadosSubasta()misOfertadosSubasta():"+nickname );
         setFiltro("subasta");
         setVendidos("noVendidos");
         todosProductos();
@@ -808,19 +752,19 @@ private Locale locale;
     }    
     
     public void misOfertadosVentaDirecta(ActionEvent event){
-        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta(taDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta(");
+//        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta(taDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta(");
         String nickname;
         nickname = (String)event.getComponent().getAttributes().get("username");
-               //.getComponent().getAttributes().get("username");
-        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta():"+nickname);
+
+//        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta():"+nickname);
         setFiltro("ventaDirecta");
         setVendidos("noVendidos");
         todosProductos();
-//        actualizaVistaTodosProductos();
+
     }
     
     public void misProductosCompradosNORecibidos(String sin){
-        System.out.println("compradoNORecibidos(String sin)");
+//        System.out.println("compradoNORecibidos(String sin)");
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
@@ -832,7 +776,7 @@ private Locale locale;
 
     }
     public void misProductosCompradosRecibidos(String sin){
-        System.out.println("compradoRecibidos(String sin)");
+//        System.out.println("compradoRecibidos(String sin)");
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
@@ -861,7 +805,7 @@ private Locale locale;
 
     }
     public void misProductosCompradosNORecibidos(){
-        System.out.println("compradoNORecibidos()");
+//        System.out.println("compradoNORecibidos()");
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
@@ -880,7 +824,7 @@ private Locale locale;
 
     }
     public void misProductosCompradosRecibidos(){
-        System.out.println("compradoRecibidos()");
+//        System.out.println("compradoRecibidos()");
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
@@ -929,6 +873,8 @@ private Locale locale;
             setListaVentas(listaVentasTempo);
          }
     }
+    
+   /* 
     public void misProductosCompradosNORecibidos(ActionEvent event){
         setListaVentas(null);
         Usuario usuario=usuarioLogado();
@@ -996,6 +942,8 @@ private Locale locale;
             setListaVentas(listaVentasTempo);
          }
     }    
+    
+    */
     public void actualizaVistaVentas(){
         switch (filtroMisProductos) {
             case "comprados":
@@ -1065,7 +1013,6 @@ private Locale locale;
          productoFacade.salva(productoMalClasificado);
          
 
-//        gestionEventos.fireRealizadaDenuncia(denuncia);
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeMarcadoProducto")+productoMalClasificado.getNombre()+ResourcesUtil.getString("app.MensajeComoMalClasificado"),"");
         FacesContext.getCurrentInstance().addMessage(null, message);
         

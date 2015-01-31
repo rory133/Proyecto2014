@@ -14,9 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,21 +44,21 @@ public class VisualizaImagen extends HttpServlet {
             
     try { 
             String tipo = request.getParameter("tipo");  
-              System.out.println("pasdo como tipo: " + tipo);
+//              System.out.println("pasdo como tipo: " + tipo);
      switch (tipo){
          
       case "crearProducto":
           CrearProductoBean crearProducto = (CrearProductoBean) request.getSession().getAttribute("crearProductoBean");
         try { 
             String id = request.getParameter("Image_id");
-            System.out.println("inside servlet–>" + id);
+//            System.out.println("inside servlet–>" + id);
             Integer indice=Integer.parseInt(id);
-            System.out.println("inside servlet indice –>" + indice);
+//            System.out.println("inside servlet indice –>" + indice);
            // byte[] bytearray = new byte[1048576];
             byte[] bytearray = new byte[16777215];
             int size = 0;
             sImage = crearProducto.getImagenesSubidas().get(indice).getInputstream();
-            System.out.println("inside servlet oontents –>" + crearProducto.getImagenesSubidas().size());
+//            System.out.println("inside servlet oontents –>" + crearProducto.getImagenesSubidas().size());
             //sImage = new ByteArrayInputStream(crearProducto.getImagenesSubidas().get(indice).getContents());
             response.reset();
             response.setContentType("image/jpeg");
@@ -76,37 +73,7 @@ public class VisualizaImagen extends HttpServlet {
         break;
           
           
-        /*  
-     case "listadoProductos":
-          ListadoProductosBean listadoProductos = (ListadoProductosBean) request.getSession().getAttribute("productoView");
-        try { 
-            String id = request.getParameter("Image_id");
-            System.out.println("inside servlet–>" + id);
-            Integer indice=Integer.parseInt(id);
-      
-            byte[] bytearray = new byte[16777215];
-            int size = 0;
-            //convertir byte[] en InputStream
-           //  System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen());
-           // System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen().toString());
-             sImage = new ByteArrayInputStream(listadoProductos.getImagenesProducto().get(indice).getImagen());
-                    //listadoProductos.getImagenesProducto().get(indice).getImagen();
-                    
-            
-            //sImage = new ByteArrayInputStream(crearProducto.getImagenesSubidas().get(indice).getContents());
-            response.reset();
-            response.setContentType("image/jpeg");
-                while ((size = sImage.read(bytearray)) != -1) {
-                    response.getOutputStream().
-                            write(bytearray, 0, size);
-                }    
-            } catch (Exception e) {
-            e.printStackTrace();
-        }
-            
-        break;
-         
-         */
+
          
          
          
@@ -138,12 +105,99 @@ public class VisualizaImagen extends HttpServlet {
         }
             
         break;    
-       
+       case "imagenUnicaUsuarioIdProducto":         
+        try { 
+            String idProducto = request.getParameter("idProducto");
+            System.out.println("inside servlet UsuarioidProducto–>" + idProducto);
+            Integer indice=Integer.parseInt(idProducto);
+      
+            byte[] bytearray = new byte[16777215];
+            int size = 0;
+            //convertir byte[] en InputStream
+           //  System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen());
+           // System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen().toString());
+          sImage = new ByteArrayInputStream(imagenFacade.imageneUnicaXIdProducto(indice).getImagen());
+                    //listadoProductos.getImagenesProducto().get(indice).getImagen();
+                    
             
+            //sImage = new ByteArrayInputStream(crearProducto.getImagenesSubidas().get(indice).getContents());
+            response.reset();
+            response.setContentType("image/jpeg");
+                while ((size = sImage.read(bytearray)) != -1) {
+                    response.getOutputStream().
+                            write(bytearray, 0, size);
+                }    
+            } catch (Exception e) {
+            e.printStackTrace();
+        }
+            
+        break;    
+       
+      case "imagenUnicaUsuarioVenta":         
+        try { 
+            String idProducto = request.getParameter("idProducto");
+            System.out.println("inside servlet imagenUnicaUsuarioVenta–>" + idProducto);
+            Integer indice=Integer.parseInt(idProducto);
+      
+            byte[] bytearray = new byte[16777215];
+            int size = 0;
+            //convertir byte[] en InputStream
+           //  System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen());
+           // System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen().toString());
+          sImage = new ByteArrayInputStream(imagenFacade.imageneUnicaXIdProducto(indice).getImagen());
+                    //listadoProductos.getImagenesProducto().get(indice).getImagen();
+                    
+            
+            //sImage = new ByteArrayInputStream(crearProducto.getImagenesSubidas().get(indice).getContents());
+            response.reset();
+            response.setContentType("image/jpeg");
+                while ((size = sImage.read(bytearray)) != -1) {
+                    response.getOutputStream().
+                            write(bytearray, 0, size);
+                }    
+            } catch (Exception e) {
+            e.printStackTrace();
+        }
+            
+        break;         
+           
+         
+          case "imagenUnicaVentaSeleccionada":   
+       String idProducto = request.getParameter("idProducto");
+        if(idProducto!=null&&!idProducto.equals("")){
+         try { 
+  
+            System.out.println("inside servlet imagenUnicaVentaSeleccionada–>" + idProducto);
+            Integer indice=Integer.parseInt(idProducto);
+      
+            byte[] bytearray = new byte[16777215];
+            int size = 0;
+            //convertir byte[] en InputStream
+           //  System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen());
+           // System.out.println("imagen a mostrar: "+listadoProductos.getImagenesProducto().get(indice).getIdimagen().toString());
+          sImage = new ByteArrayInputStream(imagenFacade.imageneUnicaXIdProducto(indice).getImagen());
+                    //listadoProductos.getImagenesProducto().get(indice).getImagen();
+                    
+            
+            //sImage = new ByteArrayInputStream(crearProducto.getImagenesSubidas().get(indice).getContents());
+            response.reset();
+            response.setContentType("image/jpeg");
+                while ((size = sImage.read(bytearray)) != -1) {
+                    response.getOutputStream().
+                            write(bytearray, 0, size);
+                }    
+                
+          }catch (Exception e) {
+            e.printStackTrace();
+        }
+          break;
+         }    
+        break;    
+           
        case "porIdImagen":         
         try { 
             String idImagen = request.getParameter("idImagen");
-            System.out.println("inside servlet idImagen–>" + idImagen);
+//            System.out.println("inside servlet idImagen–>" + idImagen);
             Integer indice=Integer.parseInt(idImagen);
       
             byte[] bytearray = new byte[16777215];

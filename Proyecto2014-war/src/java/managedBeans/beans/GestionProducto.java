@@ -23,17 +23,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import utilidades.Loggable;
 import managedBeans.beans.ListadoProductosBean;
+import managedBeans.utilidades.ResourcesUtil;
 
 
 /**
@@ -137,10 +134,10 @@ public class GestionProducto implements Serializable{
         
                  //id del usuario que compra el producto
                  String idUsuario = (String) facesContext.getExternalContext().getRequestParameterMap().get("idUsuarioComprador");
-                 System.out.println("usuario comprador getCurrentInstance con Map: "+idUsuario);
+//                 System.out.println("usuario comprador getCurrentInstance con Map: "+idUsuario);
                 //id del producto a comprar
                  String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("idProductoAComprar");
-                  System.out.println("producto a comprar antes de buscarlo con Map: "+idProducto);
+//                  System.out.println("producto a comprar antes de buscarlo con Map: "+idProducto);
                  
  
          
@@ -149,17 +146,17 @@ public class GestionProducto implements Serializable{
          //producto a comprar
            Producto productoAComprar=productoFacade.find((Integer)Integer.parseInt(idProducto));
          
-        System.out.println("usuario comprador: "+productoAComprar.getNombre());
-        System.out.println("producto a comprar antes de buscarlo: "+usuarioComprador.getNombre());
+//        System.out.println("usuario comprador: "+productoAComprar.getNombre());
+//        System.out.println("producto a comprar antes de buscarlo: "+usuarioComprador.getNombre());
         
        //usuario que oferta el producto
         Usuario usuarioProducto=(Usuario)productoAComprar.getUsuarioIdusuario();
         //un usuario no podrá compar sus propios pructos, se comprueba si esto ocurre
         if(usuarioComprador.equals(usuarioProducto)){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"NO PUEDES COMPRAR UNO DE TUS PRODUCTOS","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.NoCompraTusProductos"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
-            System.out.println("producto a comprar: "+productoAComprar.getNombre());
-            System.out.println("mismo usuario comprador y ofertador");
+//            System.out.println("producto a comprar: "+productoAComprar.getNombre());
+//            System.out.println("mismo usuario comprador y ofertador");
             //faceContext.getExternalContext().getFlash().setKeepMessages(true);
             return "index";
         }
@@ -175,7 +172,7 @@ public class GestionProducto implements Serializable{
             productoAComprar.setVendido(true);
             productoFacade.salva(productoAComprar);
                     
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"has comprado el producto "+productoAComprar.getNombre()+".","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeHascomprado")+productoAComprar.getNombre()+".","");
             FacesContext.getCurrentInstance().addMessage(null, message);
              gestionEventos.fireProductoAdquiridoVentaDirecta(venta);
             return "index.xhtml?faces-redirect=true";
@@ -189,10 +186,10 @@ public class GestionProducto implements Serializable{
         
                  //id del usuario que compra el producto
                  String idUsuario = (String) facesContext.getExternalContext().getRequestParameterMap().get("idUsuarioComprador");
-                 System.out.println("usuario pujador getCurrentInstance con Map: "+idUsuario);
+//                 System.out.println("usuario pujador getCurrentInstance con Map: "+idUsuario);
                 //id del producto a comprar
                  String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("idProductoAComprar");
-                  System.out.println("producto a pujar antes de buscarlo con Map: "+idProducto);
+//                  System.out.println("producto a pujar antes de buscarlo con Map: "+idProducto);
                  
  
          
@@ -201,17 +198,17 @@ public class GestionProducto implements Serializable{
          //producto a comprar
            Producto productoAPujar=productoFacade.find((Integer)Integer.parseInt(idProducto));
          
-        System.out.println("producto a Pujar: "+productoAPujar.getNombre());
-        System.out.println("producto a comprar antes de buscarlo: "+usuarioPujador.getNombre());
+//        System.out.println("producto a Pujar: "+productoAPujar.getNombre());
+//        System.out.println("producto a comprar antes de buscarlo: "+usuarioPujador.getNombre());
         
        //usuario que oferta el producto
         Usuario usuarioProducto=(Usuario)productoAPujar.getUsuarioIdusuario();
         //un usuario no podrá compar sus propios pructos, se comprueba si esto ocurre
         if(usuarioPujador.equals(usuarioProducto)){
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"NO PUEDES PUJAR POR UNO DE TUS PRODUCTOS","");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeNoPujarPorTusProductos"),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
-            System.out.println("producto a comprar: "+productoAPujar.getNombre());
-            System.out.println("mismo usuario comprador y ofertador");
+//            System.out.println("producto a comprar: "+productoAPujar.getNombre());
+//            System.out.println("mismo usuario comprador y ofertador");
             //faceContext.getExternalContext().getFlash().setKeepMessages(true);
             return "index";
         }
@@ -226,13 +223,13 @@ public class GestionProducto implements Serializable{
                   puja.setUsuarioIdusuario(usuarioPujador);
                   pujaFacade.create(puja);
                   System.out.println("Creada primara puja del producto: "+productoAPujar.getNombre());
-                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE PUJAR POR EL PRODUCTO "+productoAPujar.getNombre(),"");
+                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeAcabasDePujar")+productoAPujar.getNombre(),"");
                         FacesContext.getCurrentInstance().addMessage(null, message);
                         gestionEventos.firePujaRealizada(puja);
                         return "index";  
 
               }else{
-                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"EN LA PRIMERA PUJA AL MENOS TIENE QUE IGUARLAR EL PRECIO DE SALIDA","");
+                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeEnLaPrimeraPuja"),"");
                         FacesContext.getCurrentInstance().addMessage(null, message);
                         return "index";                 
               }
@@ -246,13 +243,13 @@ public class GestionProducto implements Serializable{
                   puja.setUsuarioIdusuario(usuarioPujador);
                   pujaFacade.create(puja);
                   System.out.println("Creada puja por producto : "+productoAPujar.getNombre());
-                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"ACABAS DE PUJAR POR EL PRODUCTO "+productoAPujar.getNombre(),"");
+                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeAcabasDePujar")+productoAPujar.getNombre(),"");
                         FacesContext.getCurrentInstance().addMessage(null, message);
                         gestionEventos.firePujaRealizada(puja);
                         return "index";  
 
               }else{
-                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,"TIENES QUE PUJAR POR UN VALOR SUPERIOR AL ACTUAL: "+productoAPujar.getUltimaPuja(),"");
+                        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajePujaDebeSerSuperior")+productoAPujar.getUltimaPuja(),"");
                         FacesContext.getCurrentInstance().addMessage(null, message);
                         return "index.xhtml?faces-redirect=true";                 
                             

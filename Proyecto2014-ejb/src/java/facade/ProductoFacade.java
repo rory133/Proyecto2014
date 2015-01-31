@@ -57,28 +57,26 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         
         
         List<Producto> lP=null;
-        System.out.println("@@@psumado parametro antes del try  : "+"%"+nombreP+"%");
+//        System.out.println("@@@psumado parametro antes del try  : "+"%"+nombreP+"%");
         try{
             Query query2=
                     //em.createQuery(
                     getEntityManager().createQuery(
                      "SELECT producto2 FROM Producto producto2 WHERE producto2.nombre like :nombreP");
             
-            System.out.println("@@@psumado parametro depues del try  despues de crear query: "+"%"+nombreP+"%");
+//            System.out.println("@@@psumado parametro depues del try  despues de crear query: "+"%"+nombreP+"%");
             
-//           "SELECT producto FROM Producto producto WHERE producto.nombre like '%' + replace(:nombreP, '%', '[%]') + '%'");
-//             "SELECT producto FROM Producto producto WHERE producto.nombre like :escape:nombreP:escape");
-           // query.setParameter("escape" , '%');
+
             query2.setParameter("nombreP" , "%"+nombreP+"%");
-            System.out.println("@@@psumado parametro despues del try despues de añadir parametros  : "+"%"+nombreP+"%");
-            System.out.println("@@@psumado parametro  : "+"%"+nombreP+"%");
+//            System.out.println("@@@psumado parametro despues del try despues de añadir parametros  : "+"%"+nombreP+"%");
+//            System.out.println("@@@psumado parametro  : "+"%"+nombreP+"%");
             lP =query2.getResultList();
-            System.out.println("@@@encontrados  : "+lP.size());
+//            System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
-            System.out.println("@@@error en contrando : "+nombreP);
-            System.out.println(e.toString());
+//            System.out.println("@@@error en contrando : "+nombreP);
+//            System.out.println(e.toString());
         }
-    System.out.println("@@@ amtes de devolver lP");
+//    System.out.println("@@@ amtes de devolver lP");
         return lP;
     }
     
@@ -89,7 +87,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
        
                
         List<Producto> lP=null;
-        System.out.println("@@@psumado parametro antes del try  : "+"%"+nombreP+"%");
+//        System.out.println("@@@psumado parametro antes del try  : "+"%"+nombreP+"%");
         try{
             
             
@@ -195,20 +193,18 @@ public class ProductoFacade extends AbstractFacade<Producto> {
             
             
             
-            System.out.println("@@@psumado parametro depues del try  despues de crear query: "+"%"+nombreP+"%");
+//            System.out.println("@@@psumado parametro depues del try  despues de crear query: "+"%"+nombreP+"%");
             
-//           "SELECT producto FROM Producto producto WHERE producto.nombre like '%' + replace(:nombreP, '%', '[%]') + '%'");
-//             "SELECT producto FROM Producto producto WHERE producto.nombre like :escape:nombreP:escape");
-           // query.setParameter("escape" , '%');
+
             query2.setParameter("nombreP" , "%"+nombreP+"%");
-            System.out.println("@@@psumado parametro despues del try despues de añadir parametros  : "+"%"+nombreP+"%");
-            System.out.println("@@@psumado parametro  : "+"%"+nombreP+"%");
+//            System.out.println("@@@psumado parametro despues del try despues de añadir parametros  : "+"%"+nombreP+"%");
+//            System.out.println("@@@psumado parametro  : "+"%"+nombreP+"%");
             lP =query2.getResultList();
-            System.out.println("@@@encontrados  : "+lP.size());
+//            System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
-            System.out.println("@@@error en contrando : "+nombreP);
+//            System.out.println("@@@error en contrando : "+nombreP);
         }
-    System.out.println("@@@ amtes de devolver lP");
+//    System.out.println("@@@ amtes de devolver lP");
         return lP;
     }
     
@@ -217,7 +213,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         
         
         List<Producto> lP=null;
-        System.out.println("@@@idcategoria  de la que buscamos pruductos  : "+"%"+categoriaP+"%");
+//        System.out.println("@@@idcategoria  de la que buscamos pruductos  : "+"%"+categoriaP+"%");
         try{
             Query query2=
                     //em.createQuery(
@@ -227,10 +223,10 @@ public class ProductoFacade extends AbstractFacade<Producto> {
            lP =query2.getResultList();
             System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
-            System.out.println("@@@error en contrando productos de la categoria : "+categoriaP);
-            System.out.println(e.toString());
+//            System.out.println("@@@error en contrando productos de la categoria : "+categoriaP);
+//            System.out.println(e.toString());
         }
-    System.out.println("@@@ amtes de devolver lP");
+//    System.out.println("@@@ amtes de devolver lP");
         return lP;
     }
     
@@ -239,7 +235,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         
         
         List<Producto> lP=null;
-        System.out.println("@@@idcategoria  de la que buscamos pruductos  : "+"%"+categoriaP+"%");
+//        System.out.println("@@@idcategoria  de la que buscamos pruductos  : "+"%"+categoriaP+"%");
         try{
             Query query2=
                     //em.createQuery(
@@ -346,20 +342,20 @@ public class ProductoFacade extends AbstractFacade<Producto> {
             ///////////////////////////
            query2.setParameter("categoriaP" , categoriaP);        
            lP =query2.getResultList();
-            System.out.println("@@@encontrados  : "+lP.size());
+//            System.out.println("@@@encontrados  : "+lP.size());
         }catch (Exception e){
-            System.out.println("@@@error en contrando productos de la categoria filtrada: "+categoriaP);
-             System.out.println(e.toString());
+//            System.out.println("@@@error en contrando productos de la categoria filtrada: "+categoriaP);
+//             System.out.println(e.toString());
         }
-    System.out.println("@@@ amtes de devolver lP");
+//    System.out.println("@@@ amtes de devolver lP");
         return lP;
     }
         
     public List<Producto> todosProductosFiltrados(String filtro, String vendidos){
                 List<Producto> lP=null;
-        System.out.println("@@@todos filtrados ");
-        System.out.println("vendidos : "+ vendidos);
-        System.out.println("filtro : "+ filtro);
+//        System.out.println("@@@todos filtrados ");
+//        System.out.println("vendidos : "+ vendidos);
+//        System.out.println("filtro : "+ filtro);
         try{
             Query query3=
                     //em.createQuery(
