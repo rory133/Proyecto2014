@@ -1,21 +1,31 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+          
+
+    <f:view locale="#{productoView.locale}">
     <h:head>
          <h:outputStylesheet library="css" name="default.css"  />
          <h:outputStylesheet library="css" name="cssLayout.css"  />
-        <title>Usuario Bloqueado</title>
+         <f:loadBundle basename="resources.mensajes.mensajes" var="msg"/>
+       <title><h:outputText value="#{msg.app_title_inicio}"/> </title>
         <link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
     </h:head>
     <h:body>
-         <h:link outcome="index" value="volver" />
+         <h:link outcome="index" value="#{msg['app.Volver']}" />
          
          <div class="fondo-centroUsuarioBloqueado">  
-                Tienes más de dos votos negativos, deberas esperar a ser redimido por el administrador para entrar en el portal
+               <h:outputText value=" #{msg['app.PaginaBloqueado']}"  />
+            
+         
          </div>
         
         
     </h:body>
+  </f:view>
 </html>
 

@@ -24,20 +24,15 @@ import facade.PujaFacade;
 import facade.VentaFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import javax.servlet.http.HttpSession;
-import org.primefaces.context.RequestContext;
 import utilidades.DatosProductoCompleto;
 
 /**
@@ -189,7 +184,7 @@ private boolean viendoCategorias;
     }
 
     public void setViendoCategorias(boolean viendoCategorias) {
-        System.out.println(" cambio viendoCategorias: "+viendoCategorias);
+//        System.out.println(" cambio viendoCategorias: "+viendoCategorias);
         this.viendoCategorias = viendoCategorias;
     }
 
@@ -237,18 +232,18 @@ private boolean viendoCategorias;
          System.out.println("@@tamaño listaProductos2: "+listaProductos2.size());
         for(Producto producto: listaProductos2){
             DatosProductoCompleto datosProductoCompleto2= new  DatosProductoCompleto();
-            System.out.println("WWWWAñadimos producto : "+producto.getNombre());
-            System.out.println("WWWWW tiene marca de mal clasificado : "+producto.isMarcadoMalClasificado());
-            System.out.println("WWWWW expirado : "+producto.isExpirado());
+//            System.out.println("WWWWAñadimos producto : "+producto.getNombre());
+//            System.out.println("WWWWW tiene marca de mal clasificado : "+producto.isMarcadoMalClasificado());
+//            System.out.println("WWWWW expirado : "+producto.isExpirado());
             datosProductoCompleto2.setProducto(producto);
             datosProductoCompleto2.setImagenes(imagenFacade.imagenesXProcducto(producto));
            
             
             
             if(producto.getVendido()){
-                System.out.println("@@AbuscoVentas del producto "+ producto.getNombre()+" vendido "+producto.getVendido());
+//                System.out.println("@@AbuscoVentas del producto "+ producto.getNombre()+" vendido "+producto.getVendido());
                 datosProductoCompleto2.setVenta(ventaFacade.ventaXProducto(producto));
-                 System.out.println("@@datos ventaSUMADA "+datosProductoCompleto2.getVenta().getIdventa());
+//                 System.out.println("@@datos ventaSUMADA "+datosProductoCompleto2.getVenta().getIdventa());
             }else{
                 datosProductoCompleto2.setVenta(null);
             }
@@ -265,29 +260,30 @@ private boolean viendoCategorias;
             
             
             if(denunciados.equals("todos")) {
-                 System.out.println("@@añadimos producto:"+ datosProductoCompleto2.getProducto().getNombre()+ "denuncia mal clasificado? "+datosProductoCompleto2.getProducto().isMarcadoMalClasificado());
+//                 System.out.println("@@añadimos producto:"+ datosProductoCompleto2.getProducto().getNombre()+ "denuncia mal clasificado? "+datosProductoCompleto2.getProducto().isMarcadoMalClasificado());
                 listaProductosCompletos2.add(datosProductoCompleto2);
             }else if(denunciados.equals("malClasificado")) { 
                 if(datosProductoCompleto2.getProducto().isMarcadoMalClasificado()){
+//                     System.out.println("%%%%%%%%%%%%%%%%%%mal clasificado&&&&&&&&&&&&&&&&&&&");
                     listaProductosCompletos2.add(datosProductoCompleto2);
                 }
                 
             }else if(denunciados.equals("faltaPago")) {
-                if(datosProductoCompleto2.getVenta()!=null && compruebaDenuciaActiva(datosProductoCompleto2.getVenta().getDenunciaList(),"NO_PAGADO"))
-                    
+                if(datosProductoCompleto2.getVenta()!=null && compruebaDenuciaActiva(datosProductoCompleto2.getVenta().getDenunciaList(),"NO_PAGADO")){
+//                       System.out.println("%%%%%%%%%%%%%%%%%%falta de pago&&&&&&&&&&&&&&&&&&&");
                     listaProductosCompletos2.add(datosProductoCompleto2);
-                
+                } 
             }else if(denunciados.equals("faltaEnvio")) {
                 if(datosProductoCompleto2.getVenta()!=null && compruebaDenuciaActiva(datosProductoCompleto2.getVenta().getDenunciaList(),"NO_ENVIADO")){
-                     System.out.println("%%%%%%%%%%%%%%%%%%falta de envio&&&&&&&&&&&&&&&&&&&");
+//                     System.out.println("%%%%%%%%%%%%%%%%%%falta de envio&&&&&&&&&&&&&&&&&&&");
                     listaProductosCompletos2.add(datosProductoCompleto2);
                 
             }
             
             
-            System.out.println("@@tamaño listaProductosCompletos2: "+listaProductosCompletos2.size());
+//            System.out.println("@@tamaño listaProductosCompletos2: "+listaProductosCompletos2.size());
         }
-          System.out.println("@@tamaño FINAL listaProductosCompletos2: "+listaProductosCompletos2.size());
+//          System.out.println("@@tamaño FINAL listaProductosCompletos2: "+listaProductosCompletos2.size());
           
 
          
@@ -314,11 +310,11 @@ private boolean viendoCategorias;
     }
     public String borrarProducto(){
                             //recogemos los parametros necesarios
-         System.out.println("#######borrarProducto");
+//         System.out.println("#######borrarProducto");
         facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
             String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoABorrar");
-             System.out.println("#######id producto a borrar: "+idProducto);
+//             System.out.println("#######id producto a borrar: "+idProducto);
           //producto a salvar
            Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
             
@@ -332,11 +328,11 @@ private boolean viendoCategorias;
     }
     public String borrarProductoPorImprocedente(){
                             //recogemos los parametros necesarios
-         System.out.println("#######borrarProducto");
+//         System.out.println("#######borrarProducto");
         facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
             String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoABorrarPorImprocedente");
-             System.out.println("#######id producto a borrar: "+idProducto);
+//             System.out.println("#######id producto a borrar: "+idProducto);
           //producto a salvar
            Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
             
@@ -354,7 +350,7 @@ private boolean viendoCategorias;
          FacesContext facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
          String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoAEliminarMarca");
-          System.out.println("######atenderDenunciaMalClasificado"+idProducto);
+//          System.out.println("######atenderDenunciaMalClasificado"+idProducto);
          Producto productoMalClasificado=productoFacade.find((Integer)Integer.parseInt(idProducto));
           
        
@@ -376,7 +372,7 @@ private boolean viendoCategorias;
         facesContext = FacesContext.getCurrentInstance();
         session = (HttpSession) facesContext.getExternalContext().getSession(false);
         Integer categoriaNueva=(Integer)session.getAttribute("idCategoria");
-        System.out.println(" entro en cambiar Categoria: "+ categoriaNueva);
+//        System.out.println(" entro en cambiar Categoria: "+ categoriaNueva);
 //        System.out.println(" categoria padre seleccionada "+categoriaSeleccionadaPadreNuevaCategoria);
         if (categoriaNueva < 0) {
            
@@ -384,10 +380,10 @@ private boolean viendoCategorias;
             FacesContext.getCurrentInstance().addMessage(null, message);
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().getFlash().setKeepMessages(true);            
-            System.out.println(" sin categoria Seleccionada ");
+//            System.out.println(" sin categoria Seleccionada ");
 //            return "index.xhtml?faces-redirect=true";
         }else{
-            System.out.println(" categoriaSeleccinoada "+categoriaNueva);
+//            System.out.println(" categoriaSeleccinoada "+categoriaNueva);
             Categoria categoria=categoriaFacade.find(categoriaNueva);
            String idProducto = (String) facesContext.getExternalContext().getRequestParameterMap().get("productoACambiarCategoria");
             
@@ -437,8 +433,8 @@ private boolean viendoCategorias;
         
        // Producto productoABorrar=productoFacade.find((Integer)Integer.parseInt(idProducto));
         
-        System.out.println(" entro en cambiar atendiendo denuncia: "+ denunciaPasada);
-         System.out.println(" usuario: "+ usuario.getNombre());
+//        System.out.println(" entro en cambiar atendiendo denuncia: "+ denunciaPasada);
+//         System.out.println(" usuario: "+ usuario.getNombre());
       if(denunciaPasada!=null){
         Denuncia denunciaAGuardar=denunciaFacade.find((Integer)Integer.parseInt(denunciaPasada));
         denunciaAGuardar.setAtiendeIdusuario1(usuario);

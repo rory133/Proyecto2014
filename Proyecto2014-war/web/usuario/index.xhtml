@@ -571,7 +571,7 @@
                                                
                                                  <f:param id="parametro112" name="idProductoASalvar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                                                                <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionCambiarProducto']}" icon="ui-icon-alert" />
+                                                                                <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionCambiarProducto']}" icon="ui-icon-alert" />
                                         </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
@@ -602,7 +602,7 @@
                                                
                                                  <f:param id="parametro111" name="idProductoASalvar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                     <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionCambiarProducto']}" icon="ui-icon-alert" />
+                                     <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionCambiarProducto']}" icon="ui-icon-alert" />
                                     </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
@@ -616,7 +616,7 @@
                                                  <f:param id="parametro1" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
                                                  <f:param id="parametro2" name="idProductoAComprar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                                <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionCompra']}" icon="ui-icon-alert" />
+                                                <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionCompra']}" icon="ui-icon-alert" />
                                     </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
@@ -635,7 +635,7 @@
                                                
                                                  <f:param id="parametroBorrar111" name="idProductoABorrar" value="#{productoView.productoSeleccionado.idproducto}" />
 
-                                     <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionBorrarProducto']}" icon="ui-icon-alert" />
+                                     <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionBorrarProducto']}" icon="ui-icon-alert" />
                                     </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
@@ -670,7 +670,7 @@
                                        <BR/>
                                       <p:commandButton id="botonDenunciaMalClasificado" value="#{msg['app.BotonMalClasificado']}"   actionListener="#{productoView.creaDenunciaMalClasificado()}" 
                                                          icon="ui-icon-check" update=":form2 msgs3" >
-                                            <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionMalClasificado']}"  icon="ui-icon-alert" />
+                                            <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionMalClasificado']}"  icon="ui-icon-alert" />
                                             <f:param id="parametroProductoMalClasificado" name="idProductoMalClasificado" value="#{productoView.productoSeleccionado.idproducto}" />
                                         </p:commandButton>
                                         
@@ -766,7 +766,7 @@
                                         
                                         <p:commandButton id="botonDenuncia" value="#{msg['app.BotonDenunciarVenta']}" update=":form22:grow221"    actionListener="#{productoView.creaDenuncia()}" 
                                                          icon="ui-icon-check" oncomplete="PF('creacionDenuncia').hide();" >
-                                            <p:confirm header="Confirmación" message="#{msg['app.ConfirmacionDenunciarVenta']}" icon="ui-icon-alert" />
+                                            <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionDenunciarVenta']}" icon="ui-icon-alert" />
                                         </p:commandButton>
                                         
                                         <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">

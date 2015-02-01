@@ -222,7 +222,7 @@ public class GestionProducto implements Serializable{
                   puja.setProductoIdproducto(productoAPujar);
                   puja.setUsuarioIdusuario(usuarioPujador);
                   pujaFacade.create(puja);
-                  System.out.println("Creada primara puja del producto: "+productoAPujar.getNombre());
+//                  System.out.println("Creada primara puja del producto: "+productoAPujar.getNombre());
                         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeAcabasDePujar")+productoAPujar.getNombre(),"");
                         FacesContext.getCurrentInstance().addMessage(null, message);
                         gestionEventos.firePujaRealizada(puja);
