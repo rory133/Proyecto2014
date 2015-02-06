@@ -341,7 +341,7 @@ private List<Puja> listaPujas;
          //correo al usuario
           String mensajeAUsuario=text.getString("app.AsuntoMensaje");
           mensajeAUsuario=mensajeAUsuario+text.getString("app.Redimido");
-          mensajeAUsuario=mensajeAUsuario+text.getString("app.YaPuedesEntra");
+          mensajeAUsuario=mensajeAUsuario+text.getString("app.YaPuedesEntrar");
          emailService.envioIndividual(usuario.getEmail(),text.getString("app.AsuntoRedimido"), mensajeAUsuario);
     }    
     public void usuarioBorrado(@Observes @UsuarioBorrado Usuario usuario ) {
