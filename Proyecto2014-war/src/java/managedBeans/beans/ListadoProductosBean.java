@@ -1148,5 +1148,11 @@ private Locale locale;
              }
             
         }
-
+   public void quitarFiltros(){
+       setBuscandoPorCategoria(true);
+       setBuscandoPorNombre(false);
+       setNombreBuscado("");
+       setFiltro("todos");       
+       todosProductos();
+   }     
 }

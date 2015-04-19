@@ -76,6 +76,13 @@
                                 </h:panelGrid>
                    
                     </td> 
+                    <td class='alnright'> 
+                    <p:commandLink id="linkBorraFiltros" action="#{productoView.quitarFiltros()}">
+                        <f:ajax event="click" render=":form2:productos" />
+                        <h:outputText value="quitar Filtros" />
+                        <p:tooltip id="toolTipBorrarFiltros" for="linkBorraFiltros" value="#{msg['app.tooltipQuitarFiltros']}" />
+                     </p:commandLink>
+                    </td>
                     <td class='alnright'>
                         
                                     <p:inputText id="nombre" value="#{productoView.nombreBuscado}" label="busqueda">
