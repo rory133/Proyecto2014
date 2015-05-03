@@ -43,9 +43,9 @@ import utilidades.SumadoSocio;
 //captura los eventos en los que se envian emails 
 public class MailEvent implements Serializable{
 @EJB 
-EmailService emailService;
+private static EmailService emailService;
 @EJB
-private UsuarioFacade usuarioFacade;
+private static UsuarioFacade usuarioFacade;
 @EJB
 private PujaFacade pujaFacade;
 

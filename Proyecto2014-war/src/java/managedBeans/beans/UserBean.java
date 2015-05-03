@@ -31,7 +31,7 @@ import utilidades.Loggable;
  *
  * @author juanma
  */
-@Loggable
+//@Loggable
 @RequestScoped
 @ManagedBean(name="userBean")
 public class UserBean {

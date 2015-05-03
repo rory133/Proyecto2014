@@ -9,7 +9,6 @@
 
 package managedBeans.utilidades;
 
-import com.google.common.collect.Table;
 import entidades.Categoria;
 import facade.CategoriaFacade;
 import java.io.Serializable;
@@ -18,15 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.enterprise.context.Dependent;
-import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Named;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
-import utilidades.Loggable;
 
 /**
  *

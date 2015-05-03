@@ -402,7 +402,7 @@ private Locale locale;
     @PostConstruct
     public void init() {
        faceContext=FacesContext.getCurrentInstance();
-       iniciarLocate();
+       
        setSoloMios(false);
        imagenesProducto= new  ArrayList<>();
        listaProductos=new  ArrayList<>(); 
@@ -413,23 +413,24 @@ private Locale locale;
        todosProductos();
        setTitulo(ResourcesUtil.getString("app.Categorias"));
        setVentasAMostrar("NoEnviados");
-       
+//       iniciarLocate();
        
     }
     
     
-        public void iniciarLocate() {
-        //obtenemos el HttpServletRequest  de la peticion para poder saber
-       // el locale del cliente
-        
-        
-         HttpServletRequest requestObj = (HttpServletRequest)      
-         FacesContext.getCurrentInstance().getExternalContext().getRequest();
-         
-       //Asignamos al locale de la aplicacion el locale del cliente
-       FacesContext.getCurrentInstance().getViewRoot().setLocale(requestObj.getLocale());
-       locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-    }   
+//    public void iniciarLocate() {
+//        //obtenemos el HttpServletRequest  de la peticion para poder saber
+//       // el locale del cliente
+//        
+//        
+//         HttpServletRequest requestObj = (HttpServletRequest)      
+//         FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//         
+//       //Asignamos al locale de la aplicacion el locale del cliente
+////       FacesContext.getCurrentInstance().getViewRoot().setLocale(requestObj.getLocale());
+//       locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//       
+//    }   
     
     
     

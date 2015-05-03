@@ -61,6 +61,8 @@ public class PujaFacade extends AbstractFacade<Puja> {
                 //"SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP");
         query.setParameter("productoP" , productoP);
          lP=query.getResultList();
+         
+         System.out.println("en pujas por ID producto tamaño lista: "+lP.size());
         // System.out.println("Creating Timer...");
         }catch (Exception e){
             System.out.println("@@@error en contrando pujas del producto : "+productoP);

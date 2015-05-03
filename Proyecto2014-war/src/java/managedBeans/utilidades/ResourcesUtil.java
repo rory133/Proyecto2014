@@ -9,6 +9,7 @@
 
 package managedBeans.utilidades;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.faces.context.FacesContext;
 
@@ -23,7 +24,9 @@ public class ResourcesUtil {
         FacesContext context = FacesContext.getCurrentInstance();
         
 //       generamos texto segun locale
-        ResourceBundle text = ResourceBundle.getBundle("resources.mensajes.mensajes", context.getViewRoot().getLocale());
+//        ResourceBundle text = ResourceBundle.getBundle("resources.mensajes.mensajes", context.getViewRoot().getLocale());
+       Locale locale = new Locale.Builder().setLanguage("es").setRegion("es").build();
+        ResourceBundle text = ResourceBundle.getBundle("resources.mensajes.mensajes", locale);
         return text.getString(key);
         
 

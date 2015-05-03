@@ -1,4 +1,5 @@
 /*
+
  * Proyecto fin de carrera gen�rico del Dpto.  * 
  * Lenguajes y Sistemas Inform�ticos (curso 2014-2015)  * 
  * Desarrollo de un portal de anuncios para compra/venta online. * 

@@ -37,7 +37,7 @@ import managedBeans.utilidades.ResourcesUtil;
  *
  * @author juanma
  */
-@Loggable
+//@Loggable
 @ViewScoped
 //@RequestScoped
 //@SessionScoped

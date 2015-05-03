@@ -45,7 +45,7 @@ import utilidades.Loggable;
  */
 
 
-@Loggable
+//@Loggable
 @SessionScoped
 //@RequestScoped
 @ManagedBean(name="crearProductoBean")

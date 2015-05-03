@@ -30,7 +30,7 @@ import utilidades.Loggable;
  */
 //@Named(value = "loginBean")
 //@Dependent
-@Loggable
+//@Loggable
 @RequestScoped
 //@ViewScoped
 @ManagedBean(name="loginBean")
@@ -155,9 +155,11 @@ public void logout(){
 
         Object session = externalContext.getSession(false);
 
-        HttpSession httpSession = (HttpSession) session;
-
-        httpSession.invalidate();
+//        HttpSession httpSession = (HttpSession) session;
+//   if (null!=httpSession){
+//        httpSession.invalidate();
+//
+//   }
     
         try {
 //        System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
