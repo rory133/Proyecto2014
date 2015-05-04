@@ -14,6 +14,7 @@ import entidades.Usuario;
 import facade.LoginFacade;
 import facade.UsuarioFacade;
 import java.io.IOException;
+import java.util.Enumeration;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -153,10 +154,13 @@ public String validarUsuario(){
 
     public void logout() throws ServletException {
 //        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-//              HttpSession session = Util.getSession();
+              HttpSession session = Util.getSession();
 //      session.invalidate();
    
-           
+           for (Enumeration e=session.getAttributeNames();e.hasMoreElements();){
+               String nombreAtributo =(String) e.nextElement();
+               session.removeAttribute(nombreAtributo);
+           }
             
             
         
@@ -170,9 +174,10 @@ public String validarUsuario(){
 //           request.logout();   
 
             
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();   
+//        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();  
+        
        
-        HttpSession session = (HttpSession)Util.getSession();
+//        HttpSession session = (HttpSession)Util.getSession();
         FacesContext.getCurrentInstance().getExternalContext()
         .redirect("../index.xhtml");     
         
