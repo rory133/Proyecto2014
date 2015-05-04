@@ -5,7 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <f:view locale="#{productoView.locale}">
+    <f:view locale="#{localeBean.locale}">
         <h:head>
           <f:loadBundle basename="resources.mensajes.mensajes" var="msg"/>
             
@@ -37,7 +37,7 @@
                      <h:outputText value="#{msg['app.VotosNegativos']}: #{sessionScope.usuario.votosNegativos}  " />         
                                             
                      <p:commandLink id="salir"  actionListener="#{loginBean.logout()}">
-                             <h:outputText value="#{msg['app.Salir']}" />
+                            <h:outputText value="#{msg['app.Salir']}" />
                              <p:tooltip id="toolTipFade00" for="salir" value="#{msg['app.toolTipSalirComoUsuario']}" />
                         </p:commandLink>
                    
@@ -416,7 +416,7 @@
                                 <p:growl id="grow22"  />
                                      <h:outputText value="#{msg['app.FechaDeVenta']}: " />
                                      <h:outputText value="#{venta.fecha}" >
-                                       <f:convertDateTime  locale="#{productoView.locale}"/>
+                                       <f:convertDateTime  locale="#{localeBean.locale}"/>
                                     </h:outputText>
                                 <h:panelGrid columns="1" style="width:100%">
                    
@@ -534,7 +534,7 @@
                                     <h:outputText value="#{productoView.productoSeleccionado.usuarioIdusuario.email}" />                                    
                                     <h:outputText value="#{msg['app.FechaDePuestaEnVenta']}:" />                                   
                                     <h:outputText value="#{productoView.productoSeleccionado.fechaProducto}" >
-                                        <f:convertDateTime locale="#{productoView.locale}" />
+                                        <f:convertDateTime locale="#{localeBean.locale}" />
                                         <!--
                                      <f:convertDateTime pattern="d-M-yyyy" locale="#{productoView.locale}" />
                                      -->

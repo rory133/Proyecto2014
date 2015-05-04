@@ -28,7 +28,7 @@ public class CalculaUltimaPuja {
     
     private List<Puja> pujasProducto ;
     
-    @PostLoad
+  //  @PostLoad
     @PostPersist
     @PostUpdate
     //calculamos el valor de la última puja para cada producto en modo subasta

@@ -20,9 +20,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import managedBeans.utilidades.ResourcesUtil;
-import utilidades.Loggable;
+import managedBeans.utilidades.Util;
+
 
 /**
  *
@@ -30,7 +34,7 @@ import utilidades.Loggable;
  */
 //@Named(value = "loginBean")
 //@Dependent
-@Loggable
+
 @RequestScoped
 //@ViewScoped
 @ManagedBean(name="loginBean")
@@ -43,7 +47,6 @@ private UsuarioFacade usuarioFacade;
 
 private Login usuarioLogado;
 private Usuario datosUsuarioLogado;
-
 private FacesMessage facesMessage;
 private final FacesContext faceContext;
 private String login;
@@ -101,9 +104,12 @@ public String validarUsuario(){
        // logger.info("@@@@@@@despues de encontrar usuario : "+usuarioLogado.getLogin());
         //System.out.println("usuario encontrado: "+usuarioLogado.getLogin());
         if(usuarioLogado!=null){
-            HttpSession session = 
-           
-            (HttpSession) faceContext.getExternalContext().getSession(false);
+//            HttpSession session = 
+//           
+//            (HttpSession) faceContext.getExternalContext().getSession(false);
+            HttpSession session = Util.getSession();
+            
+            
             session.setAttribute("login", usuarioLogado);
             datosUsuarioLogado=(Usuario)usuarioFacade.find(usuarioLogado.getUsuarioIdusuario().getIdusuario());
             session.setAttribute("usuario", datosUsuarioLogado);
@@ -144,29 +150,69 @@ public String validarUsuario(){
       }
       return "login";
    }
-public void logout(){  
-//    System.out.println("entro en logout()");
-    String retorno;
-    retorno = "../index?faces-redirect=true";
 
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        ExternalContext externalContext = context.getExternalContext();
-
-        Object session = externalContext.getSession(false);
-
-        HttpSession httpSession = (HttpSession) session;
-
-        httpSession.invalidate();
-    
+    public void logout() throws ServletException {
+//        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+//              HttpSession session = Util.getSession();
+//      session.invalidate();
+   
+           
+            
+            
+        
         try {
-//        System.out.println("contexto---->:"+FacesContext.getCurrentInstance().getExternalContext().toString());
+
+        
+        
+//          HttpServletRequest request=(HttpServletRequest)    FacesContext.
+//          getCurrentInstance().
+//          getExternalContext().getRequest();
+//           request.logout();   
+
+            
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();   
+       
+        HttpSession session = (HttpSession)Util.getSession();
         FacesContext.getCurrentInstance().getExternalContext()
-        .redirect("../index.xhtml");
+        .redirect("../index.xhtml");     
+        
+//        if(session!=null)
+//         session.invalidate();
         } catch (IOException e) {
         e.printStackTrace();
         }
-     }
+    
+    }
+
+
+
+//public void logout(){  
+//    System.out.println("entro en logout()");
+//    String retorno;
+//    retorno = "../index?faces-redirect=true";
+// 
+//        FacesContext context = FacesContext.getCurrentInstance();
+// 
+//        ExternalContext externalContext = context.getExternalContext();
+//
+//        Object session = externalContext.getSession(false);
+//
+//        HttpSession httpSession = (HttpSession) session;
+
+//        httpSession.invalidate();
+        
+        
+           
+
+//    FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+//        try {
+//
+//        FacesContext.getCurrentInstance().getExternalContext()
+//        .redirect("../index.xhtml");
+//        } catch (IOException e) {
+//        e.printStackTrace();
+//        }
+//     }
 
 
         

@@ -24,14 +24,14 @@ import javax.faces.context.FacesContext;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import managedBeans.utilidades.ResourcesUtil;
-import utilidades.Loggable;
+
 
 
 /**
  *
  * @author juanma
  */
-@Loggable
+
 @RequestScoped
 @ManagedBean(name="userBean")
 public class UserBean {

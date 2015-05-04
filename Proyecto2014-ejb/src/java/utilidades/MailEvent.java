@@ -27,7 +27,6 @@ import javax.ejb.EJB;
 import javax.enterprise.event.Observes;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import utilidades.Loggable;
 import utilidades.SumadoSocio;
 
 /**

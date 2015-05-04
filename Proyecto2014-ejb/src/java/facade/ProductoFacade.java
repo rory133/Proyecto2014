@@ -367,6 +367,11 @@ public class ProductoFacade extends AbstractFacade<Producto> {
                     case "todos":
                         switch (vendidos) {
                         case "todos":
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+            System.out.println("todos todos");
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
                             query3=getEntityManager().createQuery(
                              "SELECT producto4 FROM Producto producto4");
 
@@ -455,6 +460,13 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         
              
             lP =query3.getResultList();
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+            System.out.println("tamaño lista encontrados :"+lP.size());
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+            
+//            lP =(List<Producto>)query3.getSingleResult();
         }catch (Exception e){
               System.out.println("@@@error en contrando todos los producotos : "+e.toString());
                         }

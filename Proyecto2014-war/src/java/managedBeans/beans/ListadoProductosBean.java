@@ -401,8 +401,9 @@ private Locale locale;
     
     @PostConstruct
     public void init() {
+//    public void iniciar() {
        faceContext=FacesContext.getCurrentInstance();
-       iniciarLocate();
+
        setSoloMios(false);
        imagenesProducto= new  ArrayList<>();
        listaProductos=new  ArrayList<>(); 
@@ -410,26 +411,28 @@ private Locale locale;
        setFiltro("todos");
        setFiltroMisProductos("ofertados");
 
-       todosProductos();
+   
        setTitulo(ResourcesUtil.getString("app.Categorias"));
        setVentasAMostrar("NoEnviados");
-       
+         todosProductos();
+//       todosProductosSinFiltro();
        
     }
     
     
-        public void iniciarLocate() {
+////        public void iniciarLocate() {
         //obtenemos el HttpServletRequest  de la peticion para poder saber
        // el locale del cliente
         
         
-         HttpServletRequest requestObj = (HttpServletRequest)      
-         FacesContext.getCurrentInstance().getExternalContext().getRequest();
-         
+//         HttpServletRequest requestObj = (HttpServletRequest)      
+//         FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//         
        //Asignamos al locale de la aplicacion el locale del cliente
-       FacesContext.getCurrentInstance().getViewRoot().setLocale(requestObj.getLocale());
-       locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-    }   
+//       FacesContext.getCurrentInstance().getViewRoot().setLocale(requestObj.getLocale());
+//       locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+//       locale = new Locale.Builder().setLanguage("es").setRegion("es").build();
+//    }   
     
     
     
@@ -456,12 +459,21 @@ private Locale locale;
            listaProductos.add(productoEncontrado);
        }
     }  
-       
+     
+
     public void todosProductos(){
 
         setBuscandoPorCategoria(false);
         setBuscandoPorNombre(false);
-        List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
+        List<Producto> listaProductos2= new ArrayList<>();
+//        List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
+            listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
+            System.out.println("###########################################");
+            System.out.println("###########################################");
+            System.out.println("tamaño lista encontrados :"+listaProductos2.size());
+            System.out.println("###########################################");
+            System.out.println("###########################################");
+        
         if (soloMios){
          List<Producto> listaProductos3= new  ArrayList<>();;
          FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -480,9 +492,7 @@ private Locale locale;
        //añadimos a la lista de imagenes la primera imagen de cada producto.
         imagenesProducto= new  ArrayList<>();
         listaProductos=new  ArrayList<>();
-        setNombreBuscado("");
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        externalContext.getSessionMap().put("idCategoria", 0);
+
 
        for(Producto productoEncontrado :listaProductos2){
            
@@ -494,9 +504,11 @@ private Locale locale;
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
            imagenesProducto.add(imagenesXProcducto.get(0));
            listaProductos.add(productoEncontrado);
-       }
-
-     
+         }
+       
+        setNombreBuscado("");
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.getSessionMap().put("idCategoria", 0);
 
     }
     public void actualizaVistaTodosProductos(){

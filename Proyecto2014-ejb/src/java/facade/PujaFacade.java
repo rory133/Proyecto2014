@@ -11,7 +11,6 @@ package facade;
 
 import entidades.Producto;
 import entidades.Puja;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,7 +22,7 @@ import javax.persistence.Query;
  * @author juanma
  */
 @Stateless
-public class PujaFacade extends AbstractFacade<Puja> {
+public class PujaFacade extends AbstractFacade<Puja>  {
     @PersistenceContext(unitName = "Proyecto2014-ejbPU")
     private EntityManager em;
 

@@ -37,7 +37,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
-import utilidades.Loggable;
+
 
 /**
  *
@@ -45,7 +45,7 @@ import utilidades.Loggable;
  */
 
 
-@Loggable
+
 @SessionScoped
 //@RequestScoped
 @ManagedBean(name="crearProductoBean")

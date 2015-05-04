@@ -27,7 +27,7 @@ import javax.servlet.http.HttpSession;
 import managedBeans.beans.CrearProductoBean;
 import managedBeans.beans.ListadoProductosBean;
 import org.primefaces.model.TreeNode;
-import utilidades.Loggable;
+
 
 /**
  *

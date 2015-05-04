@@ -28,7 +28,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import utilidades.Loggable;
 import managedBeans.beans.ListadoProductosBean;
 import managedBeans.utilidades.ResourcesUtil;
 
@@ -37,7 +36,7 @@ import managedBeans.utilidades.ResourcesUtil;
  *
  * @author juanma
  */
-@Loggable
+
 @ViewScoped
 //@RequestScoped
 //@SessionScoped
