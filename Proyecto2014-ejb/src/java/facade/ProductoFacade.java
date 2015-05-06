@@ -41,6 +41,13 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         List<Producto> lP =query.getResultList();
         return lP;
     }
+    public Producto productosXIdProducto(Integer idproducto){
+        
+        Query query=em.createNamedQuery("Producto.findByIdproducto");
+        query.setParameter(1, idproducto);
+        Producto lP =(Producto)query.getSingleResult();
+        return lP;
+    }
     
     public List<Producto> productosNoExpirados(){
         Query query5=getEntityManager().createQuery(
@@ -367,11 +374,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
                     case "todos":
                         switch (vendidos) {
                         case "todos":
-            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-            System.out.println("todos todos");
-            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+
                             query3=getEntityManager().createQuery(
                              "SELECT producto4 FROM Producto producto4");
 
@@ -460,11 +463,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         
              
             lP =query3.getResultList();
-            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-            System.out.println("tamaño lista encontrados :"+lP.size());
-            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
-            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+
             
 //            lP =(List<Producto>)query3.getSingleResult();
         }catch (Exception e){

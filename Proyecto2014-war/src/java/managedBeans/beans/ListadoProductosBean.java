@@ -88,7 +88,7 @@ private String nombreBuscado;
 private String filtro;
 private String vendidos;
 private boolean soloMios; 
-private Producto productoSeleccionado;
+public Producto productoSeleccionado;
 private List<Imagen> imagenesProductoSeleccionado;
 
 //para controlar cuando se esta buscando por nombre
@@ -125,6 +125,7 @@ private Locale locale;
     }
     
     public Producto getProductoSeleccionado() {
+       
         return productoSeleccionado;
     }
 
@@ -133,6 +134,21 @@ private Locale locale;
         buscaImagenesProductoSeleccionado(productoSeleccionado);
         this.productoSeleccionado = productoSeleccionado;
         setTiempoRestante(this.productoSeleccionado.getFechaProducto());
+        
+         if (!productoSeleccionado.getEnSubasta()){
+             
+            productoSeleccionado.setUltimaPuja(0f);
+
+        }else{
+          List<Puja> pujasProducto2=pujaFacade.pujaXIdProducto(productoSeleccionado.getIdproducto());
+           if((pujasProducto2==null)||(pujasProducto2.isEmpty())){
+               productoSeleccionado.setUltimaPuja(productoSeleccionado.getPrecio());
+           }else productoSeleccionado.setUltimaPuja(pujasProducto2.get(0).getOferta());
+          
+             
+         }
+        
+        
         
         
     }
@@ -456,7 +472,11 @@ private Locale locale;
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
            imagenesProducto.add(imagenesXProcducto.get(0));
-           listaProductos.add(productoEncontrado);
+           if (!productoEncontrado.getEnSubasta())
+                listaProductos.add(productoEncontrado);
+           else
+               //si esta en modo subasta acutalizamos las subastas que ha recibido
+               listaProductos.add(ActualizaPujas(productoEncontrado));
        }
     }  
      
@@ -468,11 +488,11 @@ private Locale locale;
         List<Producto> listaProductos2= new ArrayList<>();
 //        List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
             listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
-            System.out.println("###########################################");
-            System.out.println("###########################################");
-            System.out.println("tamaño lista encontrados :"+listaProductos2.size());
-            System.out.println("###########################################");
-            System.out.println("###########################################");
+//            System.out.println("###########################################");
+//            System.out.println("###########################################");
+//            System.out.println("tamaño lista encontrados :"+listaProductos2.size());
+//            System.out.println("###########################################");
+//            System.out.println("###########################################");
         
         if (soloMios){
          List<Producto> listaProductos3= new  ArrayList<>();;
@@ -503,7 +523,11 @@ private Locale locale;
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
            imagenesProducto.add(imagenesXProcducto.get(0));
-           listaProductos.add(productoEncontrado);
+           if (!productoEncontrado.getEnSubasta())
+                listaProductos.add(productoEncontrado);
+           else
+               //si esta en modo subasta acutalizamos las subastas que ha recibido
+               listaProductos.add(ActualizaPujas(productoEncontrado));
          }
        
         setNombreBuscado("");
@@ -554,7 +578,11 @@ private Locale locale;
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getIdimagen());
 //           System.out.println("IdImagen : "+ imagenesXProcducto.get(0).getImagen().toString());
            imagenesProducto.add(imagenesXProcducto.get(0));
-           listaProductos.add(productoEncontrado);
+           if (!productoEncontrado.getEnSubasta())
+                listaProductos.add(productoEncontrado);
+           else
+               //si esta en modo subasta acutalizamos las subastas que ha recibido
+               listaProductos.add(ActualizaPujas(productoEncontrado));
        }
       }
      
@@ -724,7 +752,17 @@ private Locale locale;
          
           }
     }
-
+     //actualizamos la última puja recibida por el producto.
+    public Producto ActualizaPujas(Producto producto){
+         List<Puja>  pujasProducto2=pujaFacade.pujaXIdProducto(producto.getIdproducto());
+         if((pujasProducto2==null)||(pujasProducto2.isEmpty())){
+               producto.setUltimaPuja(producto.getPrecio());
+        }else producto.setUltimaPuja(pujasProducto2.get(0).getOferta());
+         return producto;
+        
+    }
+    
+    
     public List<Producto> todosProductosVenta(){
        return productoFacade.findAll();
     }
@@ -735,7 +773,7 @@ private Locale locale;
         
     }
     public void misOfertadosVentaDirecta(){
-        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()");
+//        System.out.println("misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()misOfertadosVentaDirecta()");
         setFiltro("ventaDirecta");
         setVendidos("noVendidos");
 

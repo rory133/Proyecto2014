@@ -231,7 +231,7 @@
                     
                      <h:form id="formCentroProductos" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Productos'}">
                        
-                      <p:poll interval="5" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update=":formCentroProductos:listaProductos:tablaListadoProductos"/>   
+                      <p:poll interval="180" listener="#{gestionProductosAdministradorView.actualizaListaProductosCompletos()}" update=":formCentroProductos:listaProductos:tablaListadoProductos"/>   
                            <!--
                         <p:poll interval="2" listener="#{gestionProductosAdministradorView.actualizaListadoProductos()}" update="formCentroProductos listaProductosPortal" />
                          
@@ -281,7 +281,7 @@
                     
                     <h:form id="formCentroUsuarios" styleClass="center" rendered="#{administradorBean.filtroAdministrador eq 'Usuarios'}">
 
-                        <p:poll interval="3" listener="#{gestionUsuariosAdministradorBean.listadoLogins()}" update=":formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"/>
+                        <p:poll interval="180" listener="#{gestionUsuariosAdministradorBean.listadoLogins()}" update=":formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"/>
                         <h:panelGroup id="listaUsuariosPortal" >
                         
                            <ui:include src="listadoUsuarios.xhtml" />

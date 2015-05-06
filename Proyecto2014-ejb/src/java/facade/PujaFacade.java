@@ -37,9 +37,35 @@ public class PujaFacade extends AbstractFacade<Puja>  {
     public List<Puja> pujaXProducto(Producto productoP){
         List<Puja> lP=null;
         
+//           System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+//           System.out.println("entro en pujaXIdProduto con "+productoP.getNombre());
+//           System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+        
+        try{
+        Query queryx=getEntityManager().createQuery(
+//                             "SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP ORDER BY puja2.fecha DESC");
+                            "SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto.idproducto = :idProducto ORDER BY puja2.fecha DESC");
+                //"SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP");
+        queryx.setParameter("idProducto" , productoP.getIdproducto());
+         lP=queryx.getResultList();
+        // System.out.println("Creating Timer...");
+        }catch (Exception e){
+            System.out.println("@@@error en contrando pujas del producto : "+productoP);
+            System.out.println(e.toString());
+        }
+        return lP;
+        
+    }
+    public List<Puja> pujaXIdProducto(Integer productoP){
+        List<Puja> lP=null;
+        
+//           System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+//           System.out.println("entro en pujaXIdProduto con "+productoP);
+//           System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+        
         try{
         Query query=getEntityManager().createQuery(
-                             "SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP ORDER BY puja2.fecha DESC");
+                             "SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto.idproducto = :productoP ORDER BY puja2.oferta DESC");
                 //"SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP");
         query.setParameter("productoP" , productoP);
          lP=query.getResultList();
@@ -51,7 +77,26 @@ public class PujaFacade extends AbstractFacade<Puja>  {
         return lP;
         
     }
-    public List<Puja> pujaXIdProducto(Integer productoP){
+    public List<Puja> pujaXIdProducto2(Integer idproductoP){
+        List<Puja> lP=null;
+        
+        try{
+        Query query;
+            query = getEntityManager().createQuery(
+                    "SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto.idproducto = :productoP");
+                //"SELECT puja2 FROM Puja puja2 WHERE puja2.productoIdproducto = :productoP");
+        query.setParameter("productoP" , idproductoP);
+         lP=query.getResultList();
+        // System.out.println("Creating Timer...");
+        }catch (Exception e){
+            System.out.println("@@@error en contrando pujas del producto : "+idproductoP);
+//            System.out.println(e.toString());
+        }
+        return lP;
+        
+    }
+    
+    public List<Puja> pujaXIdProducto3(Integer productoP){
         List<Puja> lP=null;
         
         try{
@@ -68,4 +113,5 @@ public class PujaFacade extends AbstractFacade<Puja>  {
         return lP;
         
     }
+
 }

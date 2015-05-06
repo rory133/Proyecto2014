@@ -28,9 +28,9 @@ public class CalculaUltimaPuja {
     
     private List<Puja> pujasProducto ;
     
-  //  @PostLoad
-    @PostPersist
-    @PostUpdate
+//    @PostLoad
+//    @PostPersist
+//    @PostUpdate
     //calculamos el valor de la última puja para cada producto en modo subasta
     public void calculaUltimaPuja(Producto producto) {
         
@@ -48,6 +48,11 @@ public class CalculaUltimaPuja {
 //             producto.setUltimaPuja(77);
            pujasProducto=null;
            pujasProducto=pujaFacade.pujaXIdProducto(producto.getIdproducto());
+       System.out.println("********************************************");
+       System.out.println("*pujasProducto*********"+ pujasProducto.size());
+       System.out.println("********************************************");
+       
+              
            if((pujasProducto==null)||(pujasProducto.isEmpty())){
                producto.setUltimaPuja(producto.getPrecio());
            }else producto.setUltimaPuja(pujasProducto.get(0).getOferta());

@@ -234,6 +234,11 @@ public class GestionProducto implements Serializable{
               }
               
           }else{
+              
+              // actualizamos el valor de la ultima puja
+              productoAPujar.setUltimaPuja(pujasProducto.get(0).getOferta());
+              
+              //comprobamos si comple los requisitos
                if(pujaPropuesta>productoAPujar.getUltimaPuja()){
                   puja=new Puja();
                   puja.setFecha(new java.util.Date(System.currentTimeMillis()));
