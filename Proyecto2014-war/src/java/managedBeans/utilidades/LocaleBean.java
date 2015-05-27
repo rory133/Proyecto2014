@@ -13,7 +13,6 @@ package managedBeans.utilidades;
  * @author juanma
  */
 
-import java.io.Serializable;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
 
@@ -23,21 +22,14 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @SessionScoped
-public class LocaleBean implements Serializable{
-    
-       private Locale locale;
+public class LocaleBean {
+
+    private Locale locale;
 
     @PostConstruct
     public void init() {
-
-        
-        
-
-//        if(null==FacesContext.getCurrentInstance())
-//             locale = new Locale.Builder().setLanguage("es").setRegion("es").build();
-//        else
-//             locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
-         locale = new Locale.Builder().setLanguage("es").setRegion("es").build();
+//        locale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+        locale=FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     }
 
     public Locale getLocale() {
@@ -52,4 +44,5 @@ public class LocaleBean implements Serializable{
         locale = new Locale(language);
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
     }
+
 }

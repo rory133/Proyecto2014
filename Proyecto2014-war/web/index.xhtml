@@ -1,5 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="#{localeBean.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -7,7 +8,11 @@
 
 
     <f:view locale="#{localeBean.locale}">
+    <!--<f:view locale="#{localeBean.language}" encoding="UTF-8" contentType="text/html">-->
+    <!--<f:view locale="#{localeBean.locale}">-->
         <h:head>
+
+            
             <f:loadBundle basename="resources.mensajes.mensajes" var="msg"/>
             <f:facet name="Principal">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
@@ -25,9 +30,14 @@
         </h:head>
 
         <h:body style="background-color: #7092be" >
+            
+            
 
 
             <p:layout fullPage="true" >
+                
+                
+
 
                 <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
 
@@ -45,11 +55,12 @@
                                 <br/>
                                 <h:link id="crearCuenta" outcome="crearUsuario" value="#{msg['app.crearCuenta']}" />
                                 <p:tooltip id="toolTipFade11" for="crearCuenta" value="#{msg['app.tooltipCrearCuenta']}" />
-
-
-
+                                <br/>
+                                <h:link outcome="paginaAnonimo" value="ver la pagina" />
+                 
                             </h:form>
                         </div>
+
 
 
                         <h:form id="tabla2" rendered="#{not productoView.soloMios}">
@@ -62,6 +73,7 @@
 
                                 <h:panelGrid id="panelGrid1" columns="2" style="margin-bottom:10px" cellpadding="5">
 
+                                    
                                     <p:selectOneRadio id="filtro" value="#{productoView.filtro}">
                                         <f:selectItem itemLabel="#{msg['app.itemTodos']}" itemValue="todos" />
                                         <f:selectItem itemLabel="#{msg['app.itemVentaDirecta']}" itemValue="ventaDirecta" />
@@ -79,7 +91,7 @@
                                 <td class='alnright'> 
                                 <p:commandLink id="linkBorraFiltros" action="#{productoView.quitarFiltros()}">
                                     <f:ajax event="click" render=":form2:productos" />
-                                    <h:outputText value="quitar Filtros" />
+                                    <h:outputText value="#{msg['app.QuitarFiltros']}" />
                                     <p:tooltip id="toolTipBorrarFiltros" for="linkBorraFiltros" value="#{msg['app.tooltipQuitarFiltros']}" />
                                 </p:commandLink>
                                 </td>
@@ -254,16 +266,9 @@
 
 
             <br />
-            <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-            <br />
-            <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-            <br />
-            <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-            <br />
-            <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-            <br />
-            <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+
         </h:body>
+
 
     </f:view>
 </html>

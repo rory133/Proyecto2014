@@ -86,6 +86,57 @@ public class ProductoFacade extends AbstractFacade<Producto> {
 //    System.out.println("@@@ amtes de devolver lP");
         return lP;
     }
+    public List<Producto> productosXNombreParcialYFiltro(String nombreP,String filtro){
+        
+       
+               
+        List<Producto> lP=null;
+//        System.out.println("@@@psumado parametro antes del try  : "+"%"+nombreP+"%");
+        try{
+            
+            
+            
+            Query query2
+                    
+                         =getEntityManager().createQuery(
+                             "SELECT producto2 FROM Producto producto2 WHERE producto2.nombre like :nombreP");
+                    //em.createQuery(
+
+            
+            switch (filtro) {
+                    case "todos":
+                            query2=getEntityManager().createQuery(
+                             "SELECT producto2 FROM Producto producto2 WHERE producto2.nombre like :nombreP");
+
+                        break;
+                        
+                     case "ventaDirecta":
+
+
+                           query2=getEntityManager().createQuery(
+                             "SELECT producto2 FROM Producto producto2 WHERE producto2.nombre like :nombreP AND producto2.enSubasta=false");
+                        break;
+
+                     case "subasta":
+                           query2=getEntityManager().createQuery(
+                             "SELECT producto2 FROM Producto producto2 WHERE producto2.nombre like :nombreP AND producto2.enSubasta=true");
+                        break;
+                     default:
+                            query2=getEntityManager().createQuery(
+                             "SELECT producto2 FROM Producto producto2 WHERE producto2.nombre like :nombreP");
+                    }
+            
+          
+
+            query2.setParameter("nombreP" , "%"+nombreP+"%");
+            lP =query2.getResultList();
+
+        }catch (Exception e){
+
+        }
+
+        return lP;
+    }
     
     
     
@@ -355,6 +406,51 @@ public class ProductoFacade extends AbstractFacade<Producto> {
 //             System.out.println(e.toString());
         }
 //    System.out.println("@@@ amtes de devolver lP");
+        return lP;
+    }
+    public List<Producto> todosProductosXFiltro(String filtro){
+        System.out.println("encontrando todos los producotos con filtro = "+filtro);
+                List<Producto> lP=null;
+        try{
+            Query query3=
+                    //em.createQuery(
+                    getEntityManager().createQuery(
+                    "SELECT producto4 FROM Producto producto4");
+            /////////////////////////////////////
+            
+            switch (filtro) {
+                    case "todos":
+                           System.out.println("encontrando todos los producotos con filtro = todos ");
+                            query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4");
+                            System.out.println("encontrando todos los producotos con filtro todos");
+                        break;
+                    
+                    case "ventaDirecta":
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=false");
+                            break;
+                    case "subasta":
+                            query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=true");
+                             break;
+                    case "noVendidos":
+                           query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4 WHERE  producto4.enSubasta=true  AND producto4.vendido=false");
+
+                    default:
+                            query3=getEntityManager().createQuery(
+                             "SELECT producto4 FROM Producto producto4");
+                        System.out.println("encontrando todos los producotos con filtro default");
+                    }
+        
+             
+            lP =query3.getResultList();
+
+        }catch (Exception e){
+              System.out.println("@@@error en contrando todos los producotos con filtro : "+e.toString());
+                        }
+    
         return lP;
     }
         
