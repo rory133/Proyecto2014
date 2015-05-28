@@ -8,8 +8,11 @@
  */
 package managedBeans.beans;
 
+import entidades.Categoria;
 import entidades.Imagen;
 import entidades.Producto;
+import entidades.Usuario;
+import facade.CategoriaFacade;
 import facade.ImagenFacade;
 import facade.ProductoFacade;
 import java.util.ArrayList;
@@ -20,6 +23,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import managedBeans.utilidades.ResourcesUtil;
 
 /**
@@ -36,6 +40,9 @@ private ProductoFacade productoFacade;
 @EJB
 private ImagenFacade imagenFacade;
 
+@EJB
+private CategoriaFacade categoriaFacade;
+
 private Imagen imagen;
 
 private Producto producto;
@@ -45,6 +52,7 @@ private FacesContext faceContext;
 private String filtro;
 private String nombreBuscado;
 private boolean buscandoPorNombre;
+private boolean buscandoPorCategoria;
 
     public ListadoProductos() {
         }
@@ -67,12 +75,18 @@ private boolean buscandoPorNombre;
     public void buscar(){
         if(isBuscandoPorNombre()){
             System.out.println(" en buscar-por nombre ");
+            setBuscandoPorCategoria(false);
             buscaXNombre();
+        }else if(isBuscandoPorCategoria()){
+            setNombreBuscado("");
+            setBuscandoPorNombre(false);
+            
         }
         else{
              System.out.println(" en buscar-todos ");
             setNombreBuscado("");
             setBuscandoPorNombre(false);
+            setBuscandoPorCategoria(false);
             todosLosProductos();
         }
         
@@ -112,6 +126,60 @@ private boolean buscandoPorNombre;
                     }
         }
     }
+    
+    public void buscaXCategoria(){
+             setBuscandoPorCategoria(true);
+             setBuscandoPorNombre(false);
+             FacesContext facesContext = FacesContext.getCurrentInstance();
+             HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+             Integer categoriaSeleccionada=(Integer)session.getAttribute("idCategoria");
+        if ((categoriaSeleccionada != null) && (categoriaSeleccionada>0)) {//se ha seleccionado una categoria
+          
+          //buscamos datos de la categoria seleccionada   
+            Categoria categoria = (Categoria)categoriaFacade.find(categoriaSeleccionada);
+            
+           //buscamos productos de la categoria seleccionada
+            List<Producto> listaProductosTempo=productoFacade.productosXCategoriaYFiltro(categoriaSeleccionada, filtro);
+            
+            
+       
+            if ((null==listaProductosTempo)|| (listaProductosTempo.isEmpty())){//no hay productos de la categoria seleccionada
+               setNombreBuscado("");
+               //Enviamos el mensaje informando que la categoria no tiene productos
+                FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeNoProductosCategoria")+categoria.getNombre(),categoria.getNombre());
+                FacesContext.getCurrentInstance().addMessage(null, message1);
+    //            System.out.println(" No se han encontrado productos de "+categoria.getNombre());
+            
+
+            }else{
+//                    Actualizamos la lista de productos con los que pertenecen a la categoria seleccionada
+                System.out.println(" la categoria tien los siguientes productos: "+listaProductosTempo.size());
+                    setListaProductos(listaProductosTempo);
+                   }
+      
+    
+
+        }else {
+              
+           // se informa al usuario cuando no ha seleccionada ninguna categoria
+//             System.out.println("CATEGORIA PASADA en else::::::::::"+ categoriaSeleccionada);
+             
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeNoCategoriaSeleccionada"),
+                                    ResourcesUtil.getString("app.MensajeSeleccionaCategoria")));
+            
+               FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage(ResourcesUtil.getString("app.MensajeSeleccionaCategoria")  ));
+               
+               
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeSeleccionaCategoria"),"");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+               
+               
+         
+          }
+    }
+    
     public void limpiarFiltros(){
          setNombreBuscado("");
          setBuscandoPorNombre(false);
@@ -171,6 +239,14 @@ private boolean buscandoPorNombre;
 
     public void setBuscandoPorNombre(boolean buscandoPorNombre) {
         this.buscandoPorNombre = buscandoPorNombre;
+    }
+
+    public boolean isBuscandoPorCategoria() {
+        return buscandoPorCategoria;
+    }
+
+    public void setBuscandoPorCategoria(boolean buscandoPorCategoria) {
+        this.buscandoPorCategoria = buscandoPorCategoria;
     }
         
        

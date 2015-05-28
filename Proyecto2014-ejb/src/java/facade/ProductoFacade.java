@@ -287,7 +287,61 @@ public class ProductoFacade extends AbstractFacade<Producto> {
 //    System.out.println("@@@ amtes de devolver lP");
         return lP;
     }
-    
+    public List<Producto> productosXCategoriaYFiltro(Integer categoriaP,String filtro){
+        
+        
+        List<Producto> lP=null;
+//        System.out.println("@@@idcategoria  de la que buscamos pruductos  : "+"%"+categoriaP+"%");
+        try{
+            Query query2=
+                    //em.createQuery(
+                    getEntityManager().createQuery(
+                    "SELECT producto3 FROM Producto producto3 WHERE producto3.categoriaIdcategoria.idcategoria = :categoriaP");
+            /////////////////////////////////////
+            
+            switch (filtro) {
+                    case "todos":
+
+                            query2=getEntityManager().createQuery(
+                             "SELECT producto3 FROM Producto producto3 WHERE producto3.categoriaIdcategoria.idcategoria = :categoriaP");
+
+                        break;
+
+                    case "ventaDirecta":
+
+
+                           query2=getEntityManager().createQuery(
+                             "SELECT producto3 FROM Producto producto3 WHERE producto3.categoriaIdcategoria.idcategoria = :categoriaP AND producto3.enSubasta=false");
+                        break;
+
+                    case "subasta":
+
+                           query2=getEntityManager().createQuery(
+                             "SELECT producto3 FROM Producto producto3 WHERE producto3.categoriaIdcategoria.idcategoria = :categoriaP AND producto3.enSubasta=true");
+                        break;
+
+                    default:
+                            query2=getEntityManager().createQuery(
+                             "SELECT producto3 FROM Producto producto3 WHERE producto3.categoriaIdcategoria.idcategoria = :categoriaP");
+                    }
+            
+            
+            
+            
+            
+            
+            
+            ///////////////////////////
+           query2.setParameter("categoriaP" , categoriaP);        
+           lP =query2.getResultList();
+//            System.out.println("@@@encontrados  : "+lP.size());
+        }catch (Exception e){
+//            System.out.println("@@@error en contrando productos de la categoria filtrada: "+categoriaP);
+//             System.out.println(e.toString());
+        }
+//    System.out.println("@@@ amtes de devolver lP");
+        return lP;
+    }    
     
     public List<Producto> productosXCategoria(Integer categoriaP,String filtro, String vendidos){
         

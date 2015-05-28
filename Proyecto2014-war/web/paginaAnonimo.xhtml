@@ -127,8 +127,9 @@
 
 
 
-                        <p:commandButton id="boton2" value="#{msg['app.BotonFiltrarCategoria']}"  update=":msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
-
+                        <p:commandButton id="boton2" value="#{msg['app.BotonFiltrarCategoria']}"  update=":msgs"  
+                                         action="#{listadoProductos.buscaXCategoria()}" icon="ui-icon-check" >
+                                         <f:ajax event="click" render="formListadoProducto:productos" />
 
                         </p:commandButton>
 
