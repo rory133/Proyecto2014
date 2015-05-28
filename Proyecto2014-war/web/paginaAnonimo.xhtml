@@ -29,6 +29,7 @@
      
     <h:body style="background-color: #7092be" >
         <p:layout fullPage="true" >
+             <p:growl id="msgs" showDetail="true" escape="false" autoUpdate="true"/>
                 <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
 
                     <div class="fondo-norte">
@@ -45,11 +46,11 @@
                  
                             </h:form>
                         </div>
-
+                        <h:form id="formTablaFiltros">
                         <table border="0" width="100%" id="tabla2" >
                          <tr>
                            <td>
-                            <h:form id="formFiltro">
+                            <!--<h:form id="formFiltro">-->
                             <h:panelGrid id="panelGridFiltro" columns="2" style="margin-bottom:10px" cellpadding="5">
                                 <p:selectOneRadio id="filtro" value="#{listadoProductos.filtro}">
                                     <f:selectItem itemLabel="#{msg['app.itemTodos']}" itemValue="todos"  />
@@ -60,12 +61,31 @@
                                 </p:selectOneRadio>
                                  <p:tooltip id="toolTipFade11" for="panelGridFiltro" value="#{msg['app.tooltipFiltrarProductos']}" />
                             </h:panelGrid>
-                           </h:form>
+<!--                           </h:form>-->
                           </td> 
+                          <td class='alnright'>
+                              <!--<h:form id="nombeABuscar">-->                                 
+                              <p:inputText id="nombre" value="#{listadoProductos.nombreBuscado}" label="busqueda">
+                                    <p:tooltip id="toolTipFade1" for="nombre" value="#{msg['app.tooltipBuscarPorNombre']}" />
+                              </p:inputText>
+                              <!--</h:form>-->
+
+                          </td> 
+                          <td class='alnleft'>
+                               <!--<h:form id="formBuscarPorNombre">--> 
+                              <p:commandLink id="buscaXNombre"  action="#{listadoProductos.buscaXNombre()}">
+
+                                    <f:ajax event="click" render="formListadoProducto:productos" />
+                                    <h:graphicImage library="images" name="buscar2.gif" />
+                                    <p:tooltip id="toolTipFade2" for="buscaXNombre" value="#{msg['app.tooltipBotonBuscarPorNombre']}" />
+                                </p:commandLink>
+                              <!--</h:form>-->
+                          </td>
+
                          </tr>
                      
                         </table>
-
+                       </h:form>
 
 
 
@@ -79,9 +99,9 @@
 
                 <p:layoutUnit id="izquierda" position="west" size="25%" header="#{productoView.titulo}" collapsible="false" 
                               style="background-color: #e1c1a2">
-                
+                  
                 <h:form id="formCategorias" style="background-color: #e1c1a2">
-                             <p:growl id="msgs" showDetail="true" escape="false"/>
+                          
 
                         <p:tree value="#{treeSelectionView.root1}" var="doc"
                                 selectionMode="single"
@@ -102,12 +122,12 @@
 
                         </p:tree>
 
-                        <p:commandButton value="#{msg['app.BotonInformaciónCategoría']}" update="msgs" icon="ui-icon-newwin"
+                        <p:commandButton value="#{msg['app.BotonInformaciónCategoría']}" update=":msgs" icon="ui-icon-newwin"
                                          actionListener="#{treeSelectionView.displaySelectedSingle}"/>
 
 
 
-                        <p:commandButton id="boton2" value="#{msg['app.BotonFiltrarCategoria']}"  update="msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
+                        <p:commandButton id="boton2" value="#{msg['app.BotonFiltrarCategoria']}"  update=":msgs"  action="#{productoView.buscaXCategoria()}" icon="ui-icon-check" >
 
 
                         </p:commandButton>
@@ -128,9 +148,9 @@
                     <div class="fondo-centro">  
                 
                             <h:form id="formListadoProducto" style="background-color: #c8bfe7">
-                                <f:event  id="cargaProductos" type="preRenderView" listener="#{listadoProductos.todosLosProductos()}"/>
+                                <f:event  id="cargaProductos" type="preRenderView" listener="#{listadoProductos.buscar()}"/>
                                   <!--<p:poll interval="5" listener="#{listadoProductos.todosLosProductos()}" update="productos" />-->
-                                         <p:dataGrid   var="producto" value="#{listadoProductos.listaProductos}" columns="3" 
+                                <p:dataGrid   var="producto" value="#{listadoProductos.listaProductos}" columns="3" 
                                           rows="12" paginator="true" id="productos"
                                           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                           rowsPerPageTemplate="6,12,16" 

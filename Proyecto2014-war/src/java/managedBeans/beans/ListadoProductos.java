@@ -16,9 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import managedBeans.utilidades.ResourcesUtil;
 
 /**
  *
@@ -41,6 +43,8 @@ private List<Imagen> imagenesProducto;
 private List<Producto> listaProductos;
 private FacesContext faceContext;
 private String filtro;
+private String nombreBuscado;
+private boolean buscandoPorNombre;
 
     public ListadoProductos() {
         }
@@ -48,6 +52,7 @@ private String filtro;
     public void init() {
 //    public void iniciar() {
        faceContext=FacesContext.getCurrentInstance();
+       setBuscandoPorNombre(false);
        setFiltro("todos");
     }
 
@@ -55,25 +60,62 @@ private String filtro;
         setListaProductos(productoFacade.findAll());
     }
     public void todosLosProductos(){
-//          setListaProductos(productoFacade.findAll());
-//        seleccionaProductos();
-//          String filtro2=getFiltro();
-        
-        
-        
+             System.out.println(" en todos los productos con filtro"+ filtro);
         setListaProductos(productoFacade.todosProductosXFiltro(filtro));
-//        switch (filtro) {
-//            
-//                case "todos":
-//                    setListaProductos(productoFacade.findAll());
-//                break;
-//                default:
-//                    setListaProductos(productoFacade.findAll());
-//        }
-    
+
+    }
+    public void buscar(){
+        if(isBuscandoPorNombre()){
+            System.out.println(" en buscar-por nombre ");
+            buscaXNombre();
+        }
+        else{
+             System.out.println(" en buscar-todos ");
+            setNombreBuscado("");
+            setBuscandoPorNombre(false);
+            todosLosProductos();
+        }
+        
     }
     
+    public void buscaXNombre(){
+        setBuscandoPorNombre(true);
+        //comprobamos que se ha puesto un nombre a buscar y que este es de mas de 2 caracteres
+         if((nombreBuscado==null)||(nombreBuscado.isEmpty())||(nombreBuscado.length()<3)){
 
+            setNombreBuscado("");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeDebesItroducirUnaPalabra"),"");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+         
+            FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeAlMenosTresLetras"),"");
+            FacesContext.getCurrentInstance().addMessage(null, message1);
+//            System.out.println(" nombreBuscado vacio");
+            setBuscandoPorNombre(false);
+            
+        }else{
+             //buscamos los productos que coinciden con el nombre
+             List<Producto> listaProductosTempo =productoFacade.productosXNombreParcialYFiltro(nombreBuscado, filtro);
+             //si no se ha encontrado ninguno se indica con un mensaje
+             if ((listaProductosTempo.isEmpty())){
+                seleccionaProductos();
+                FacesMessage message1 = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajesNoEncontradoPorNombre")+nombreBuscado,nombreBuscado);
+                FacesContext.getCurrentInstance().addMessage(null, message1);
+    //            System.out.println(" No se han encontrado productos");
+                setBuscandoPorNombre(false);
+               }else{
+                 //añadimos los productos encontrados
+                 System.out.println(" encontrados numero de productos por nombre: "+listaProductosTempo.size());
+//                    setFiltro("todos");
+                    setListaProductos(listaProductosTempo);
+                    setBuscandoPorNombre(true);
+
+                    }
+        }
+    }
+    public void limpiarFiltros(){
+         setNombreBuscado("");
+         setBuscandoPorNombre(false);
+    }
     public Imagen getImagen() {
         return imagen;
     }
@@ -114,8 +156,24 @@ private String filtro;
         System.out.println("cambiamos filtro "+filtro);
         this.filtro = filtro;
     }
+
+    public String getNombreBuscado() {
+        return nombreBuscado;
+    }
+
+    public void setNombreBuscado(String nombreBuscado) {
+        this.nombreBuscado = nombreBuscado;
+    }
+
+    public boolean isBuscandoPorNombre() {
+        return buscandoPorNombre;
+    }
+
+    public void setBuscandoPorNombre(boolean buscandoPorNombre) {
+        this.buscandoPorNombre = buscandoPorNombre;
+    }
         
-        
+       
         
         
 }

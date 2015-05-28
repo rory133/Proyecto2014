@@ -409,7 +409,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         return lP;
     }
     public List<Producto> todosProductosXFiltro(String filtro){
-        System.out.println("encontrando todos los producotos con filtro = "+filtro);
+        
                 List<Producto> lP=null;
         try{
             Query query3=
@@ -420,10 +420,10 @@ public class ProductoFacade extends AbstractFacade<Producto> {
             
             switch (filtro) {
                     case "todos":
-                           System.out.println("encontrando todos los producotos con filtro = todos ");
+                          
                             query3=getEntityManager().createQuery(
                              "SELECT producto4 FROM Producto producto4");
-                            System.out.println("encontrando todos los producotos con filtro todos");
+                
                         break;
                     
                     case "ventaDirecta":
@@ -441,7 +441,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
                     default:
                             query3=getEntityManager().createQuery(
                              "SELECT producto4 FROM Producto producto4");
-                        System.out.println("encontrando todos los producotos con filtro default");
+                       
                     }
         
              
@@ -456,9 +456,7 @@ public class ProductoFacade extends AbstractFacade<Producto> {
         
     public List<Producto> todosProductosFiltrados(String filtro, String vendidos){
                 List<Producto> lP=null;
-//        System.out.println("@@@todos filtrados ");
-//        System.out.println("vendidos : "+ vendidos);
-//        System.out.println("filtro : "+ filtro);
+
         try{
             Query query3=
                     //em.createQuery(
