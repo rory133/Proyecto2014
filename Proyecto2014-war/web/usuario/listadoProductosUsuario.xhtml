@@ -1,0 +1,74 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <p:panel header="#{producto.nombre}" style="text-align:center; border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%; background-color: #c8bfe7; background: #c8bfe7 ">
+                    <div class="fondo-centro">  
+                
+                            <h:form id="formListadoProducto" style="background-color: #c8bfe7">
+                                <f:event  id="cargaProductos" type="preRenderView" listener="#{listadoProductos.buscar()}"/>
+                                  <!--<p:poll interval="5" listener="#{listadoProductos.todosLosProductos()}" update="productos" />-->
+                                <p:dataGrid   var="producto" value="#{listadoProductos.listaProductos}" columns="3" 
+                                          rows="12" paginator="true" id="productos"
+                                           paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                          rowsPerPageTemplate="6,12,16" 
+                                          style=" border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%;">
+
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['app.NumeroDeProductos']} #{listadoProductos.listaProductos.size()}" id="cantidad"/>
+                                </f:facet>
+
+                                <p:panel header="#{producto.nombre}" style="text-align:center; border-color: #c8bfe7; padding: 0px 0px 0px 0px; width: 100%; background-color: #c8bfe7;">
+
+                                    <div class="fondo-centro">
+
+                                        <h:panelGrid columns="1" style="width:100%">
+
+
+
+
+
+                                            <h:graphicImage value="../VisualizaImagen?tipo=imagenUnica&amp;idProducto=#{producto.idproducto}" width="50" height="50">
+
+                                            </h:graphicImage>
+
+
+
+
+
+                                            <h:outputText rendered="#{not (producto.enSubasta)}" value="___________________" />
+                                            <h:outputText value="#{msg['app.Categoria']}: #{producto.categoriaIdcategoria.nombre}" />
+
+                                            <h:outputText rendered="#{not (producto.enSubasta)}" value="#{msg['app.Precio']} : #{producto.precio}" />
+                                            <h:outputText rendered="#{producto.enSubasta}" value="#{msg['app.PrecioDeSalida']}: #{producto.precio}" />
+                                            <h:outputText rendered="#{producto.enSubasta}" value="#{msg['app.PujaASuperar']}: #{producto.ultimaPuja}" />
+                                            <h:outputText value="#{msg['app.UsuarioOfertador']}: #{producto.usuarioIdusuario.nombre}" />
+                                            <h:outputText  rendered="#{not (producto.enSubasta)}" value="#{msg['app.EnVentaDirecta']}" ></h:outputText >
+                                            <h:outputText  rendered="#{(producto.enSubasta)}" value="#{msg['app.itemSubasta']}" ></h:outputText >
+
+
+                                        </h:panelGrid>
+                                        
+                                <p:commandLink update=":formDetallesProducto:detalleProducto" oncomplete="PF('dialogoProducto').show()" title="#{msg['app.VerDetalles']}">
+                                        <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                        <f:setPropertyActionListener value="#{producto}" target="#{detallesProductoBean.productoSeleccionado}" />
+                                        <f:setPropertyActionListener value="#{listadoProductos.soloMios}" target="#{detallesProductoBean.soloMios}" />
+                                </p:commandLink>
+
+
+                                    </div>
+                                </p:panel>
+
+                            </p:dataGrid>
+
+
+
+                        </h:form>
+                
+                </div>    
+             </p:panel>
+                <ui:include src="detallesProducto.xhtml" />
+</ui:composition>

@@ -226,17 +226,16 @@ private String idCategoria;
     
   //antes de salir de la pagina borramos los campos
     public String salir() {
-    imagenesSubidas = new  ArrayList<>();
-     
+  
+     System.out.println(" en salir() ");
       setCategoria(null);
       setDescripcion("");
       setEnSubasta(false);
       setNombre("");
       setPrecio((float) 0.0);
       imagenesSubidas = new  ArrayList<>();
-      ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-      externalContext.getSessionMap().put("idCategoria", 0);
-      return "index.xhtml?faces-redirect=true";
+      return "paginaUsuario.xhtml?faces-redirect=true";
+     
     }
 
     
@@ -245,6 +244,7 @@ private String idCategoria;
            imagenesSubidas.add(event.getFile());
 
     }
+
    public void imprimirImagenes(){
        
           

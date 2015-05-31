@@ -50,7 +50,9 @@
     
     
     <welcome-file-list>
-        <welcome-file>faces/inicio.xhtml</welcome-file>
+        <!--<welcome-file>faces/inicio.xhtml</welcome-file>-->
+        <welcome-file>faces/paginaAnonimo.xhtml</welcome-file>
+        
     </welcome-file-list>
     
 

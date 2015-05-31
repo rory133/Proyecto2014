@@ -1,0 +1,215 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    
+                      <h:form id="formDetallesProducto" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
+                          <p:growl id="msgs3" showDetail="true" escape="false"/>
+                          <!--<p:messages id="msgsDenduncia" />--> 
+                             <p:dialog id="dlg" header="#{msg['app.InformacionProducto']}" widgetVar="dialogoProducto" modal="false" showEffect="fade" hideEffect="fade" resizable="true"
+                                        width="500" height="550"
+                                        style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+                                 
+                                
+                               <p:outputPanel id="detalleProducto" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important;">
+
+                                   <p:commandButton type="button" onclick="PF('switcher').previous();"
+                                        icon="ui-icon-circle-triangle-w" id="prev"/>
+                                    <p:commandButton type="button" onclick="PF('switcher').next();"
+                                        icon="ui-icon-circle-triangle-e" id="next"/>
+
+                                    <p:imageSwitch effect="wipe" widgetVar="switcher" id="manuelSwitcher"
+                                        slideshowAuto="false">
+                                        <ui:repeat value="#{detallesProductoBean.imagenesProductoSeleccionado}" var="image" id="manuelSwitcherImages">
+                                            <p:graphicImage value="../VisualizaImagen?tipo=porIdImagen&amp;idImagen=#{image.idimagen}"/>
+                                        </ui:repeat>
+                                    </p:imageSwitch>
+                                    <p:panelGrid  columns="2" rendered="#{not empty detallesProductoBean.productoSeleccionado and not detallesProductoBean.soloMios}"  columnClasses="label,value" id="panelDetalle"
+                                      style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"            >
+                                    <h:outputText value="#{msg['app.Nombre']}:" />
+                                    <h:outputText value="#{detallesProductoBean.productoSeleccionado.nombre}" />
+                                    <h:outputText value="#{msg['app.Descripcion']}:" />
+                                    <h:outputText value="#{detallesProductoBean.productoSeleccionado.descripcion}" />                                    
+                                    <h:outputText value="#{msg['app.UsuarioOfertador']}" />
+                                    <h:outputText value="#{detallesProductoBean.productoSeleccionado.usuarioIdusuario.nombre}" />
+                                    <h:outputText value="#{msg['app.EmailUsuario']}" />
+                                    <h:outputText value="#{detallesProductoBean.productoSeleccionado.usuarioIdusuario.email}" />                                    
+                                    <h:outputText value="#{msg['app.FechaDePuestaEnVenta']}:" />                                   
+                                    <h:outputText value="#{detallesProductoBean.productoSeleccionado.fechaProducto}" >
+                                        <f:convertDateTime locale="#{localeBean.locale}" />
+
+                                    </h:outputText>
+                                    <h:outputText  rendered="#{not (detallesProductoBean.productoSeleccionado.enSubasta)}" value="#{msg['app.Precio']}:" ></h:outputText >
+                                    <h:outputText  rendered="#{not (detallesProductoBean.productoSeleccionado.enSubasta)}" value="#{detallesProductoBean.productoSeleccionado.precio}" ></h:outputText >
+                                    <h:outputText  rendered="#{(detallesProductoBean.productoSeleccionado.enSubasta)}" value="#{msg['app.PujaASuperar']}:" ></h:outputText >
+                                    <h:outputText  rendered="#{(detallesProductoBean.productoSeleccionado.enSubasta)}" value="#{(detallesProductoBean.productoSeleccionado.ultimaPuja)}" ></h:outputText >
+                                 
+                                  
+                                  
+                                  </p:panelGrid>
+                                    <p:panelGrid  columns="2" rendered="#{not empty detallesProductoBean.productoSeleccionado and  detallesProductoBean.soloMios and detallesProductoBean.productoSeleccionado.enSubasta and not detallesProductoBean.productoSeleccionado.expirado }"  columnClasses="label,value" id="panelDetalle2"
+                                    style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
+                                                                      
+
+                                    <h:outputText value="#{msg['app.Nombre']}:" />
+                                    <h:inputText value="#{detallesProductoBean.productoSeleccionado.nombre}" />
+                                    <h:outputText value="#{msg['app.Descripcion']}: " />
+                                    <h:inputText value="#{detallesProductoBean.productoSeleccionado.descripcion}" />
+                                    <h:outputText value="#{msg['app.PrecioDeSalida']}: " />
+                                    <h:inputText value="#{detallesProductoBean.productoSeleccionado.precio}"/>
+                                    <h:outputText   value="#{msg['app.UltimaPuja']}:" ></h:outputText >
+                                    <h:outputText  value="#{(detallesProductoBean.productoSeleccionado.ultimaPuja)}"/>                                   
+                                    
+                                    
+                                  </p:panelGrid>    
+                                    
+                                   <p:commandButton rendered="#{(detallesProductoBean.productoSeleccionado.enSubasta)and detallesProductoBean.soloMios}" id="botonSalvarSubasta" value="#{msg['app.SalvarProducto']}" update=":msgs :formListadoProducto"    actionListener="#{detallesProductoBean.salvarProducto()}" 
+                                                     icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
+  
+                                               
+                                                 <f:param id="parametro112" name="idProductoASalvar" value="#{detallesProductoBean.productoSeleccionado.idproducto}" />
+
+                                                                                <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionCambiarProducto']}" icon="ui-icon-alert" />
+                                   </p:commandButton>
+                                        
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                        <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                        <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                    </p:confirmDialog>  
+                                    
+                                    <p:panelGrid  columns="2" rendered="#{not empty detallesProductoBean.productoSeleccionado and  detallesProductoBean.soloMios and not detallesProductoBean.productoSeleccionado.enSubasta}"  columnClasses="label,value" id="panelDetalle21"
+                                    style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
+                                         
+                                    <h:outputText value="#{msg['app.Nombre']}:" />
+                                    <h:inputText value="#{detallesProductoBean.productoSeleccionado.nombre}" />
+                                    <h:outputText value="#{msg['app.Descripcion']}:" />
+                                    <h:inputText value="#{detallesProductoBean.productoSeleccionado.descripcion}" />
+                                    <h:outputText   value="#{msg['app.Precio']}:" ></h:outputText >
+                                    <h:inputText  value="#{detallesProductoBean.productoSeleccionado.precio}" ></h:inputText >
+                                                                       
+                                  </p:panelGrid>  
+                                    
+
+                                    <p:commandButton rendered="#{not(detallesProductoBean.productoSeleccionado.enSubasta)and not detallesProductoBean.productoSeleccionado.vendido and detallesProductoBean.soloMios}" id="botonSalvarVentaDirecta" value="#{msg['app.SalvarProducto']}" update=":msgs :formDetallesProducto :formListadoProducto"    actionListener="#{detallesProductoBean.salvarProducto()}" 
+                                                     icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
+  
+                                               
+                                                 <f:param id="parametro111" name="idProductoASalvar" value="#{detallesProductoBean.productoSeleccionado.idproducto}" />
+
+                                     <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionCambiarProducto']}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>  
+                               
+                                    <p:commandButton rendered="#{not (detallesProductoBean.productoSeleccionado.enSubasta)and (not detallesProductoBean.productoSeleccionado.vendido )and not detallesProductoBean.soloMios}" id="boton" value="#{msg['app.BotonComprarProducto']}" update=":msgs :formListadoProducto"      actionListener="#{gestionProductoBean.compraProducto()}" icon="ui-icon-check"
+                                                     oncomplete="PF('dialogoProducto').hide();">
+  
+                                                 <f:param id="parametro1" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
+                                                 <f:param id="parametro2" name="idProductoAComprar" value="#{detallesProductoBean.productoSeleccionado.idproducto}" />
+
+                                                <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionCompra']}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog> 
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <p:commandButton rendered="#{detallesProductoBean.soloMios}" id="botonBorrar" value="#{msg['app.BotonBorrarProducto']}" update=":msgs :formListadoProducto"      actionListener="#{detallesProductoBean.borrarProductoNoVendido()}" 
+                                                     icon="ui-icon-check" oncomplete="PF('dialogoProducto').hide();" >
+  
+                                               
+                                                 <f:param id="parametroBorrar111" name="idProductoABorrar" value="#{detallesProductoBean.productoSeleccionado.idproducto}" />
+
+                                     <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionBorrarProducto']}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>                                      
+                                    
+                                    <h:outputText rendered="#{not (detallesProductoBean.productoSeleccionado.enSubasta)and (detallesProductoBean.productoSeleccionado.vendido )}" value="#{msg['app.ProductoVendido']}"  style="color: red" />
+                                    
+                                    <p:inputText rendered="#{(detallesProductoBean.productoSeleccionado.enSubasta)and not detallesProductoBean.productoSeleccionado.expirado and not detallesProductoBean.soloMios}" id="puja" value="#{gestionProductoBean.pujaPropuesta}" label="puja">
+                                        <f:validateLength minimum="1" />
+                                    </p:inputText>
+                                    
+                                    <p:commandButton rendered="#{(detallesProductoBean.productoSeleccionado.enSubasta)and not detallesProductoBean.productoSeleccionado.expirado and not detallesProductoBean.soloMios}" id="boton2" value="#{msg['app.RealizarPuja']}"  actionListener="#{gestionProductoBean.pujaXProducto()}" icon="ui-icon-check" update=":msgs :formListadoProducto" >
+  
+                                                 <f:param id="parametro3" name="idUsuarioComprador" value="#{sessionScope.usuario.idusuario}" />
+                                                 <f:param id="parametro4" name="idProductoAComprar" value="#{detallesProductoBean.productoSeleccionado.idproducto}" />
+<!--                                                 <f:ajax event="click" render=":formDetallesProducto:detalleProducto" />
+                                                 <f:ajax event="click" render=":formDetallesProducto:productos" />-->
+                                                 
+                                    </p:commandButton>
+                                    
+                                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                                    <h:outputText rendered="#{(detallesProductoBean.productoSeleccionado.enSubasta) and not detallesProductoBean.productoSeleccionado.expirado and not detallesProductoBean.soloMios}" 
+                                                  value="#{msg['app.PodraPujarDurante']}" />
+                                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                                     <h:outputText rendered="#{(detallesProductoBean.productoSeleccionado.enSubasta) and not detallesProductoBean.productoSeleccionado.expirado and not detallesProductoBean.soloMios}" 
+                                                  value="#{detallesProductoBean.elapsedDays} #{msg['app.Dias']}  #{detallesProductoBean.elapsedHours} #{msg['app.Horas']} #{detallesProductoBean.elapsedMinutes} #{msg['app.MinutosY']} #{detallesProductoBean.elapsedSeconds} #{msg['app.Segundos']} " />
+                                                                    
+                                      <h:outputText rendered="#{(detallesProductoBean.productoSeleccionado.enSubasta) and (detallesProductoBean.productoSeleccionado.expirado)}" value="#{msg['app.ExpiradoTiempoDePuja']}"  style="color: red" />
+                                       <BR/>
+                                      <p:commandButton id="botonDenunciaMalClasificado" value="#{msg['app.BotonMalClasificado']}"   actionListener="#{detallesProductoBean.creaDenunciaMalClasificado()}" 
+                                                         icon="ui-icon-check" update=":msgs :formListadoProducto" >
+                                            <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionMalClasificado']}"  icon="ui-icon-alert" />
+                                            <f:param id="parametroProductoMalClasificado" name="idProductoMalClasificado" value="#{detallesProductoBean.productoSeleccionado.idproducto}" />
+                                        </p:commandButton>
+                                        
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                                            <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                            <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                                        </p:confirmDialog>    
+                                       
+                                       
+                                       <BR/>
+        <h:outputLink value="https://twitter.com/intent/tweet" target="_blank" id="botonTwitter" >
+           
+            <h:graphicImage library="images" name="twitter.png" width="30" height="30"/>
+            
+            <f:param name="url" value="http://www.buyup.com"/>
+            <f:param name="text" value="#{msg['app.MiraElProducto']} #{detallesProductoBean.productoSeleccionado.nombre}  #{msg['app.AlaVentaPor']} #{detallesProductoBean.productoSeleccionado.precio} #{msg['app.En']} "/>
+	
+	    <p:tooltip id="toolTipFadeTwitter" for="botonTwitter" value="#{msg['app.Twittear']}"/>
+        </h:outputLink>
+
+        <h:outputLink value="http://www.facebook.com/sharer.php" target="_blank" id="botonFaceBook" >
+           
+            <h:graphicImage library="images" name="facebook.ico" width="30" height="30"/>
+             <f:param name="u" value="" />
+                <f:param name="t" value="#{msg['app.ProductoEn']}" />
+      	    <p:tooltip id="toolTipFadeFaceBook" for="botonFaceBook" value="#{msg['app.Facebook']}"/>
+        </h:outputLink>
+
+        <h:outputLink value="http://www.tuenti.com/share" target="_blank" id="botonTuenti" >
+           
+            <h:graphicImage library="images" name="tuenti.png" width="30" height="30"/>
+             <f:param name="url" value="http://www.buyup.com" />
+      
+      	    <p:tooltip id="toolTipTuenti" for="botonTuenti" value="#{msg['app.Tuenti']}"/>
+        </h:outputLink>                                    
+                                    
+                                  
+                                </p:outputPanel>
+
+                                 
+                            </p:dialog>
+                    
+                       </h:form>  
+
+
+</ui:composition>

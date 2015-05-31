@@ -11,10 +11,12 @@ package managedBeans.beans;
 import entidades.Categoria;
 import entidades.Imagen;
 import entidades.Producto;
+import entidades.Puja;
 import entidades.Usuario;
 import facade.CategoriaFacade;
 import facade.ImagenFacade;
 import facade.ProductoFacade;
+import facade.PujaFacade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -42,26 +44,34 @@ private ImagenFacade imagenFacade;
 
 @EJB
 private CategoriaFacade categoriaFacade;
+@EJB
+private PujaFacade pujaFacade;
 
 private Imagen imagen;
 
 private Producto producto;
 private List<Imagen> imagenesProducto;
 private List<Producto> listaProductos;
-private FacesContext faceContext;
+private FacesContext facesContext;
 private String filtro;
 private String nombreBuscado;
 private boolean buscandoPorNombre;
 private boolean buscandoPorCategoria;
+private boolean soloMios;
+private Usuario usuarioActual;
 
     public ListadoProductos() {
         }
     @PostConstruct
     public void init() {
 //    public void iniciar() {
-       faceContext=FacesContext.getCurrentInstance();
+       facesContext=FacesContext.getCurrentInstance();
        setBuscandoPorNombre(false);
        setFiltro("todos");
+       setSoloMios(false);
+       facesContext.getExternalContext().getSession(false);
+       HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+       setUsuarioActual((Usuario)session.getAttribute("usuario"));
     }
 
     public void seleccionaProductos(){
@@ -179,7 +189,20 @@ private boolean buscandoPorCategoria;
          
           }
     }
-    
+    public List<Producto> ActualizaPujas(List<Producto> listaProductos){
+        
+   
+        for(Producto producto :listaProductos){
+          if(producto.getEnSubasta()){  
+             List<Puja>  pujasProducto2=pujaFacade.pujaXIdProducto(producto.getIdproducto());
+             if((pujasProducto2==null)||(pujasProducto2.isEmpty())){
+                   producto.setUltimaPuja(producto.getPrecio());
+            }else producto.setUltimaPuja(pujasProducto2.get(0).getOferta());
+             
+          }
+        }
+        return listaProductos;
+    }
     public void limpiarFiltros(){
          setNombreBuscado("");
          setBuscandoPorNombre(false);
@@ -213,7 +236,22 @@ private boolean buscandoPorCategoria;
     }
 
     public void setListaProductos(List<Producto> listaProductos) {
-        this.listaProductos = listaProductos;
+        if(isSoloMios()){
+            List<Producto> listaProductosTempo= new  ArrayList<>();
+             FacesContext facesContext2 = FacesContext.getCurrentInstance();
+             HttpSession session = (HttpSession) facesContext2.getExternalContext().getSession(false);
+             Usuario usuarioTempo=(Usuario)session.getAttribute("usuario");
+//       setUsuarioActual((Usuario)session.getAttribute("usuario"));
+             for(Producto productoEncontrado :listaProductos){
+                if (productoEncontrado.getUsuarioIdusuario().getIdusuario().equals(usuarioTempo.getIdusuario())){
+                 listaProductosTempo.add(productoEncontrado); 
+                }
+             }
+            
+             this.listaProductos =ActualizaPujas(listaProductosTempo);
+        }else{
+            this.listaProductos = ActualizaPujas(listaProductos);
+        }
     }
 
     public String getFiltro() {
@@ -248,7 +286,24 @@ private boolean buscandoPorCategoria;
     public void setBuscandoPorCategoria(boolean buscandoPorCategoria) {
         this.buscandoPorCategoria = buscandoPorCategoria;
     }
-        
+
+    public boolean isSoloMios() {
+        return soloMios;
+    }
+
+    public void setSoloMios(boolean soloMios) {
+        this.soloMios = soloMios;
+    }
+
+    public Usuario getUsuarioActual() {
+        return usuarioActual;
+    }
+
+    public void setUsuarioActual(Usuario usuarioActual) {
+        this.usuarioActual = usuarioActual;
+    }
+    
+    
        
         
         

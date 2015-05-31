@@ -27,9 +27,16 @@
                 <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
               <div class="fondo-norte">
        
-                 <h:link outcome="/usuario/index" value="#{msg['app.Volver']}" />
-      
+                 <!--<h:link outcome="/usuario/paginaUsuario" value="#{msg['app.Volver']}" />-->
+                 <h:form class="formSalirCrearProducto">
+                     <p:commandLink id="salir"  action="#{crearProductoBean.salir()}">
+                                    <h:outputText value="#{msg['app.SalirCrearProducto']}" />
+                                     <p:tooltip id="toolTipFade00" for="salir" value="#{msg['app.toolTipSalirCrearProducto']}" />
+                     </p:commandLink>
+                 </h:form>
             </div>
+                    
+
                 </p:layoutUnit>
 
 
@@ -198,8 +205,7 @@
 
                     required="true" mode="advanced" dragDropSupport="false"
                     multiple="true" sizeLimit="1000000" fileLimit="5" update="messages"
-                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
-                    style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
+                    allowTypes="/(\.|\/)(gif|jpe?g|png)$/">
                     <p:growl id="messages" showDetail="true" />
                    
         </p:fileUpload>
@@ -220,7 +226,7 @@
              <h:link outcome="/admin/index" value="#{msg['app.Volver']}"   rendered="#{ROLE_ADMIN}" />
             <h:outputText value="#{msg['app.NoEstasLogadoParaPoderAccederAEstaPagina']}"    rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
             <BR/>
-            <h:link outcome="/faces/index" value="#{msg['app.Volver']}" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
+            <h:link outcome="/faces/paginaAnonimo" value="#{msg['app.Volver']}" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
             
             <BR/>
 
@@ -229,4 +235,5 @@
 
     </f:view>
 </html>
+
 

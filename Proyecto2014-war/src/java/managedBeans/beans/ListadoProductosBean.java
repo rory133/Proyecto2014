@@ -495,7 +495,7 @@ private Locale locale;
 //            System.out.println("###########################################");
         
         if (soloMios){
-         List<Producto> listaProductos3= new  ArrayList<>();;
+         List<Producto> listaProductos3= new  ArrayList<>();
          FacesContext facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
          Usuario usuario=(Usuario)session.getAttribute("usuario");
@@ -548,7 +548,7 @@ private Locale locale;
         setBuscandoPorNombre(false);
         List<Producto> listaProductos2 =productoFacade.todosProductosFiltrados(filtro, vendidos);
         if (soloMios){
-         List<Producto> listaProductos3= new  ArrayList<>();;
+         List<Producto> listaProductos3= new  ArrayList<>();
          FacesContext facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
          Usuario usuario=(Usuario)session.getAttribute("usuario");
@@ -1091,7 +1091,7 @@ private Locale locale;
     }
     
         public void salvarProducto(){
-        System.out.println("EN SALVAR PRODUCTO ");
+//        System.out.println("EN SALVAR PRODUCTO ");
                 //recogemos los parametros necesarios
          FacesContext facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);

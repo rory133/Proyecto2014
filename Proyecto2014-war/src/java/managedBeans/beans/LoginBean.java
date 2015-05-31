@@ -131,7 +131,8 @@ public String validarUsuario(){
                 session.setAttribute("ROLE_ADMIN", false);
                 session.setAttribute("ROLE_SOCIO", true);
 //                  System.out.println("es socio");
-                 return "/usuario/index?faces-redirect=true";
+//                 return "/usuario/index?faces-redirect=true";
+                 return "/usuario/paginaUsuario?faces-redirect=true";
             }else
                 System.out.println("na de na: "+usuarioLogado.getRole());
             
@@ -179,7 +180,8 @@ public String validarUsuario(){
        
 //        HttpSession session = (HttpSession)Util.getSession();
         FacesContext.getCurrentInstance().getExternalContext()
-        .redirect("../index.xhtml");     
+           .redirect("../paginaAnonimo.xhtml");     
+//        .redirect("../index.xhtml");     
         
 //        if(session!=null)
 //         session.invalidate();
