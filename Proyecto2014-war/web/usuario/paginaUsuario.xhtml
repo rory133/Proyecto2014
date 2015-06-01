@@ -86,12 +86,12 @@
                             <td>             
 
 
-                               <h:panelGrid id="aGestionarMisProductos3" columns="2" style="margin-bottom:10px" cellpadding="5">
+                               <h:panelGrid id="aGestionarMisProductos" columns="2" style="margin-bottom:10px" cellpadding="5">
                                   <h:outputText value="#{msg['app.GestionarMisProductos']}:" id="botonSoloMios1"/>
                                   <p:selectBooleanCheckbox value="#{listadoProductos.soloMios}">
-                                      <f:ajax event="change"  render="formListadoProducto formSuperior"/>
+                                      <f:ajax event="change"  render="formSuperior formListadoProducto @all"/>
                                      <!--<f:ajax event="change" render=":listaproductos.productos"/>-->
-                                    <p:tooltip id="toolTipFadeSoloMios1" for="aGestionarMisProductos3" value="#{msg['app.SalirDeGestionarTusProductos']}" />
+                                    <p:tooltip id="toolTipFadeSoloMios1" for="aGestionarMisProductos" value="#{msg['app.GestionarTusProductos']}" />
                                   </p:selectBooleanCheckbox>
                               </h:panelGrid>
 
@@ -106,6 +106,7 @@
                                <td>
                                 <!--<h:form id="formFiltro">-->
                                 <h:panelGrid id="panelGridFiltro2" columns="2" style="margin-bottom:10px" cellpadding="5">
+                                        <!-- rendered="#{not listadoProductos.soloMios}">-->
                                     <p:selectOneRadio id="filtro2" value="#{listadoProductos.filtro}">
                                         <f:selectItem itemLabel="#{msg['app.itemTodos']}" itemValue="todos"  />
                                         <f:selectItem itemLabel="#{msg['app.itemVentaDirecta']}" itemValue="ventaDirecta" />
@@ -117,6 +118,19 @@
                                 </h:panelGrid>
     <!--                           </h:form>-->
                               </td> 
+                              <td>
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" id="filtraMisProductos">
+
+                                        <p:selectOneRadio id="filtroMisProductos" value="#{gestionVentas.filtroMisProductos}">
+                                                    <f:selectItem itemLabel="#{msg['app.Ofertados']}" itemValue="ofertados" />
+                                                    <f:selectItem itemLabel="#{msg['app.Comprados']}" itemValue="comprados" />
+                                                    <f:selectItem itemLabel="#{msg['app.Vendidos']}" itemValue="vendidos" />
+                                                    <f:ajax event="change"  render="formListadoVentas formListadoProducto @all"/>
+                                                    <!--<f:ajax event="change"  render="listaProductos"/>-->
+                                         </p:selectOneRadio>
+                                     <p:tooltip id="toolTipFadeFiltro" for="filtroMisProductos" value="#{msg['app.toolTipFiltraTusProductos']}" />                           
+                                 </h:panelGrid>
+                              </td>
                                 <td>
 
 
@@ -133,7 +147,7 @@
                                    <h:panelGrid id="gestionarMisProductos" columns="2" style="margin-bottom:10px" cellpadding="5">
                                       <h:outputText value="#{msg['app.GestionarMisProductos']}:" id="botonSoloMios2"/>
                                       <p:selectBooleanCheckbox value="#{listadoProductos.soloMios}">
-                                          <f:ajax event="change"  render="formListadoProducto formSuperior"/>
+                                          <f:ajax event="change"  render="formSuperior formListadoProducto izquierda @all"/>
                                          <!--<f:ajax event="change" render=":listaproductos.productos"/>-->
                                         <p:tooltip id="toolTipFadeSoloMios2" for="gestionarMisProductos" value="#{msg['app.SalirDeGestionarTusProductos']}" />
                                       </p:selectBooleanCheckbox>
@@ -156,10 +170,11 @@
       
 
 
-                <p:layoutUnit id="izquierda" position="west" size="25%" header="#{productoView.titulo}" collapsible="false" 
-                              style="background-color: #e1c1a2">
+                <p:layoutUnit id="izquierda" position="west" size="25%" header="#{listadoProductos.titulo}" collapsible="false" 
+                              style="background-color: #e1c1a2" >
                   
-                <h:form id="formCategorias" style="background-color: #e1c1a2">
+                <h:form id="formCategorias" style="background-color: #e1c1a2" 
+                        rendered="#{gestionVentas.filtroMisProductos eq 'ofertados' or not listadoProductos.soloMios }">
                           
 
                         <p:tree value="#{treeSelectionView.root1}" var="doc"
@@ -202,12 +217,91 @@
 
 
                 </h:form>
-            </p:layoutUnit>
+                <h:form id="formFiltroComprados" rendered="#{gestionVentas.filtroMisProductos eq 'comprados' and  listadoProductos.soloMios}" 
+                        style="background-color: #e1c1a2" >
+                    <p:growl id="growl"  />
+                        <p:separator />
+                        <p:commandLink id="botonRecibidos" update="growl" actionListener="#{gestionVentas.misProductosCompradosRecibidos()}">
+                         <f:ajax event="click" render="@all formListadoVentas" />
+                        <h:outputText value="#{msg['app.Recibidos']}" />
+                    </p:commandLink>
+                           <p:separator />
+                           <p:commandLink id="botonNoRecibidos" update="growl" actionListener="#{gestionVentas.misProductosCompradosNORecibidos()}" >
+                        <f:ajax event="click" render="@all formListadoVentas" />
+                        <h:outputText value="#{msg['app.NoRecibidos']}" />
 
-             <p:layoutUnit position="center" style="background-color: #c8bfe7" id="listaProductos">
-                <ui:include src="listadoProductosUsuario.xhtml"/>
+                    </p:commandLink>
+                </h:form>    
+                  <h:form id="formFiltroVendidos" rendered="#{gestionVentas.filtroMisProductos eq 'vendidos' and  listadoProductos.soloMios}" 
+                          style="background-color: #e1c1a2; color: #e1c1a2">
+                    <p:growl id="grow2"  />
+                        <p:separator />
+                        <p:commandLink id="botonEnviados"  update="grow2" actionListener="#{gestionVentas.misProductosVendidosEnviados()}">
+                         <f:ajax event="click" render="@all formListadoVentas" />
+                        <h:outputText value="#{msg['app.Enviados']}" />
+                    </p:commandLink>
+                           <p:separator />
+                           <p:commandLink id="botonNoEnviados" update="grow2" actionListener="#{productoView.misProductosVendidosNoEnviados()}" >
+                        <f:ajax event="click" render="@all formListadoVentas" />
+                        <h:outputText value="#{msg['app.NoEnviados']}" />
+
+                    </p:commandLink>
+                </h:form>                    
+                    
+                    
+                    
+                    
+                    
+            </p:layoutUnit>
+             
+<!--            <p:layoutUnit id="izquierdaOfertados" position="west" size="25%" header="#{listadoProductos.titulo}" collapsible="false" 
+                          style="background-color: #e1c1a2" rendered="#{listadoProductos.filtroMisProductos eq 'ofertados' and listadoProductos.soloMios}">
+                 <h:outputText value="solo mios ofertados"/>
+               <h:panelGrid id="panelGridFiltroIzquierda" columns="2" style="margin-bottom:10px" cellpadding="5">
+                        <p:selectOneRadio id="filtro2" value="#{listadoProductos.filtro}">
+                            <f:selectItem itemLabel="#{msg['app.itemTodos']}" itemValue="todos"  />
+                            <f:selectItem itemLabel="#{msg['app.itemVentaDirecta']}" itemValue="ventaDirecta" />
+                            <f:selectItem itemLabel="#{msg['app.itemSubasta']}" itemValue="subasta" />
+                            <f:ajax event="change"  render="formListadoProducto"/>
+
+                        </p:selectOneRadio>
+                         <p:tooltip id="toolTipFadeTipoVenta" for="panelGridFiltroIzquierda" value="#{msg['app.tooltipFiltrarProductos']}" />
+               </h:panelGrid>
+            </p:layoutUnit>-->
+             
+<!--            <p:layoutUnit id="izquierdaComprados" position="west" size="25%" header="#{listadoProductos.titulo}" collapsible="false" 
+                              style="background-color: #e1c1a2" rendered="#{listadoProductos.filtroMisProductos eq 'comprados'}">
+                 <h:outputText value="comprados"/>
+                 <ui:include src="listadoVentas.xhtml"/>
+            </p:layoutUnit>-->
+<!--            <p:layoutUnit id="izquierdaVendidos" position="west" size="25%" header="#{listadoProductos.titulo}" collapsible="false" 
+                              style="background-color: #e1c1a2" rendered="#{listadoVentas.filtroMisProductos eq 'vendidos' or listadoVentas.filtroMisProductos eq 'comprados'}">
+                 <h:outputText value="vendidos"/>
+                
+            </p:layoutUnit>             -->
+             
+             <p:layoutUnit position="center" style="background-color: #c8bfe7" id="listaProductos"  
+                           rendered = "#{gestionVentas.filtroMisProductos eq 'ofertados' or not listadoProductos.soloMios }" >
+                <ui:include src="listadoProductosUsuario.xhtml" />
+                
+                
                 
             </p:layoutUnit>  
+             
+            <p:layoutUnit position="center" style="background-color: #c8bfe7" id="listaVentas" 
+                          rendered = "#{listadoProductos.soloMios and ( gestionVentas.filtroMisProductos eq 'comprados' or gestionVentas.filtroMisProductos eq 'vendidos')}">
+               <ui:include src="listadoVentas.xhtml" />
+                
+            </p:layoutUnit>
+             
+<!--            <p:layoutUnit position="center" style="background-color: #c8bfe7" id="listaComprados" rendered="#{gestionVentas.filtroMisProductos eq 'comprados'}">
+                <h:outputText value="comprados"/>
+                
+            </p:layoutUnit>  
+            <p:layoutUnit position="center" style="background-color: #c8bfe7" id="listaVendidos" rendered="#{gestionVentas.filtroMisProductos eq 'vendidos'}">
+                <h:outputText value="vendidos"/>
+                
+            </p:layoutUnit>  -->
                 
                 
    

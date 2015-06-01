@@ -1,0 +1,78 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+         <p:dialog id="dlg" header="#{msg['app.CrearDenuncia']}" widgetVar="creacionDenuncia" 
+                    width="500" height="350"
+                    style="background-color: #c8bfe7; background: #c8bfe7;">
+
+
+            <p:outputPanel id="detalleDenuncia" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7;">
+                <p:growl id="growlDenuncia" showDetail="true" sticky="true" /> 
+                <p:messages id="msgsDenduncia" /> 
+
+
+
+                <p:separator />
+
+                <h:outputText value="#{msg['app.InfoCrearDenuncia']}: #{gestionVentas.ventaSeleccionada.productoIdproducto.nombre}  " />
+                <p:separator />
+
+
+            <h:panelGrid columns="4" cellpadding="2">         
+
+                <h:outputLabel for="motivoDenuncia" value="#{msg['app.MotivoDenuncia']}: " />
+                <p:inputTextarea rows="5" cols="30" counter="display" maxlength="300"  counterTemplate="{0} #{msg['app.CaracteresRestantes']}." autoResize="false" 
+                                 id="motivoDenuncia" value="#{gestionVentas.motivoDenuncia}" label="motivoDenuncia">   
+                  <f:validateLength minimum="5" />
+                </p:inputTextarea>
+                     <h:outputText id="display" />
+                <p:message for="motivoDenuncia" /> 
+            </h:panelGrid> 
+
+                <p:separator />
+
+                <!--
+                <h:outputLabel for="tipoDenuncia" value="#{msg['app.DenunciarFaltaEnvio']} " rendered="#{gestionVentas.filtroMisProductos eq 'comprados'}" />
+                <h:outputLabel for="tipoDenuncia2" value="#{msg['app.DenunciarFaltaPago']} " rendered="#{gestionVentas.filtroMisProductos ne 'comprados'}"/>
+                -->
+
+                <h:selectOneMenu id="questionStatus" value="#{gestionVentas.tipoDenuncia}" rendered="#{gestionVentas.filtroMisProductos ne 'comprados'}" >
+                    <f:selectItem itemLabel="#{msg['app.NO_PAGADO']}" itemValue="NO_PAGADO" rendered="#{gestionVentas.filtroMisProductos ne 'comprados'}" />
+              <!--     <f:selectItem itemLabel="NO_ENVIADO" itemValue="NO_ENVIADO" rendered="#{gestionVentas.filtroMisProductos eq 'comprados'}"/> -->
+
+                </h:selectOneMenu>
+
+
+                <h:selectOneMenu id="questionStatus2" value="#{gestionVentas.tipoDenuncia}" rendered="#{gestionVentas.filtroMisProductos eq 'comprados'}" >
+                 <!--   <f:selectItem itemLabel="NO_PAGADO" itemValue="NO_PAGADO" rendered="#{gestionVentas.filtroMisProductos ne 'comprados'}" /> -->
+                    <f:selectItem itemLabel="#{msg['app.NO_ENVIADO']}" itemValue="NO_ENVIADO" rendered="#{gestionVentas.filtroMisProductos eq 'comprados'}"/>
+
+                </h:selectOneMenu>
+
+                <p:separator />
+                    <p:growl id="msgs33" showDetail="true" escape="false"/>
+
+                    <p:commandButton id="botonDenuncia" value="#{msg['app.BotonDenunciarVenta']}" update=":form22:grow221"    actionListener="#{gestionVentas.creaDenuncia()}" 
+                                     icon="ui-icon-check" oncomplete="PF('creacionDenuncia').hide();" >
+                        <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionDenunciarVenta']}" icon="ui-icon-alert" />
+                    </p:commandButton>
+
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                        <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
+
+
+
+
+            </p:outputPanel>
+
+        </p:dialog>
+                           
+</ui:composition>
+

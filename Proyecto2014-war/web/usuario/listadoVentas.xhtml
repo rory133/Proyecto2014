@@ -1,0 +1,94 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <div class="fondo-centro">  
+                
+        <h:form id="formListadoVentas" style="background-color: #c8bfe7">
+            <f:event  id="cargaVentas" type="preRenderView" listener="#{gestionVentas.actualizaVistaVentas()}"/>
+
+                <p:dataGrid   var="venta" value="#{gestionVentas.listaVentas}" columns="3" 
+                            rows="12" paginator="true" id="listadoVentas"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                            rowsPerPageTemplate="6,12,16" 
+                            style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
+
+                            <f:facet name="header">
+                                <h:outputText value=" #{msg['app.NumeroDeVentas']} : #{gestionVentas.listaVentas.size()}" id="cantidadVentas"/>
+                                 
+                            </f:facet>
+                            
+                        <p:panel  header="#{msg['app.Producto']}: #{venta.productoIdproducto.nombre}" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important">
+                                <p:growl id="grow22"  />
+                                     <h:outputText value="#{msg['app.FechaDeVenta']}: " />
+                                     <h:outputText value="#{venta.fecha}" >
+                                       <f:convertDateTime  locale="#{localeBean.locale}"/>
+                                    </h:outputText>
+                                <h:panelGrid columns="1" style="width:100%">
+                   
+                                  
+                                    
+                                  
+                                    
+                                    <h:graphicImage value="../VisualizaImagen?tipo=imagenUnicaUsuarioVenta&amp;idProducto=#{venta.productoIdproducto.idproducto}" width="50" height="50">
+                                   
+                                    </h:graphicImage>
+                                    
+                             
+                                    <h:outputText value="#{msg['app.UsuarioComprador']} : #{venta.compradorIdusuario.nombre}    #{venta.compradorIdusuario.apellidos}" />
+                                    <h:outputText value="#{msg['app.UsuarioVendedor']} : #{venta.productoIdproducto.usuarioIdusuario.nombre}    #{venta.productoIdproducto.usuarioIdusuario.apellidos}" />
+                                 
+      
+                                    <h:outputText value="#{msg['app.Precio']}: #{venta.precioFinal}" />
+
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{gestionVentas.filtroMisProductos ne 'comprados'}">
+                                    <h:outputText value="#{msg['app.EstaEnviado']}: " />
+                                    <h:outputText value="#{venta.enviado}" />
+                                  
+                                    <h:outputText value="#{msg['app.EstaCobrado']}: " />
+                                    <h:outputText value="#{venta.cobrado}" />
+                                     <h:outputText value="#{msg['app.CompradorMarcadoRecibido']}: " />
+                                     <h:outputText value="#{venta.recibido}" />
+                                    <h:outputText value="#{msg['app.CompradorMarcadoPagado']}: " />
+                                    <h:outputText value="#{venta.pagado}" />                                 
+                                    
+                                    </h:panelGrid>
+                                    
+                                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" rendered="#{gestionVentas.filtroMisProductos eq 'comprados'}">
+                                    <h:outputText value="#{msg['app.EstaRecibido']}: " />
+                                     <h:outputText value="#{venta.recibido}" />
+                                    <h:outputText value="#{msg['app.EstaPagado']}: " />
+                                    <h:outputText value="#{venta.pagado}" />
+                                    <h:outputText value="#{msg['app.VendedorMarcoEnviado']}: " />
+                                    <h:outputText value="#{venta.enviado}" />
+                                    <h:outputText value="#{msg['app.VendedorMarcoCobrado']}: " />
+                                    <h:outputText value="#{venta.cobrado}" />
+                                    </h:panelGrid>
+                        
+                                </h:panelGrid>
+
+                                       <p:separator />
+<!--                                <p:commandLink update=":form33:detalleDenuncia" oncomplete="PF('creacionDenuncia').show()" title="#{msg['app.CrearDenuncia']}">
+                                    <h:outputText styleClass="ui-icon ui-icon-pin-s" style="margin:0 auto;" />
+                                    <h:outputText value ="#{msg['app.Denunciar']}"  />
+                                    <f:setPropertyActionListener value="#{venta}" target="#{gestionVentas.ventaSeleccionada}" />
+                                </p:commandLink>
+                                          <p:separator />
+                                <p:commandLink update=":form333:detalleVenta" oncomplete="PF('editarVenta').show()" title="#{msg['app.EditarVentaTitulo']}">
+                                    <f:setPropertyActionListener value="#{venta}" target="#{gestionVentas.ventaSeleccionada2}" />
+                                    <h:outputText value ="#{msg['app.EditarCompra']}" rendered="#{gestionVentas.filtroMisProductos eq 'comprados'}" />
+                                    <h:outputText value ="#{msg['app.EditarVentaTexto']}" rendered="#{gestionVentas.filtroMisProductos ne 'comprados'}" />
+                                    
+                                </p:commandLink>-->
+                                          <p:separator />
+                                      
+                            </p:panel>
+               </p:dataGrid>
+        </h:form>
+                
+ </div>              
+</ui:composition>
+

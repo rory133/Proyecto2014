@@ -59,12 +59,15 @@ private boolean buscandoPorNombre;
 private boolean buscandoPorCategoria;
 private boolean soloMios;
 private Usuario usuarioActual;
+private String filtroMisProductos;
+private String titulo;
 
     public ListadoProductos() {
         }
     @PostConstruct
     public void init() {
-//    public void iniciar() {
+
+        setFiltroMisProductos("ofertados");
        facesContext=FacesContext.getCurrentInstance();
        setBuscandoPorNombre(false);
        setFiltro("todos");
@@ -236,7 +239,8 @@ private Usuario usuarioActual;
     }
 
     public void setListaProductos(List<Producto> listaProductos) {
-        if(isSoloMios()){
+      if (listaProductos!=null){
+        if((isSoloMios())){
             List<Producto> listaProductosTempo= new  ArrayList<>();
              FacesContext facesContext2 = FacesContext.getCurrentInstance();
              HttpSession session = (HttpSession) facesContext2.getExternalContext().getSession(false);
@@ -252,6 +256,9 @@ private Usuario usuarioActual;
         }else{
             this.listaProductos = ActualizaPujas(listaProductos);
         }
+      }else{
+           this.listaProductos =null;
+      }
     }
 
     public String getFiltro() {
@@ -292,6 +299,17 @@ private Usuario usuarioActual;
     }
 
     public void setSoloMios(boolean soloMios) {
+        if (soloMios==true){
+            
+
+              setTitulo(ResourcesUtil.getString("app.GestionaTusProductos"));
+              setFiltro("todos");
+              
+        }else {
+            setFiltro("todos");
+            setTitulo(ResourcesUtil.getString("app.Categorias"));
+            setFiltroMisProductos("ofertados");
+        }        
         this.soloMios = soloMios;
     }
 
@@ -301,6 +319,24 @@ private Usuario usuarioActual;
 
     public void setUsuarioActual(Usuario usuarioActual) {
         this.usuarioActual = usuarioActual;
+    }
+
+    public String getFiltroMisProductos() {
+        return filtroMisProductos;
+    }
+
+    public void setFiltroMisProductos(String filtroMisProductos) {
+        if (filtroMisProductos.equals("ofertados"))
+            setFiltro("todos");
+        this.filtroMisProductos = filtroMisProductos;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
     
     
