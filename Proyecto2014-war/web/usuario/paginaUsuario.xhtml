@@ -125,7 +125,7 @@
                                                     <f:selectItem itemLabel="#{msg['app.Ofertados']}" itemValue="ofertados" />
                                                     <f:selectItem itemLabel="#{msg['app.Comprados']}" itemValue="comprados" />
                                                     <f:selectItem itemLabel="#{msg['app.Vendidos']}" itemValue="vendidos" />
-                                                    <f:ajax event="change"  render="formListadoVentas formListadoProducto @all"/>
+                                                    <f:ajax event="change"  render="@all formFiltroComprados formFiltroVendidos formListadoProducto formListadoVentas "/>
                                                     <!--<f:ajax event="change"  render="listaProductos"/>-->
                                          </p:selectOneRadio>
                                      <p:tooltip id="toolTipFadeFiltro" for="filtroMisProductos" value="#{msg['app.toolTipFiltraTusProductos']}" />                           
@@ -217,37 +217,57 @@
 
 
                 </h:form>
+             
+                       
                 <h:form id="formFiltroComprados" rendered="#{gestionVentas.filtroMisProductos eq 'comprados' and  listadoProductos.soloMios}" 
                         style="background-color: #e1c1a2" >
-                    <p:growl id="growl"  />
-                        <p:separator />
-                        <p:commandLink id="botonRecibidos" update="growl" actionListener="#{gestionVentas.misProductosCompradosRecibidos()}">
-                         <f:ajax event="click" render="@all formListadoVentas" />
+                    <p:growl id="grow2"  /> 
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:commandLink id="botonRecibidos"  update="grow2" actionListener="#{gestionVentas.misProductosCompradosRecibidos()}">
+                         <f:ajax event="click" render="formListadoProducto formListadoVentas" />
+                          <f:ajax execute="formFiltroComprados" render="formListadoProducto formListadoVentas "></f:ajax>
                         <h:outputText value="#{msg['app.Recibidos']}" />
                     </p:commandLink>
-                           <p:separator />
-                           <p:commandLink id="botonNoRecibidos" update="growl" actionListener="#{gestionVentas.misProductosCompradosNORecibidos()}" >
-                        <f:ajax event="click" render="@all formListadoVentas" />
+                        <p:separator />
+                    <p:commandLink id="botonNoRecibidos" update="grow2"  actionListener="#{gestionVentas.misProductosCompradosNORecibidos()}" >
+                        <f:ajax event="click" render="formListadoProducto formListadoVentas" />
+                         <f:ajax execute="formFiltroComprados" render="formListadoProducto formListadoVentas"></f:ajax>
                         <h:outputText value="#{msg['app.NoRecibidos']}" />
 
                     </p:commandLink>
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
                 </h:form>    
                   <h:form id="formFiltroVendidos" rendered="#{gestionVentas.filtroMisProductos eq 'vendidos' and  listadoProductos.soloMios}" 
                           style="background-color: #e1c1a2; color: #e1c1a2">
-                    <p:growl id="grow2"  />
-                        <p:separator />
-                        <p:commandLink id="botonEnviados"  update="grow2" actionListener="#{gestionVentas.misProductosVendidosEnviados()}">
-                         <f:ajax event="click" render="@all formListadoVentas" />
+                  <p:growl id="grow3"  /> 
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:commandLink id="botonEnviados"  update="grow3" actionListener="#{gestionVentas.misProductosVendidosEnviados()}">
+                         <f:ajax event="click" render="formListadoProducto formListadoVentas" />
+                         <f:ajax execute="formFiltroVendidos" render="formListadoProducto formListadoVentas "></f:ajax>
                         <h:outputText value="#{msg['app.Enviados']}" />
-                    </p:commandLink>
+                       </p:commandLink>
                            <p:separator />
-                           <p:commandLink id="botonNoEnviados" update="grow2" actionListener="#{productoView.misProductosVendidosNoEnviados()}" >
-                        <f:ajax event="click" render="@all formListadoVentas" />
+                           <p:commandLink id="botonNoEnviados" update="grow3" actionListener="#{gestionVentas.misProductosVendidosNoEnviados()}" >
+                        <f:ajax event="click" render="formListadoProducto formListadoVentas" />
+                        <f:ajax execute="formFiltroVendidos" render="formListadoProducto formListadoVentas "></f:ajax>
                         <h:outputText value="#{msg['app.NoEnviados']}" />
+                         <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
+                        <p:separator /><p:separator /><p:separator /><p:separator />
 
                     </p:commandLink>
                 </h:form>                    
-                    
+         
                     
                     
                     

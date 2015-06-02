@@ -53,6 +53,8 @@ public class GestionVentas {
     private String filtroMisProductos;
     private FacesMessage facesMessage;
     private FacesContext facesContext;
+    private String tipoVenta;
+           
 
 
     /**
@@ -76,8 +78,8 @@ public class GestionVentas {
     public void misProductosCompradosNORecibidos(){
 //        System.out.println("compradoNORecibidos()");
         setListaVentas(null);
-        Usuario usuario=usuarioLogado();
-        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuario);
+//        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorNoRecibidos(usuarioLogado());
         setVentasAMostrar("NoRecibidos");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeCompradoNoRecibido"),"");
@@ -95,8 +97,8 @@ public class GestionVentas {
     public void misProductosCompradosRecibidos(){
 //        System.out.println("compradoRecibidos()");
         setListaVentas(null);
-        Usuario usuario=usuarioLogado();
-        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuario);
+//        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioCompradorRecibidos(usuarioLogado());
         setVentasAMostrar("Recibidos");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeCompradoRecibido"),"");
@@ -113,8 +115,8 @@ public class GestionVentas {
     }
     public void misProductosVendidosEnviados(){
         setListaVentas(null);
-        Usuario usuario=usuarioLogado();
-        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorEnviados(usuario);
+//        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorEnviados(usuarioLogado());
         setVentasAMostrar("Enviados");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeVendidoEnviado"),"");
@@ -128,9 +130,9 @@ public class GestionVentas {
     }
     
     public void misProductosVendidosNoEnviados(){
-        setListaVentas(null);
-        Usuario usuario=usuarioLogado();
-        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorNoEnviados(usuario);
+//        setListaVentas(null);
+//        Usuario usuario=usuarioLogado();
+        List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorNoEnviados(usuarioLogado());
         setVentasAMostrar("NoEnviados");
          if((listaVentasTempo==null)||(listaVentasTempo.isEmpty())){
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,ResourcesUtil.getString("app.MensajeVendidoNoEnviado"),"");
@@ -228,30 +230,39 @@ public class GestionVentas {
             case "comprados":
                 switch (ventasAMostrar) {
                     case "Recibidos":
+                    setTipoVenta(ResourcesUtil.getString("app.Recibidos"));
                     misProductosCompradosRecibidos();
                     
                     break;
                     case "NoRecibidos":
+                    setTipoVenta(ResourcesUtil.getString("app.NoRecibidos"));
                     misProductosCompradosNORecibidos();
                     break;
-                    
+                    default:
+                    setTipoVenta(ResourcesUtil.getString("app.NoRecibidos"));
+                    misProductosCompradosNORecibidos();
                 }
             
             break;
             case "vendidos":
                     switch (ventasAMostrar) {
                     case "Enviados":
+                    setTipoVenta(ResourcesUtil.getString("app.Enviados"));
                     misProductosVendidosEnviados();
                     
                     break;
                     case "NoEnviados":
+                    setTipoVenta(ResourcesUtil.getString("app.NoEnviados"));
                     misProductosVendidosNoEnviados();
                     break;
-                    
+                    default:
+                    setTipoVenta(ResourcesUtil.getString("app.NoEnviados"));
+                    misProductosVendidosNoEnviados();
                 }
             
             break;
-            
+//            default:
+//            misProductosCompradosNORecibidos();
         }
     }
     
@@ -319,6 +330,14 @@ public class GestionVentas {
     public void setFiltroMisProductos(String filtroMisProductos) {
         System.out.println(" Cambio filtro mis productos a: "+ filtroMisProductos );
         this.filtroMisProductos = filtroMisProductos;
+    }
+
+    public String getTipoVenta() {
+        return tipoVenta;
+    }
+
+    public void setTipoVenta(String tipoVenta) {
+        this.tipoVenta = tipoVenta;
     }
     
     

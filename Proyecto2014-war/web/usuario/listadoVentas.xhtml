@@ -8,17 +8,18 @@
     <div class="fondo-centro">  
                 
         <h:form id="formListadoVentas" style="background-color: #c8bfe7">
-            <f:event  id="cargaVentas" type="preRenderView" listener="#{gestionVentas.actualizaVistaVentas()}"/>
+            <f:event  id="cargaVentas" type="preRenderView" listener="#{gestionVentas.actualizaVistaVentas()}"
+                      rendered="#{gestionVentas.filtroMisProductos eq 'comprados' or gestionVentas.filtroMisProductos eq 'comprados'}" />
 
                 <p:dataGrid   var="venta" value="#{gestionVentas.listaVentas}" columns="3" 
-                            rows="12" paginator="true" id="listadoVentas"
+                            rows="12" paginator="true" id="listadoVentas" 
                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                             rowsPerPageTemplate="6,12,16" 
                             style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%">
 
                             <f:facet name="header">
-                                <h:outputText value=" #{msg['app.NumeroDeVentas']} : #{gestionVentas.listaVentas.size()}" id="cantidadVentas"/>
-                                 
+                                <h:outputText value=" #{msg['app.NumeroDeVentas']} : #{gestionVentas.listaVentas.size()} " id="cantidadVentas"/>
+                                <h:outputText value=" #{gestionVentas.tipoVenta}"  />
                             </f:facet>
                             
                         <p:panel  header="#{msg['app.Producto']}: #{venta.productoIdproducto.nombre}" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7 !important">
