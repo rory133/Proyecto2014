@@ -13,6 +13,7 @@ import entidades.Denuncia;
 import entidades.Usuario;
 import entidades.Venta;
 import facade.DenunciaFacade;
+import facade.ProductoFacade;
 import facade.VentaFacade;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,8 @@ public class GestionVentas {
     private DenunciaFacade denunciaFacade;
     @EJB
     GestionEventos gestionEventos;
+    @EJB
+    private ProductoFacade productoFacade;
     
     private List<Venta> listaVentas;
     private String ventasAMostrar;
@@ -54,6 +57,7 @@ public class GestionVentas {
     private FacesMessage facesMessage;
     private FacesContext facesContext;
     private String tipoVenta;
+    
            
 
 
@@ -195,13 +199,13 @@ public class GestionVentas {
     public void salvaVenta(){
 
         ventaFacade.salva(ventaSeleccionada2);
-           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeAcutalizadaVentaProducto")+ ventaSeleccionada.getProductoIdproducto().getNombre(),"");
+           FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeAcutalizadaVentaProducto")+ ventaSeleccionada2.getProductoIdproducto().getNombre(),"");
             FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     public void creaDenuncia(){
         
-        
+//          System.out.println("entro en Crear Denuncia ");
         denuncia=new Denuncia();
         denuncia.setDenunciaIdusuario(usuarioLogado());
         denuncia.setFechaDenuncia(new java.util.Date(System.currentTimeMillis()));
@@ -210,9 +214,11 @@ public class GestionVentas {
         }else {
             denuncia.setTipoDenuncia("NO_PAGADO");
         }
-        
+//        System.out.println("tipoDenuncia "+ denuncia.getTipoDenuncia());
         denuncia.setMotivo(getMotivoDenuncia());
+//        System.out.println("motivo denuncia "+ denuncia.getMotivo());
         denuncia.setVentaIdventa(ventaSeleccionada);
+//        System.out.println("producto de la venta y de la denuncia "+ denuncia.getVentaIdventa().getProductoIdproducto().getNombre());
         denuncia.setAtendida(false);
         denuncia.setFechaAtencion(null);
         denuncia.setAtiendeIdusuario1(null);
@@ -266,6 +272,26 @@ public class GestionVentas {
         }
     }
     
+    public String borrarVenta(){
+           //recogemos los parametros necesarios
+         FacesContext facesContext = FacesContext.getCurrentInstance();
+         HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+            String idVenta = (String) facesContext.getExternalContext().getRequestParameterMap().get("idVentaABorrar");
+             Venta venta=ventaFacade.find((Integer)Integer.parseInt(idVenta));
+             if (!venta.isCobrado()||!venta.isEnviado()||!venta.isPagado()||!venta.isRecibido()){
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeNoBorradaVenta"),"");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+                   return "index.xhtml?faces-redirect=true";  
+             }else{
+                  
+                 
+                   productoFacade.remove(venta.getProductoIdproducto());
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,"Borrada Venta,","");
+                   FacesContext.getCurrentInstance().addMessage(null, message);
+                   return "paginaUsuario.xhtml?faces-redirect=true";  
+             }
+            
+    }
 
     public List<Venta> getListaVentas() {
         return listaVentas;
@@ -296,6 +322,8 @@ public class GestionVentas {
     }
 
     public void setVentaSeleccionada(Venta ventaSeleccionada) {
+        System.out.println("creamos ventaSeleccionada con venta: "+ventaSeleccionada.toString());
+         System.out.println("creamos ventaSeleccionada del producto: "+ventaSeleccionada.getProductoIdproducto().getNombre());
         this.ventaSeleccionada = ventaSeleccionada;
     }
 

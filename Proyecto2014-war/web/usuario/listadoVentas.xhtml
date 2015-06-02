@@ -72,24 +72,30 @@
                                 </h:panelGrid>
 
                                        <p:separator />
-<!--                                <p:commandLink update=":form33:detalleDenuncia" oncomplete="PF('creacionDenuncia').show()" title="#{msg['app.CrearDenuncia']}">
+                                <p:commandLink update=":formDetallesDenuncia:detalleDenuncia" oncomplete="PF('creacionDenuncia').show()" title="#{msg['app.CrearDenuncia']}">
                                     <h:outputText styleClass="ui-icon ui-icon-pin-s" style="margin:0 auto;" />
                                     <h:outputText value ="#{msg['app.Denunciar']}"  />
                                     <f:setPropertyActionListener value="#{venta}" target="#{gestionVentas.ventaSeleccionada}" />
                                 </p:commandLink>
                                           <p:separator />
-                                <p:commandLink update=":form333:detalleVenta" oncomplete="PF('editarVenta').show()" title="#{msg['app.EditarVentaTitulo']}">
+                                <p:commandLink update=":formDetallesVenta:detalleVenta" oncomplete="PF('editarVenta').show()" title="#{msg['app.EditarVentaTitulo']}">
                                     <f:setPropertyActionListener value="#{venta}" target="#{gestionVentas.ventaSeleccionada2}" />
                                     <h:outputText value ="#{msg['app.EditarCompra']}" rendered="#{gestionVentas.filtroMisProductos eq 'comprados'}" />
                                     <h:outputText value ="#{msg['app.EditarVentaTexto']}" rendered="#{gestionVentas.filtroMisProductos ne 'comprados'}" />
                                     
-                                </p:commandLink>-->
+                                </p:commandLink>
                                           <p:separator />
                                       
                             </p:panel>
                </p:dataGrid>
         </h:form>
+        
+            
+                     <ui:include src="detalleDenuncia.xhtml" />
+                     <ui:include src="detallesVenta.xhtml" />
                 
+           
+               
  </div>              
 </ui:composition>
 

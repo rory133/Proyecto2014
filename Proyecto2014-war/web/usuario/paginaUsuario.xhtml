@@ -233,7 +233,7 @@
                     </p:commandLink>
                         <p:separator />
                     <p:commandLink id="botonNoRecibidos" update="grow2"  actionListener="#{gestionVentas.misProductosCompradosNORecibidos()}" >
-                        <f:ajax event="click" render="formListadoProducto formListadoVentas" />
+                        <f:ajax event="click" render="formListadoProducto formListadoVentas formListadoVentas:listadoVentas" />
                          <f:ajax execute="formFiltroComprados" render="formListadoProducto formListadoVentas"></f:ajax>
                         <h:outputText value="#{msg['app.NoRecibidos']}" />
 
@@ -252,13 +252,13 @@
                         <p:separator /><p:separator /><p:separator /><p:separator />
                         <p:commandLink id="botonEnviados"  update="grow3" actionListener="#{gestionVentas.misProductosVendidosEnviados()}">
                          <f:ajax event="click" render="formListadoProducto formListadoVentas" />
-                         <f:ajax execute="formFiltroVendidos" render="formListadoProducto formListadoVentas "></f:ajax>
+                          <f:ajax execute="formFiltroVendidos" render="formListadoProducto formListadoVentas "></f:ajax>
                         <h:outputText value="#{msg['app.Enviados']}" />
                        </p:commandLink>
                            <p:separator />
                            <p:commandLink id="botonNoEnviados" update="grow3" actionListener="#{gestionVentas.misProductosVendidosNoEnviados()}" >
-                        <f:ajax event="click" render="formListadoProducto formListadoVentas" />
-                        <f:ajax execute="formFiltroVendidos" render="formListadoProducto formListadoVentas "></f:ajax>
+                        <f:ajax event="click" render="formListadoProducto formListadoVentas formListadoVentas:listadoVentas" />
+                         <f:ajax execute="formFiltroVendidos" render="formListadoProducto formListadoVentas"></f:ajax>
                         <h:outputText value="#{msg['app.NoEnviados']}" />
                          <p:separator /><p:separator /><p:separator /><p:separator />
                         <p:separator /><p:separator /><p:separator /><p:separator />

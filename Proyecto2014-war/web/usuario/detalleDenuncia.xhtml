@@ -5,14 +5,18 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
+    
+    
+    <h:form id="formDetallesDenuncia" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%" >
          <p:dialog id="dlg" header="#{msg['app.CrearDenuncia']}" widgetVar="creacionDenuncia" 
                     width="500" height="350"
                     style="background-color: #c8bfe7; background: #c8bfe7;">
 
 
             <p:outputPanel id="detalleDenuncia" style="text-align:center; background-color: #c8bfe7; background: #c8bfe7;">
-                <p:growl id="growlDenuncia" showDetail="true" sticky="true" /> 
-                <p:messages id="msgsDenduncia" /> 
+                <!--<p:growl id="growlDenuncia" showDetail="true" sticky="true" />-->
+                <p:growl id="growlDenuncia" showDetail="true"  />
+                <!--<p:messages id="msgsDenduncia" />--> 
 
 
 
@@ -56,7 +60,7 @@
                 <p:separator />
                     <p:growl id="msgs33" showDetail="true" escape="false"/>
 
-                    <p:commandButton id="botonDenuncia" value="#{msg['app.BotonDenunciarVenta']}" update=":form22:grow221"    actionListener="#{gestionVentas.creaDenuncia()}" 
+                    <p:commandButton id="botonDenuncia" value="#{msg['app.BotonDenunciarVenta']}" update="growlDenuncia :formDetallesDenuncia :formListadoVentas"    actionListener="#{gestionVentas.creaDenuncia()}" 
                                      icon="ui-icon-check" oncomplete="PF('creacionDenuncia').hide();" >
                         <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionDenunciarVenta']}" icon="ui-icon-alert" />
                     </p:commandButton>
@@ -73,6 +77,6 @@
             </p:outputPanel>
 
         </p:dialog>
-                           
+     </h:form>                      
 </ui:composition>
 
