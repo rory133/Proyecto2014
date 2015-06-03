@@ -77,7 +77,7 @@
           
             <p:commandButton action="#{gestionProductosAdministradorView.atenderDenunciaMalClasificado()}"  value="Atender denuncia como mál clasificado" icon="ui-icon-trash" 
                                  id="botonEliminarComoMalClasificado" 
-                                 update=":formCentroProductos:listaProductos:msgsCenter2 :formCentroProductos:listaProductos:tablaListadoProductos" 
+                                 update=":formCentroProductos :formCentroProductos:listaProductos:msgsCenter2 :formCentroProductos:listaProductos:tablaListadoProductos" 
                                  oncomplete="PF('detallesProducto').hide();"
                                  rendered="#{gestionProductosAdministradorView.datosProductoCompletoSeleccionado.producto.marcadoMalClasificado}">
                  <p:tooltip id="toolTipFade04" for="botonEliminarComoMalClasificado" value="Elimnar marca como mal clasificado" />

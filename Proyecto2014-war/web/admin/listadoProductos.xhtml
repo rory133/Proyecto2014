@@ -13,7 +13,7 @@
             <p:remoteCommand name="onCellEdit" action="#{gestionProductosAdministradorView.listaProductosCompletos}" update=":formCentroProductos:listaProductos:tablaListadoProductos" />
          <p:dataTable id="tablaListadoProductos" var="productoCompleto" value="#{gestionProductosAdministradorView.listaProductosCompletos}"
                   paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-                 paginator="true" rows="10" style="margin-bottom:20px">
+                 paginator="true" rows="6" style="margin-bottom:20px">
                <!--
                   <p:ajax event="cellEdit" oncomplete="onCellEdit();" />
                   <p:ajax event="page" oncomplete="onCellEdit();"></p:ajax>
@@ -103,7 +103,7 @@
              <p:column headerText="Eliminar" width="80">
                  
                      <p:commandButton action="#{gestionProductosAdministradorView.borrarProducto()}"  value="Borrar" icon="ui-icon-trash" 
-                                      id="botonBorrarProducto" update=":formCentroProductos:listaProductos:msgsCenter2">
+                                      id="botonBorrarProducto" update=":formCentroProductos :formCentroProductos:listaProductos:msgsCenter2">
                          <p:tooltip id="toolTipFade03" for="botonBorrarProducto" value="Borrar este producto" />
                          <f:param id="productoABorrar" name="productoABorrar" value="#{productoCompleto.producto.idproducto}" />
                             

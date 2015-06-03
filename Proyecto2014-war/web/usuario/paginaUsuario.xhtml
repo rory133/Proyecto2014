@@ -105,7 +105,8 @@
                              <tr>
                                <td>
                                 
-                                <h:panelGrid id="panelGridFiltro2" columns="2" style="margin-bottom:10px" cellpadding="5">
+                                <h:panelGrid id="panelGridFiltro2" columns="2" style="margin-bottom:10px" cellpadding="5"
+                                             rendered="#{gestionVentas.filtroMisProductos eq 'ofertados'}">
                                       
                                     <p:selectOneRadio id="filtro2" value="#{listadoProductos.filtro}">
                                         <f:selectItem itemLabel="#{msg['app.itemTodos']}" itemValue="todos"  />
