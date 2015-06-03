@@ -63,7 +63,7 @@
                 <p:commandButton action="#{gestionUsuariosAdministradorBean.borrarUsuario()}"  value="eliminar usuario" icon="ui-icon-arrowthickstop-1-s" 
                               id="botonBorrarUsuario" 
                                
-                               update="msgsUsuarios :formCentroUsuarios:listaUsuarios:msgsCenterUsuarios :formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"
+                               update="msgsUsuarios :formCentroUsuarios :formCentroUsuarios:listaUsuarios:msgsCenterUsuarios :formCentroUsuarios:listaUsuarios:tablaListadoUsuarios"
                                oncomplete="PF('detallesUsuario').hide();">
                  <p:tooltip id="toolTipFadeBorrarUsuario" for="botonBorrarUsuario" value="Eliminar este usuario" />
                  <f:param id="usuarioABorrar" name="usuarioABorrar" value="#{gestionUsuariosAdministradorBean.usurarioSeleccionado.idusuario}" />

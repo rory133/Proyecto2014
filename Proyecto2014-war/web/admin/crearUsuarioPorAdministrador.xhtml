@@ -91,7 +91,8 @@
         </p:selectBooleanCheckbox>
  
         <p:commandButton id="botonCrearUsuario" value="Crear cuenta"  update="msgsCrearUsuarioPorAdministrador :formCrearUsuario:msgsCrearUsuarios nombre apellidos email web localizacion loginUsuario pwd1 pwd2
-                         :formCentroUsuarios:listaUsuarios:msgsCenterUsuarios :formCentroUsuarios:listaUsuarios:tablaListadoUsuarios" 
+                         :formCentroUsuarios:listaUsuarios:msgsCenterUsuarios :formCentroUsuarios:listaUsuarios:tablaListadoUsuarios
+                         :formCentroUsuarios:listaUsuarios" 
                          action="#{userBean.crearUsuarioPorAdministrador()}" icon="ui-icon-check">
             
              <p:tooltip id="toolTipFadeCrearUsuario" for="botonCrearUsuario" value="Dar de alta a este usuario" />

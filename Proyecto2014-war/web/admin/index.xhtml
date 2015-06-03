@@ -299,10 +299,10 @@
             </p:layout>
             <h:outputText value="no eres administrador y no puedes acceder a esta pagina"    rendered="#{ROLE_SOCIO}" />
             <BR/>
-             <h:link outcome="/usuario/index" value="volver"   rendered="#{ROLE_SOCIO}" />
+             <h:link outcome="/usuario/paginaUsuario" value="volver"   rendered="#{ROLE_SOCIO}" />
             <h:outputText value="no estas logado para poder acceder a esta pagina"    rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
             <BR/>
-            <h:link outcome="/faces/index" value="volver" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
+            <h:link outcome="/faces/paginaAnonimo" value="volver" rendered="#{!ROLE_SOCIO and !ROLE_ADMIN}" />
 
         </h:body>
 
