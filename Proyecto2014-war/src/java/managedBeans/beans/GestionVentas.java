@@ -274,12 +274,13 @@ public class GestionVentas {
     
     public String borrarVenta(){
            //recogemos los parametros necesarios
+//        System.out.println("En BorrarBenta");
          FacesContext facesContext = FacesContext.getCurrentInstance();
          HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
             String idVenta = (String) facesContext.getExternalContext().getRequestParameterMap().get("idVentaABorrar");
              Venta venta=ventaFacade.find((Integer)Integer.parseInt(idVenta));
              if (!venta.isCobrado()||!venta.isEnviado()||!venta.isPagado()||!venta.isRecibido()){
-                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,ResourcesUtil.getString("app.MensajeNoBorradaVenta"),"");
+                   FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,ResourcesUtil.getString("app.MensajeNoBorradaVenta"),"");
                    FacesContext.getCurrentInstance().addMessage(null, message);
                    return "index.xhtml?faces-redirect=true";  
              }else{

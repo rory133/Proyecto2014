@@ -8,7 +8,7 @@
     
       <h:form id="formDetallesVenta" style="background-color: #c8bfe7; background: #c8bfe7 !important; width:100%; height: 100%"> 
 
-         <p:dialog id="dialogoEditarVenta" header="#{msg['app.DetallesVenta']}" widgetVar="editarVenta" 
+          <p:dialog id="dialogoEditarVenta" header="#{msg['app.DetallesVenta']}  #{msg['app.Producto']}: #{gestionVentas.ventaSeleccionada2.productoIdproducto.nombre}" widgetVar="editarVenta" 
                     width="500" height="350"
                     style="background-color: #c8bfe7; background: #c8bfe7;">
 
@@ -67,18 +67,25 @@
 
                     </p:commandButton>
                     <p:separator />
-                    <p:commandButton  rendered="#{gestionVentas.filtroMisProductos eq 'vendidos'}" id="botonBorrarVenta2" value="#{msg['app.BotonBorrarVenta']}"     actionListener="#{gestionVentas.borrarVenta()}" 
+                    <p:commandButton  rendered="#{gestionVentas.filtroMisProductos eq 'vendidos'}" 
+                                      id="botonBorrarVenta2" value="#{msg['app.BotonBorrarVenta']}"     
+                                      actionListener="#{gestionVentas.borrarVenta()}" 
+                                      update=":formDetallesVenta :formListadoVentas :formListadoVentas:listadoVentas" 
                                  icon="ui-icon-check"  oncomplete="PF('editarVenta').hide();" >
 
 
-                            <f:ajax event="dialogReturn" render="formDetallesVenta :formListadoVentas" />
+                         
                            
-                        <f:param id="parametro222" name="idVentaABorrar" value="#{gestionVentas.ventaSeleccionada2.idventa}" />
-
+                            <f:param id="parametro222" name="idVentaABorrar" value="#{gestionVentas.ventaSeleccionada2.idventa}" />
+                             <p:confirm header="#{msg['app.Confirmacion']}" message="#{msg['app.ConfirmacionDenunciarVenta']}" icon="ui-icon-alert" />
                     </p:commandButton>
 
-
-
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                        <p:commandButton value="#{msg['app.Si']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['app.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                    
+                   
 
 
 
