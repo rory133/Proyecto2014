@@ -56,7 +56,7 @@
                                     <f:selectItem itemLabel="#{msg['app.itemTodos']}" itemValue="todos"  />
                                     <f:selectItem itemLabel="#{msg['app.itemVentaDirecta']}" itemValue="ventaDirecta" />
                                     <f:selectItem itemLabel="#{msg['app.itemSubasta']}" itemValue="subasta" />
-                                    <f:ajax event="valueChange"  render="formListadoProducto"/>
+                                    <f:ajax event="valueChange"  render=":formListadoProducto"/>
 
                                 </p:selectOneRadio>
                                  <p:tooltip id="toolTipFade11" for="panelGridFiltro" value="#{msg['app.tooltipFiltrarProductos']}" />
@@ -75,7 +75,7 @@
                                <!--<h:form id="formBuscarPorNombre">--> 
                               <p:commandLink id="buscaXNombre"  action="#{listadoProductos.buscaXNombre()}">
 
-                                    <f:ajax event="click" render="formListadoProducto:productos" />
+                                    <f:ajax event="click" render=":formListadoProducto:productos" />
                                     <h:graphicImage library="images" name="buscar2.gif" />
                                     <p:tooltip id="toolTipFade2" for="buscaXNombre" value="#{msg['app.tooltipBotonBuscarPorNombre']}" />
                                 </p:commandLink>
@@ -129,7 +129,7 @@
 
                         <p:commandButton id="boton2" value="#{msg['app.BotonFiltrarCategoria']}"  update=":msgs"  
                                          action="#{listadoProductos.buscaXCategoria()}" icon="ui-icon-check" >
-                                         <f:ajax event="click" render="formListadoProducto:productos" />
+                                         <f:ajax event="click" render=":formListadoProducto:productos" />
 
                         </p:commandButton>
 

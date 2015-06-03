@@ -10,22 +10,13 @@
 package managedBeans.utilidades;
 
 import entidades.Categoria;
-import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
-import javax.servlet.http.HttpSession;
-import managedBeans.beans.CrearProductoBean;
-import managedBeans.beans.ListadoProductosBean;
 import org.primefaces.model.TreeNode;
 
 

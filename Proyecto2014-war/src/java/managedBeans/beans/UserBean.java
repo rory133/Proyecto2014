@@ -229,7 +229,7 @@ private String role;
                
                //mantenemos los menasajes en la redireccion
             faceContext.getExternalContext().getFlash().setKeepMessages(true);
-             return "index.xhtml?faces-redirect=true";
+             return "paginaAnonimo.xhtml?faces-redirect=true";
           
           
 
