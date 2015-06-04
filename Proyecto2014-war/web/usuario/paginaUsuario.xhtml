@@ -228,7 +228,7 @@
                         <p:separator /><p:separator /><p:separator /><p:separator />
                         <p:separator /><p:separator /><p:separator /><p:separator />
                         <p:commandLink id="botonRecibidos"  update="grow2" actionListener="#{gestionVentas.misProductosCompradosRecibidos()}">
-                         <f:ajax event="click" render=":formListadoProducto :formListadoVentas" />
+                         <f:ajax event="click" render=":formListadoProducto :formListadoVentas :formListadoVentas:listadoVentas" />
                           <f:ajax execute="formFiltroComprados" render=":formListadoProducto :formListadoVentas "></f:ajax>
                         <h:outputText value="#{msg['app.Recibidos']}" />
                     </p:commandLink>
@@ -252,7 +252,7 @@
                         <p:separator /><p:separator /><p:separator /><p:separator />
                         <p:separator /><p:separator /><p:separator /><p:separator />
                         <p:commandLink id="botonEnviados"  update="grow3" actionListener="#{gestionVentas.misProductosVendidosEnviados()}">
-                         <f:ajax event="click" render=":formListadoProducto :formListadoVentas" />
+                         <f:ajax event="click" render=":formListadoProducto :formListadoVentas :formListadoVentas:listadoVentas" />
                           <f:ajax execute="formFiltroVendidos" render=":formListadoProducto :formListadoVentas "></f:ajax>
                         <h:outputText value="#{msg['app.Enviados']}" />
                        </p:commandLink>

@@ -81,7 +81,7 @@ public class VisualizaImagen extends HttpServlet {
         case "imagenUnica":         
         try { 
             String idProducto = request.getParameter("idProducto");
-            System.out.println("inside servlet idProducto–>" + idProducto);
+//            System.out.println("inside servlet idProducto–>" + idProducto);
             Integer indice=Integer.parseInt(idProducto);
       
             byte[] bytearray = new byte[16777215];
@@ -108,7 +108,7 @@ public class VisualizaImagen extends HttpServlet {
        case "imagenUnicaUsuarioIdProducto":         
         try { 
             String idProducto = request.getParameter("idProducto");
-            System.out.println("inside servlet UsuarioidProducto–>" + idProducto);
+//            System.out.println("inside servlet UsuarioidProducto–>" + idProducto);
             Integer indice=Integer.parseInt(idProducto);
       
             byte[] bytearray = new byte[16777215];
@@ -136,7 +136,7 @@ public class VisualizaImagen extends HttpServlet {
       case "imagenUnicaUsuarioVenta":         
         try { 
             String idProducto = request.getParameter("idProducto");
-            System.out.println("inside servlet imagenUnicaUsuarioVenta–>" + idProducto);
+//            System.out.println("inside servlet imagenUnicaUsuarioVenta–>" + idProducto);
             Integer indice=Integer.parseInt(idProducto);
       
             byte[] bytearray = new byte[16777215];
@@ -167,7 +167,7 @@ public class VisualizaImagen extends HttpServlet {
         if(idProducto!=null&&!idProducto.equals("")){
          try { 
   
-            System.out.println("inside servlet imagenUnicaVentaSeleccionada–>" + idProducto);
+//            System.out.println("inside servlet imagenUnicaVentaSeleccionada–>" + idProducto);
             Integer indice=Integer.parseInt(idProducto);
       
             byte[] bytearray = new byte[16777215];

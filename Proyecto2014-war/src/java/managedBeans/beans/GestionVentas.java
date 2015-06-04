@@ -130,7 +130,7 @@ public class GestionVentas {
     }
     
     public void misProductosVendidosNoEnviados(){
-//        setListaVentas(null);
+        setListaVentas(null);
 //        Usuario usuario=usuarioLogado();
         List<Venta> listaVentasTempo=ventaFacade.ventaXUsuarioVendedorNoEnviados(usuarioLogado());
         setVentasAMostrar("NoEnviados");
@@ -144,6 +144,8 @@ public class GestionVentas {
             setListaVentas(listaVentasTempo);
          }
     }
+    
+    /*
     public void misProductosCompradosNORecibidos(String sin){
 //        System.out.println("compradoNORecibidos(String sin)");
         setListaVentas(null);
@@ -185,7 +187,7 @@ public class GestionVentas {
         setListaVentas(listaVentasTempo);
 
     }
-    
+    */
     public Usuario usuarioLogado(){
        
          FacesContext facesContext = FacesContext.getCurrentInstance();
